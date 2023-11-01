@@ -1,9 +1,9 @@
 'use client'
 
 import Image from 'next/image'
-import type { FullFeaturedItemType } from '@/app/page'
+import type { FullItemType } from '@/app/page'
 
-type FeaturedProps = { featuredItems: FullFeaturedItemType[] }
+type FeaturedProps = { featuredItems: FullItemType[] }
 
 const Featured = ({ featuredItems }: FeaturedProps) => {
   const addToCart = (id: number): void => {
