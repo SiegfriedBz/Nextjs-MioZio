@@ -19,10 +19,21 @@ const ItemMiniCart = ({ basePrice, options }: ItemMiniCartProps) => {
   const [count, setCount] = useState(1)
   const [totalPrice, setTotalPrice] = useState(basePrice)
 
-  useEffect(() => {}, [selectedOption, count])
+  useEffect(() => {
+    const option = options?.find((option) => option.title === selectedOption)
+    const additionalPrice = option?.additionalPrice || 0
+    const totalPrice = (basePrice + additionalPrice) * count
+
+    setTotalPrice(totalPrice)
+  }, [selectedOption, count, basePrice, options])
 
   return (
     <div className='flex w-full flex-col space-y-2'>
+      {/* TOTAL PRICE */}
+      <h2 className='text-2xl font-bold uppercase tracking-wide'>
+        ${totalPrice}
+      </h2>
+
       {/* OPTIONS */}
       <div className='flex justify-between'>
         {options?.map((option, index) => {
