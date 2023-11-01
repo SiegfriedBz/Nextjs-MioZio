@@ -88,6 +88,7 @@ const Slider = ({ images }: SliderProps) => {
           blurDataURL={images[currentSlideId]?.blurDataUrl}
           className='h-full w-full object-cover'
           fill={true}
+          priority={true}
           alt={images[currentSlideId]?.alt}
           sizes='(max-width: 768px) 100vw, 50vw'
         />

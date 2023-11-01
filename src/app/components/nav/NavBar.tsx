@@ -20,7 +20,7 @@ const NavBar = () => {
   return (
     <div className='border-primary bg-light flex h-12 items-center justify-between border-b p-4 lg:px-16 xl:px-32 2xl:px-48'>
       {/* desktop menu 1/2 */}
-      <div className='hidden flex-1 items-center space-x-4 md:flex'>
+      <div className='hidden flex-1 items-center space-x-4 font-bold md:flex'>
         {DESKTOP_MENU_LINKS.map((link) => {
           return (
             <Link
@@ -38,7 +38,7 @@ const NavBar = () => {
       <div className='flex-1 md:absolute md:left-1/2 md:-translate-x-1/2'>
         <Link
           href='/'
-          className='text-primary text-2xl font-bold uppercase tracking-wide'
+          className='text-primary text-2xl font-bold uppercase tracking-wide md:text-3xl'
         >
           Mio Zio
         </Link>
@@ -48,11 +48,17 @@ const NavBar = () => {
       <div className='hidden flex-1 items-center justify-end space-x-4 md:flex'>
         <PhoneLink className='md:absolute md:right-4 md:top-6 md:-translate-y-1/2 lg:static lg:translate-y-0' />
         {user ? (
-          <Link href='/orders' className='text-primary uppercase tracking-wide'>
+          <Link
+            href='/orders'
+            className='text-primary font-bold uppercase tracking-wide'
+          >
             Orders
           </Link>
         ) : (
-          <Link href='/login' className='text-primary uppercase tracking-wide'>
+          <Link
+            href='/login'
+            className='text-primary font-bold uppercase tracking-wide'
+          >
             Login
           </Link>
         )}

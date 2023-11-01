@@ -22,7 +22,7 @@ const Featured = ({ featuredItems }: FeaturedProps) => {
               className='text-primary flex h-full w-screen flex-col space-y-4 px-2 py-4 text-center lg:w-[50vw] lg:px-8 2xl:w-[33vw]'
             >
               {/* ITEM IMG */}
-              <div className='relative flex-1 rounded-full'>
+              <div className='relative flex-1'>
                 <Image
                   src={item?.src}
                   placeholder='blur'
@@ -30,7 +30,7 @@ const Featured = ({ featuredItems }: FeaturedProps) => {
                   alt={item?.alt}
                   fill={true}
                   priority={true}
-                  className='cursor-pointer rounded-full object-contain transition duration-300 ease-in-out hover:rotate-[16deg] hover:scale-110'
+                  className='cursor-pointer rounded-full object-contain transition duration-300 ease-in-out hover:rotate-[8deg] hover:scale-110'
                 />
               </div>
 

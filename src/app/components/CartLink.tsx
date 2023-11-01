@@ -25,7 +25,11 @@ const CartLink = ({
       <div className='relative h-8 w-8'>
         <Image src='/cart.png' fill={true} alt='cart' />
       </div>
-      <div className={`${mobileMenu ? 'space-x-4' : 'space-x-2'} ${className}`}>
+      <div
+        className={`${
+          mobileMenu ? 'space-x-4' : 'space-x-2 font-bold'
+        } ${className}`}
+      >
         <span>Cart</span>
         <span>(3)</span>
       </div>
