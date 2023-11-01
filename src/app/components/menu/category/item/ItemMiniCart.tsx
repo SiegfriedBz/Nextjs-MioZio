@@ -31,7 +31,7 @@ const ItemMiniCart = ({ basePrice, options }: ItemMiniCartProps) => {
     <div className='flex w-full flex-col space-y-2'>
       {/* TOTAL PRICE */}
       <h2 className='text-2xl font-bold uppercase tracking-wide'>
-        ${totalPrice}
+        ${totalPrice.toFixed(2)}
       </h2>
 
       {/* OPTIONS */}
