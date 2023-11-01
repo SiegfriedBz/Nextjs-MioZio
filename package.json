@@ -21,7 +21,8 @@
     "next": "14.0.0",
     "react": "^18",
     "react-countdown": "^2.3.5",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "tailwind-merge": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",

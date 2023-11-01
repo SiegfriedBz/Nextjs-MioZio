@@ -5,9 +5,9 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { buttonEnterVariants } from '@/utils/motionVariants'
-import type { FullImageType } from '@/app/page'
+import type { FullSliderImageType } from '@/app/page'
 
-type SliderProps = { images: FullImageType[] }
+type SliderProps = { images: FullSliderImageType[] }
 
 const Slider = ({ images }: SliderProps) => {
   const router = useRouter()
@@ -88,6 +88,7 @@ const Slider = ({ images }: SliderProps) => {
           blurDataURL={images[currentSlideId]?.blurDataUrl}
           className='h-full w-full object-cover'
           fill={true}
+          priority={true}
           alt={images[currentSlideId]?.alt}
           sizes='(max-width: 768px) 100vw, 50vw'
         />
