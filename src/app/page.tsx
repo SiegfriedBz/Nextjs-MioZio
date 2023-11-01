@@ -5,10 +5,10 @@ import { getBase64ImageUrl, getImageUrl } from '@/utils/cloudinaryUtils'
 import type { ItemType, SliderImageType, OfferImageType } from '@/data'
 import { sliderImagesData, featuredItemsData, offerImageData } from '@/data'
 
-export type FullImageType = SliderImageType & {
+export type FullSliderImageType = SliderImageType & {
   blurDataUrl: string
 }
-export type FullFeaturedItemType = ItemType & {
+export type FullItemType = ItemType & {
   blurDataUrl: string
 }
 export type FullOfferImageType = OfferImageType & {
@@ -19,7 +19,7 @@ async function getData() {
   const sliderImgPromises = sliderImagesData.map(async (image) => {
     const src = getImageUrl(image.src)
     const blurDataUrl = await getBase64ImageUrl(image.src)
-    const fullImage: FullImageType = {
+    const fullImage: FullSliderImageType = {
       ...image,
       src,
       blurDataUrl,
@@ -31,7 +31,7 @@ async function getData() {
   const featuredItemsPromises = featuredItemsData.map(async (item) => {
     const src = getImageUrl(item.src)
     const blurDataUrl = await getBase64ImageUrl(item.src)
-    const fullFeaturedItem: FullFeaturedItemType = {
+    const fullFeaturedItem: FullItemType = {
       ...item,
       src,
       blurDataUrl,
