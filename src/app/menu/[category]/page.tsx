@@ -47,7 +47,7 @@ const MenuByCategory = async ({ params }: MenuByCategoryProps) => {
         return (
           <Link
             key={item.id}
-            href={`/item/${item.id}`}
+            href={`${category}/item/${item.id}`}
             className='border-primary even:bg-quaternary group flex h-[60vh] w-full flex-col justify-between border-[0.01em] hover:shadow-sm sm:w-1/2 lg:w-[30%]'
           >
             {/* ITEM IMAGE CONTAINER */}
