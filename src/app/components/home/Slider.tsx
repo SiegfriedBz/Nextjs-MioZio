@@ -4,22 +4,24 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { slides } from '@/data'
 import { buttonEnterVariants } from '@/utils/motionVariants'
+import type { FullImageType } from '@/app/page'
 
-const Slider = () => {
+type SliderProps = { images: FullImageType[] }
+
+const Slider = ({ images }: SliderProps) => {
   const router = useRouter()
-  const [currentSlide, setCurrentSlide] = useState(0)
+  const [currentSlideId, setcurrentSlideId] = useState(0)
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1))
+      setcurrentSlideId((prev) => (prev === images?.length - 1 ? 0 : prev + 1))
     }, 2000)
 
     return () => {
       clearInterval(timer)
     }
-  }, [])
+  }, [images])
 
   return (
     <section id='slider' className='flex flex-col lg:flex-row'>
@@ -62,7 +64,7 @@ const Slider = () => {
               }}
               className='inline-block'
             >
-              {slides[currentSlide]?.title}
+              {images[currentSlideId]?.title}
             </motion.h3>
           </div>
         </div>
@@ -81,10 +83,12 @@ const Slider = () => {
       {/* slider images container */}
       <div className='relative flex-1'>
         <Image
-          src={slides[currentSlide]?.src}
+          src={images[currentSlideId]?.src}
+          placeholder='blur'
+          blurDataURL={images[currentSlideId]?.blurDataUrl}
           className='h-full w-full object-cover'
           fill={true}
-          alt={slides[currentSlide]?.title}
+          alt={images[currentSlideId]?.alt}
           sizes='(max-width: 768px) 100vw, 50vw'
         />
       </div>

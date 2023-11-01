@@ -1,11 +1,15 @@
 import Image from 'next/image'
-import Counter from './Counter'
-
 import Link from 'next/link'
+import Counter from './Counter'
+import type { FullOfferImageType } from '@/app/page'
 
-const Offer = () => {
+type OfferProps = {
+  image: FullOfferImageType
+}
+
+const Offer = ({ image }: OfferProps) => {
   return (
-    <section className='flex flex-col items-center bg-[url("/offerBg.png")] lg:flex-row lg:space-x-24'>
+    <section className='flex flex-col items-center bg-[url("/specialOfferBg.png")] lg:flex-row lg:space-x-24'>
       {/* OFFER TEXT container */}
       <div className='flex flex-1 flex-col justify-center space-y-4 px-4 py-4 lg:space-y-8 lg:py-0 lg:pe-0 lg:ps-16'>
         {/* title */}
@@ -35,9 +39,11 @@ const Offer = () => {
       {/* OFFER IMG container */}
       <div className='relative flex h-full w-full flex-1 items-center justify-center'>
         <Image
-          src='/offerProduct.png'
+          src={image?.src}
+          placeholder='blur'
+          blurDataURL={image?.blurDataUrl}
           fill
-          alt='offer'
+          alt={image?.alt}
           className='object-contain'
         />
       </div>

@@ -1,9 +1,11 @@
 'use client'
 
 import Image from 'next/image'
-import { featuredItems } from '@/data'
+import type { FullFeaturedItemType } from '@/app/page'
 
-const Featured = () => {
+type FeaturedProps = { featuredItems: FullFeaturedItemType[] }
+
+const Featured = ({ featuredItems }: FeaturedProps) => {
   const addToCart = (id: number): void => {
     console.log(id)
   }
@@ -23,8 +25,11 @@ const Featured = () => {
               <div className='relative flex-1 rounded-full'>
                 <Image
                   src={item?.src}
-                  alt={item?.title}
+                  placeholder='blur'
+                  blurDataURL={item?.blurDataUrl}
+                  alt={item?.alt}
                   fill={true}
+                  priority={true}
                   className='cursor-pointer rounded-full object-contain transition duration-300 ease-in-out hover:rotate-[16deg] hover:scale-110'
                 />
               </div>
