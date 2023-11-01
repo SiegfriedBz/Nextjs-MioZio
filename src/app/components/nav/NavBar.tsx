@@ -40,7 +40,7 @@ const NavBar = () => {
           href='/'
           className='text-primary text-2xl font-bold uppercase tracking-wide'
         >
-          Dolce Vita
+          Mio Zio
         </Link>
       </div>
 

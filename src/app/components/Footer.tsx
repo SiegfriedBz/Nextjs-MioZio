@@ -10,7 +10,7 @@ const Footer = () => {
       {/* brand name */}
 
       <Link href='/' className='text-lg font-bold uppercase tracking-wide'>
-        Dolce Vita
+        Mio Zio
       </Link>
 
       <PhoneLink className='bottom-12 left-1/2 hidden -translate-x-1/2 translate-y-1/2 sm:absolute sm:flex md:hidden' />
