@@ -23,8 +23,13 @@ body {
   }
 
   /* with header h: 6rem */
-  section {
+  section,
+  .h-section {
     @apply h-[calc(100vh-6rem)];
+  }
+
+  .h-section-third {
+    @apply h-[calc((100vh-6rem)/3)];
   }
 
   button,
