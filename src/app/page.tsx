@@ -15,7 +15,7 @@ export type FullOfferImageType = OfferImageType & {
   blurDataUrl: string
 }
 
-export async function getData() {
+async function getData() {
   const sliderImgPromises = sliderImagesData.map(async (image) => {
     const src = getImageUrl(image.src)
     const blurDataUrl = await getBase64ImageUrl(image.src)
