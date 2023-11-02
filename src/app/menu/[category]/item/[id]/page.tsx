@@ -45,7 +45,7 @@ const Item = async ({ params }: ItemProps) => {
   const item = await getData({ category, id })
 
   return (
-    <section className='flex flex-col items-center justify-around space-y-2 p-4 md:flex-row md:space-x-4 lg:px-16 xl:px-32 2xl:px-48'>
+    <section className='flex flex-col items-center justify-around space-y-1 p-4 sm:space-y-2 md:flex-row md:space-x-4 lg:px-16 xl:px-32 2xl:px-48'>
       {/* IMAGE CONTAINER */}
       <div className='relative h-full w-full flex-1 pt-1'>
         <Image
@@ -57,7 +57,7 @@ const Item = async ({ params }: ItemProps) => {
       </div>
 
       {/* TEXT CONTAINER */}
-      <div className='text-primary flex flex-1 flex-col space-y-2 px-2 md:space-y-8'>
+      <div className='text-primary flex flex-1 flex-col space-y-1 px-2 sm:space-y-2 md:space-y-8'>
         <h2 className='text-2xl font-bold uppercase tracking-wide md:text-3xl'>
           {item.title}
         </h2>
