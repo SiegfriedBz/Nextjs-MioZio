@@ -13,11 +13,11 @@ const Offer = ({ image }: OfferProps) => {
       {/* OFFER TEXT container */}
       <div className='flex flex-1 flex-col justify-center space-y-4 px-4 py-4 lg:space-y-8 lg:py-0 lg:pe-0 lg:ps-16'>
         {/* title */}
-        <h2 className='text-light/90 font-extrabold lg:text-7xl'>
+        <h2 className='font-extrabold text-light/90 lg:text-7xl'>
           Delicious Burger & French Fries
         </h2>
         {/* dsec */}
-        <h4 className='text-light/80 text-justify'>
+        <h4 className='text-justify text-light/80'>
           I&apos;m baby authentic gorpcore cred, food truck roof party
           microdosing gastropub. Cardigan deep v air plant direct trade, fanny
           pack microdosing offal etsy gentrify roof party
@@ -29,7 +29,7 @@ const Offer = ({ image }: OfferProps) => {
 
         {/* CTA */}
         <Link
-          href='/orders'
+          href='/menu'
           className='btn w-max transition duration-300 ease-in-out hover:scale-110'
         >
           Order Now

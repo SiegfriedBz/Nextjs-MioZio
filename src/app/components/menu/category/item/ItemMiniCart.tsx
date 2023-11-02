@@ -1,31 +1,45 @@
 'use client'
 
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { useAppContext } from '@/app/context/appContext'
 import { twMerge } from 'tailwind-merge'
-
-type Option = {
-  title: string
-  additionalPrice: number
-}
+import { v4 as uuidv4 } from 'uuid'
+import type { ItemType } from '@/data'
+import type { CartItemType } from '@/app/context/appContext'
 
 type ItemMiniCartProps = {
-  basePrice: number
-  options: Option[]
+  item: ItemType
 }
 
-const ItemMiniCart = ({ basePrice, options }: ItemMiniCartProps) => {
+const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
+  const { id, title, price, options, src } = item
+
+  const { cart, setCart } = useAppContext()
+  const [quantity, setQuantity] = useState(1)
   const [selectedOption, setSelectedOption] = useState('Small')
-  const [count, setCount] = useState(1)
-  const [totalPrice, setTotalPrice] = useState(basePrice)
+  const [totalPrice, setTotalPrice] = useState(price)
 
   useEffect(() => {
     const option = options?.find((option) => option.title === selectedOption)
     const additionalPrice = option?.additionalPrice || 0
-    const totalPrice = (basePrice + additionalPrice) * count
+    const totalPrice = (price + additionalPrice) * quantity
 
     setTotalPrice(totalPrice)
-  }, [selectedOption, count, basePrice, options])
+  }, [selectedOption, quantity, price, options])
+
+  const onAddToCart = () => {
+    const cartItem: CartItemType = {
+      cartItemId: uuidv4(),
+      id,
+      title,
+      quantity,
+      totalPrice,
+      selectedOption,
+      src,
+    }
+
+    setCart([...cart, cartItem])
+  }
 
   return (
     <div className='flex w-full flex-col space-y-2 md:space-y-4'>
@@ -45,8 +59,8 @@ const ItemMiniCart = ({ basePrice, options }: ItemMiniCartProps) => {
                   'btn',
                   ` text-sm font-bold tracking-wide ring ${
                     option.title === selectedOption
-                      ? 'bg-light text-primary ring-primary'
-                      : 'bg-primary ring-light'
+                      ? 'bg-primary ring-light'
+                      : 'bg-light text-primary ring-primary'
                   }`
                 )}
               >
@@ -57,7 +71,7 @@ const ItemMiniCart = ({ basePrice, options }: ItemMiniCartProps) => {
         })}
       </div>
 
-      {/* COUNTER + CTA */}
+      {/* quantityER + CTA */}
       <div className='flex items-center justify-between text-primary'>
         <div>
           <span className='text-lg md:text-xl md:font-bold'>Quantity</span>
@@ -66,35 +80,35 @@ const ItemMiniCart = ({ basePrice, options }: ItemMiniCartProps) => {
           <div className='flex items-center space-x-1'>
             <span
               className={`rounded-full border bg-light px-3 text-lg font-bold md:text-3xl ${
-                count === 0
+                quantity === 1
                   ? 'cursor-not-allowed border-dark/10 text-dark/30'
                   : 'cursor-pointer border-primary/30 text-primary'
               }`}
               onClick={() => {
-                return count > 0 ? setCount((prev) => prev - 1) : null
+                return quantity > 1 ? setQuantity((prev) => prev - 1) : null
               }}
             >
               -
             </span>
             <span className='text-bold text-lg text-primary md:text-xl'>
-              {count}
+              {quantity}
             </span>
             <span
               className='cursor-pointer rounded-full border border-primary/30 bg-light px-3 text-lg font-bold text-primary md:text-3xl'
-              onClick={() => setCount((prev) => prev + 1)}
+              onClick={() => setQuantity((prev) => prev + 1)}
             >
               +
             </span>
           </div>
-          <Link
-            href='/cart'
+          <span
+            onClick={onAddToCart}
             className={twMerge(
               'btn',
               'text-base font-bold tracking-wide transition duration-300 sm:hover:scale-110 md:p-4 md:text-lg'
             )}
           >
             Add to cart
-          </Link>
+          </span>
         </div>
       </div>
     </div>
