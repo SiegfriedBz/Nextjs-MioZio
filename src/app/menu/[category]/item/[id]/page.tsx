@@ -45,27 +45,24 @@ const Item = async ({ params }: ItemProps) => {
   const item = await getData({ category, id })
 
   return (
-    <section className='flex flex-col items-center justify-center space-y-4'>
+    <section className='flex flex-col items-center justify-around space-y-2 p-4 md:flex-row md:space-x-4 lg:px-16 xl:px-32 2xl:px-48'>
       {/* IMAGE CONTAINER */}
-      <div className='relative mt-2 h-full w-full flex-1'>
+      <div className='relative h-full w-full flex-1 pt-2'>
         <Image
           src={item.src}
           alt={item.alt}
           fill={true}
-          className='object-contain'
+          className='object-contain transition-all duration-300 md:hover:rotate-[8deg] md:hover:scale-105'
         />
       </div>
 
       {/* TEXT CONTAINER */}
-      <div className='text-primary flex flex-1 flex-col space-y-2 px-2'>
-        <h2 className='text-2xl font-bold uppercase tracking-wide'>
+      <div className='text-primary flex flex-1 flex-col space-y-2 px-2 md:space-y-8'>
+        <h2 className='text-2xl font-bold uppercase tracking-wide md:text-3xl'>
           {item.title}
         </h2>
-        <h3 className='text-sm'>{item.desc}</h3>
-
-        <div>
-          <ItemMiniCart basePrice={item.price} options={item.options} />
-        </div>
+        <h3 className='text-sm md:text-base'>{item.desc}</h3>
+        <ItemMiniCart basePrice={item.price} options={item.options} />
       </div>
     </section>
   )
