@@ -47,7 +47,7 @@ const Item = async ({ params }: ItemProps) => {
   return (
     <section className='flex flex-col items-center justify-around space-y-2 p-4 md:flex-row md:space-x-4 lg:px-16 xl:px-32 2xl:px-48'>
       {/* IMAGE CONTAINER */}
-      <div className='relative h-full w-full flex-1 pt-2'>
+      <div className='relative h-full w-full flex-1 pt-1'>
         <Image
           src={item.src}
           alt={item.alt}
