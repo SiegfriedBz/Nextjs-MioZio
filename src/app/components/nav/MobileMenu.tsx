@@ -23,7 +23,7 @@ const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   // transient code
-  const user = 'user'
+  const user = undefined
 
   const isActiveRoute = (href: string) => {
     return pathname === href
