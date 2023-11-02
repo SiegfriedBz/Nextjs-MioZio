@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useAppContext } from '../context/appContext'
 
 type CartLinkProps = {
   onClick?: () => void
@@ -14,6 +15,12 @@ const CartLink = ({
   mobileMenu = false,
   className = '',
 }: CartLinkProps) => {
+  const { cart } = useAppContext()
+
+  const totalItemsCount = cart.reduce((acc, item) => {
+    return acc + item.quantity
+  }, 0)
+
   return (
     <Link
       href='/cart'
@@ -31,7 +38,7 @@ const CartLink = ({
         } ${className}`}
       >
         <span>Cart</span>
-        <span>(3)</span>
+        <span>({totalItemsCount})</span>
       </div>
     </Link>
   )

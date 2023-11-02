@@ -62,7 +62,7 @@ const Item = async ({ params }: ItemProps) => {
           {item.title}
         </h2>
         <h3 className='text-sm md:text-base'>{item.desc}</h3>
-        <ItemMiniCart basePrice={item.price} options={item.options} />
+        <ItemMiniCart item={item} />
       </div>
     </section>
   )
