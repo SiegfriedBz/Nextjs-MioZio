@@ -58,17 +58,17 @@ const ItemMiniCart = ({ basePrice, options }: ItemMiniCartProps) => {
       </div>
 
       {/* COUNTER + CTA */}
-      <div className='text-primary flex items-center justify-between'>
+      <div className='flex items-center justify-between text-primary'>
         <div>
           <span className='text-lg md:text-xl md:font-bold'>Quantity</span>
         </div>
         <div className='flex space-x-2'>
           <div className='flex items-center space-x-1'>
             <span
-              className={`bg-light rounded-full border px-3 text-lg font-bold md:text-3xl ${
+              className={`rounded-full border bg-light px-3 text-lg font-bold md:text-3xl ${
                 count === 0
-                  ? 'text-dark/30 border-dark/10 cursor-not-allowed'
-                  : 'text-primary border-primary/30 cursor-pointer'
+                  ? 'cursor-not-allowed border-dark/10 text-dark/30'
+                  : 'cursor-pointer border-primary/30 text-primary'
               }`}
               onClick={() => {
                 return count > 0 ? setCount((prev) => prev - 1) : null
@@ -76,11 +76,11 @@ const ItemMiniCart = ({ basePrice, options }: ItemMiniCartProps) => {
             >
               -
             </span>
-            <span className='text-primary text-bold text-lg md:text-xl'>
+            <span className='text-bold text-lg text-primary md:text-xl'>
               {count}
             </span>
             <span
-              className='bg-light text-primary border-primary/30 cursor-pointer rounded-full border px-3 text-lg font-bold md:text-3xl'
+              className='cursor-pointer rounded-full border border-primary/30 bg-light px-3 text-lg font-bold text-primary md:text-3xl'
               onClick={() => setCount((prev) => prev + 1)}
             >
               +
@@ -90,7 +90,7 @@ const ItemMiniCart = ({ basePrice, options }: ItemMiniCartProps) => {
             href='/cart'
             className={twMerge(
               'btn',
-              'text-base font-bold tracking-wide md:p-4 md:text-lg'
+              'text-base font-bold tracking-wide transition duration-300 sm:hover:scale-110 md:p-4 md:text-lg'
             )}
           >
             Add to cart

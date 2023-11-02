@@ -26,8 +26,8 @@ const Slider = ({ images }: SliderProps) => {
   return (
     <section id='slider' className='flex flex-col lg:flex-row'>
       {/* text container */}
-      <motion.div className='bg-light flex flex-1 flex-col items-center justify-center space-y-4 sm:space-y-8 lg:space-y-12'>
-        <div className='text-primary  flex flex-col space-y-2 text-center font-extrabold uppercase tracking-wide sm:space-y-4 lg:space-y-8'>
+      <motion.div className='flex flex-1 flex-col items-center justify-center space-y-4 bg-light sm:space-y-8 lg:space-y-12'>
+        <div className='flex  flex-col space-y-2 text-center font-extrabold uppercase tracking-wide text-primary sm:space-y-4 lg:space-y-8'>
           <div className='space-y-2 sm:space-y-4'>
             <motion.h2
               initial={{ opacity: 0, x: -350 }}
