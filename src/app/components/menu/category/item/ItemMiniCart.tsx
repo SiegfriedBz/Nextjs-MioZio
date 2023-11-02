@@ -28,7 +28,7 @@ const ItemMiniCart = ({ basePrice, options }: ItemMiniCartProps) => {
   }, [selectedOption, count, basePrice, options])
 
   return (
-    <div className='flex w-full flex-col space-y-2'>
+    <div className='flex w-full flex-col space-y-2 md:space-y-4'>
       {/* TOTAL PRICE */}
       <h2 className='text-2xl font-bold uppercase tracking-wide'>
         ${totalPrice.toFixed(2)}
@@ -43,7 +43,7 @@ const ItemMiniCart = ({ basePrice, options }: ItemMiniCartProps) => {
                 onClick={() => setSelectedOption(option.title)}
                 className={twMerge(
                   'btn',
-                  `capitalize ring ${
+                  ` text-sm font-bold tracking-wide ring ${
                     option.title === selectedOption
                       ? 'bg-light text-primary ring-primary'
                       : 'bg-primary ring-light'
@@ -60,25 +60,39 @@ const ItemMiniCart = ({ basePrice, options }: ItemMiniCartProps) => {
       {/* COUNTER + CTA */}
       <div className='text-primary flex items-center justify-between'>
         <div>
-          <span className='text-lg'>Quantity</span>
+          <span className='text-lg md:text-xl md:font-bold'>Quantity</span>
         </div>
         <div className='flex space-x-2'>
           <div className='flex items-center space-x-1'>
-            <button
-              className='bg-light text-primary border-dark/10 border text-lg'
-              onClick={() => setCount((prev) => prev - 1)}
+            <span
+              className={`bg-light rounded-full border px-3 text-lg font-bold md:text-3xl ${
+                count === 0
+                  ? 'text-dark/30 border-dark/10 cursor-not-allowed'
+                  : 'text-primary border-primary/30 cursor-pointer'
+              }`}
+              onClick={() => {
+                return count > 0 ? setCount((prev) => prev - 1) : null
+              }}
             >
               -
-            </button>
-            <span className='text-primary text-lg'>{count}</span>
-            <button
-              className='bg-light text-primary border-dark/10 border text-xl'
+            </span>
+            <span className='text-primary text-bold text-lg md:text-xl'>
+              {count}
+            </span>
+            <span
+              className='bg-light text-primary border-primary/30 cursor-pointer rounded-full border px-3 text-lg font-bold md:text-3xl'
               onClick={() => setCount((prev) => prev + 1)}
             >
               +
-            </button>
+            </span>
           </div>
-          <Link href='/cart' className='btn'>
+          <Link
+            href='/cart'
+            className={twMerge(
+              'btn',
+              'text-sm font-bold tracking-wide md:p-4 md:text-lg'
+            )}
+          >
             Add to cart
           </Link>
         </div>
