@@ -3,6 +3,7 @@ import { Roboto } from 'next/font/google'
 import './globals.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import { AppContextProvider } from './context/appContext'
 
 const roboto = Roboto({
   weight: ['100', '300', '400', '700'],
@@ -24,10 +25,12 @@ export default function RootLayout({
   return (
     <html lang='en' className='scroll-smooth'>
       <body className={`text-dark dark:text-light ${roboto.className}`}>
-        <Header />
-        {/* fixed header with h-24 */}
-        <main className='mt-24'>{children}</main>
-        <Footer />
+        <AppContextProvider>
+          <Header />
+          {/* fixed header with h-24 */}
+          <main className='mt-24'>{children}</main>
+          <Footer />
+        </AppContextProvider>
       </body>
     </html>
   )
