@@ -15,7 +15,7 @@ const DESKTOP_MENU_LINKS = [
 
 const NavBar = () => {
   // transient code
-  const user = 'user'
+  const user = undefined
 
   return (
     <div className='flex h-12 items-center justify-between border-b border-primary bg-light p-4 lg:px-16 xl:px-32 2xl:px-48'>
