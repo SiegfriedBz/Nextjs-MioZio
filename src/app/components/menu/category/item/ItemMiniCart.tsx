@@ -90,7 +90,7 @@ const ItemMiniCart = ({ basePrice, options }: ItemMiniCartProps) => {
             href='/cart'
             className={twMerge(
               'btn',
-              'text-sm font-bold tracking-wide md:p-4 md:text-lg'
+              'text-base font-bold tracking-wide md:p-4 md:text-lg'
             )}
           >
             Add to cart
