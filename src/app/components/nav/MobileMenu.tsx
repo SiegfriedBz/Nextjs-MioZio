@@ -73,7 +73,7 @@ const MobileMenu = () => {
             initial='initial'
             animate='animate'
             exit='exit'
-            className='text-light bg-primary absolute left-0 right-0 top-24 z-[999] flex h-[calc(100vh-6rem)] flex-col items-center justify-center space-y-8 text-3xl uppercase tracking-wide'
+            className='h-section absolute left-0 right-0 top-24 flex flex-col items-center justify-center space-y-8 bg-primary text-3xl uppercase tracking-wide text-light'
           >
             <>
               {MENU_LINKS?.map((link) => {
