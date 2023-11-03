@@ -6,7 +6,7 @@ import type { ItemType, SliderImageType, OfferImageType } from '@/data'
 import { sliderImagesData, featuredItemsData, offerImageData } from '@/data'
 
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/utils/authOptions'
 
 export type FullSliderImageType = SliderImageType & {
   blurDataUrl: string
