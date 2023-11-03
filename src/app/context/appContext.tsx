@@ -1,6 +1,8 @@
 'use client'
 
 import { createContext, useContext, useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export type CartItemType = {
   cartItemId: string
@@ -15,6 +17,13 @@ export type CartItemType = {
 type AppContextType = {
   cart: CartItemType[]
   setCart: (cart: CartItemType[]) => void
+  handleToast: ({
+    type,
+    message,
+  }: {
+    type?: string | undefined
+    message?: string | undefined
+  }) => void
 }
 
 const AppContext = createContext<AppContextType | null>(null)
@@ -33,9 +42,30 @@ type AppContextProviderProps = {
 export const AppContextProvider = ({ children }: AppContextProviderProps) => {
   const [cart, setCart] = useState<CartItemType[]>([])
 
+  // Toast notifications helper
+  const handleToast = ({ type = 'success', message = '' }) => {
+    switch (type) {
+      case 'success':
+        toast.success(message)
+        break
+      case 'info':
+        toast.info(message)
+        break
+      case 'error':
+        toast.error(message)
+        break
+      case 'warn':
+        toast.warn(message)
+        break
+      default:
+        toast.success(message)
+    }
+  }
+
   return (
-    <AppContext.Provider value={{ cart, setCart }}>
+    <AppContext.Provider value={{ cart, setCart, handleToast }}>
       {children}
+      <ToastContainer />
     </AppContext.Provider>
   )
 }

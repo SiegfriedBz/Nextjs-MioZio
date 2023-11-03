@@ -13,13 +13,13 @@ const Featured = ({ featuredItems }: FeaturedProps) => {
   return (
     <section id='featured' className='w-screen overflow-x-scroll'>
       {/* WRAPPER */}
-      <div className='[&>*:nth-child(even)]:bg-quaternary flex h-full w-max'>
+      <div className='flex h-full w-max [&>*:nth-child(even)]:bg-quaternary'>
         {featuredItems?.map((item) => {
           return (
             // SINGLE ITEM
             <div
               key={item.id}
-              className='text-primary flex h-full w-screen flex-col space-y-4 px-2 py-4 text-center lg:w-[50vw] lg:px-8 2xl:w-[33vw]'
+              className='flex h-full w-screen flex-col space-y-4 px-2 py-4 text-center text-primary lg:w-[50vw] lg:px-8 2xl:w-[33vw]'
             >
               {/* ITEM IMG */}
               <div className='relative flex-1'>
@@ -47,7 +47,7 @@ const Featured = ({ featuredItems }: FeaturedProps) => {
                 {/*  CTA */}
                 <button
                   onClick={() => addToCart(item?.id)}
-                  className='mx-auto transition duration-300 ease-in-out hover:scale-110'
+                  className='btn mx-auto transition duration-300 ease-in-out hover:scale-110'
                 >
                   Add to Cart
                 </button>

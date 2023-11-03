@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Counter from './Counter'
 import type { FullOfferImageType } from '@/app/page'
+import { twMerge } from 'tailwind-merge'
 
 type OfferProps = {
   image: FullOfferImageType
@@ -30,7 +31,10 @@ const Offer = ({ image }: OfferProps) => {
         {/* CTA */}
         <Link
           href='/menu'
-          className='btn w-max transition duration-300 ease-in-out hover:scale-110'
+          className={twMerge(
+            'btn',
+            'w-max transition duration-300 ease-in-out hover:scale-110'
+          )}
         >
           Order Now
         </Link>
