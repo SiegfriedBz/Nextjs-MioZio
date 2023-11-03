@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import CartLink from '../CartLink'
+import LogInOutAndAdminOrdersLinks from './LogInOutAndAdminOrdersLinks'
 
 const MENU_LINKS = [
   {
@@ -21,9 +22,6 @@ const MENU_LINKS = [
 const MobileMenu = () => {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
-
-  // transient code
-  const user = undefined
 
   const isActiveRoute = (href: string) => {
     return pathname === href
@@ -92,31 +90,13 @@ const MobileMenu = () => {
                   </Link>
                 )
               })}
-              {user ? (
-                <Link
-                  href='/orders'
-                  onClick={() => setIsOpen((prev) => !prev)}
-                  className={
-                    isActiveRoute('/orders')
-                      ? 'underline underline-offset-4'
-                      : ''
-                  }
-                >
-                  Orders
-                </Link>
-              ) : (
-                <Link
-                  href='/login'
-                  onClick={() => setIsOpen((prev) => !prev)}
-                  className={
-                    isActiveRoute('/login')
-                      ? 'underline underline-offset-4'
-                      : ''
-                  }
-                >
-                  Login
-                </Link>
-              )}
+
+              {/* links for login, logout + link for Orders if admin logged in */}
+              <LogInOutAndAdminOrdersLinks
+                closeModalMenu={() => setIsOpen((prev) => !prev)}
+                isMobileMenu={true}
+              />
+
               <CartLink
                 onClick={() => setIsOpen((prev) => !prev)}
                 mobileMenu={true}
