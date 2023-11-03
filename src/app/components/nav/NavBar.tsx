@@ -2,6 +2,7 @@ import Link from 'next/link'
 import MobileMenu from './MobileMenu'
 import PhoneLink from '../PhoneLink'
 import CartLink from '../CartLink'
+import LogInOutAndAdminOrdersLinks from './LogInOutAndAdminOrdersLinks'
 
 const DESKTOP_MENU_LINKS = [
   {
@@ -47,21 +48,9 @@ const NavBar = () => {
       {/* desktop menu 2/2 */}
       <div className='hidden flex-1 items-center justify-end space-x-4 md:flex'>
         <PhoneLink className='md:absolute md:right-4 md:top-6 md:-translate-y-1/2 lg:static lg:translate-y-0' />
-        {user ? (
-          <Link
-            href='/cart'
-            className='font-bold uppercase tracking-wide text-primary'
-          >
-            Orders
-          </Link>
-        ) : (
-          <Link
-            href='/login'
-            className='font-bold uppercase tracking-wide text-primary'
-          >
-            Login
-          </Link>
-        )}
+
+        {/* links for login, logout + link for Orders if admin logged in */}
+        <LogInOutAndAdminOrdersLinks />
 
         <CartLink className='uppercase tracking-wide text-primary' />
       </div>

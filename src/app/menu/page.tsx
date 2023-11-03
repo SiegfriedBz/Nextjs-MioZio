@@ -33,7 +33,7 @@ const Menu = async () => {
   const { menuCategories } = await getData()
 
   return (
-    <div className='md:h-section [&>*:nth-child(even)]:border-light flex flex-col px-4 md:flex-row md:py-24 lg:px-16 xl:px-32 2xl:px-48 [&>*:nth-child(even)]:border-b-2 [&>*:nth-child(even)]:border-t-2 md:[&>*:nth-child(even)]:border-0'>
+    <div className='md:h-section flex flex-col px-4 md:flex-row md:py-24 lg:px-16 xl:px-32 2xl:px-48 [&>*:nth-child(even)]:border-b-2 [&>*:nth-child(even)]:border-t-2 [&>*:nth-child(even)]:border-light md:[&>*:nth-child(even)]:border-0'>
       {menuCategories?.map((menuCategory) => {
         // CATEGORY
         return (
@@ -53,18 +53,21 @@ const Menu = async () => {
               <h4 className='text-base opacity-60 sm:text-lg md:text-xl lg:text-2xl'>
                 {menuCategory.desc}
               </h4>
-              <span
+              <button
                 className={twMerge(
                   'btn',
-                  `ring-primary shadow-primary hidden shadow-sm transition duration-300 ease-in-out hover:scale-110 2xl:block ${
-                    menuCategory?.textColor === 'text-dark'
-                      ? 'bg-dark  text-light ring-1'
-                      : 'bg-light text-primary ring-2'
-                  }`
+                  `hidden shadow-sm 
+                    shadow-primary ring-primary 
+                    transition duration-300 ease-in-out
+                     hover:scale-110 2xl:block ${
+                       menuCategory?.textColor === 'text-dark'
+                         ? 'bg-dark  text-light ring-1'
+                         : 'bg-light text-primary ring-2'
+                     }`
                 )}
               >
                 Explore
-              </span>
+              </button>
             </div>
           </Link>
         )
