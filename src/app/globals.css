@@ -36,8 +36,12 @@ body {
     @apply h-[calc((100vh-6rem)/3)];
   }
 
-  button,
   .btn {
-    @apply flex cursor-pointer items-center justify-center rounded-lg bg-primary px-4 py-2 text-xl uppercase tracking-wide text-light sm:text-2xl md:px-8 md:py-4;
+    @apply flex cursor-pointer items-center justify-center
+      rounded-lg bg-primary 
+      px-4 py-2 
+      text-xl uppercase tracking-wide 
+      text-light 
+      sm:text-2xl md:px-8 md:py-4;
   }
 }
