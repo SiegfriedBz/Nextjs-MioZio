@@ -74,6 +74,7 @@ const Slider = ({ images }: SliderProps) => {
             onClick={() => router.push('/menu')}
             initial='initial'
             animate='animate'
+            className='btn'
           >
             Order now
           </motion.button>

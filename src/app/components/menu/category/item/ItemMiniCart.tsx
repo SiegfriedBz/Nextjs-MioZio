@@ -53,7 +53,7 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
         {options?.map((option, index) => {
           return (
             <div key={index} className='flex flex-col'>
-              <span
+              <button
                 onClick={() => setSelectedOption(option.title)}
                 className={twMerge(
                   'btn',
@@ -65,7 +65,7 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
                 )}
               >
                 {option.title}
-              </span>
+              </button>
             </div>
           )
         })}
@@ -78,29 +78,29 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
         </div>
         <div className='flex space-x-2'>
           <div className='flex items-center space-x-1'>
-            <span
+            <button
               className={`rounded-full border bg-light px-3 text-lg font-bold md:text-3xl ${
                 quantity === 1
                   ? 'cursor-not-allowed border-dark/10 text-dark/30'
-                  : 'cursor-pointer border-primary/30 text-primary'
+                  : 'border-primary/30 text-primary'
               }`}
               onClick={() => {
                 return quantity > 1 ? setQuantity((prev) => prev - 1) : null
               }}
             >
               -
-            </span>
+            </button>
             <span className='text-bold text-lg text-primary md:text-xl'>
               {quantity}
             </span>
-            <span
-              className='cursor-pointer rounded-full border border-primary/30 bg-light px-3 text-lg font-bold text-primary md:text-3xl'
+            <button
+              className='rounded-full border border-primary/30 bg-light px-3 text-lg font-bold text-primary md:text-3xl'
               onClick={() => setQuantity((prev) => prev + 1)}
             >
               +
-            </span>
+            </button>
           </div>
-          <span
+          <button
             onClick={onAddToCart}
             className={twMerge(
               'btn',
@@ -108,7 +108,7 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
             )}
           >
             Add to cart
-          </span>
+          </button>
         </div>
       </div>
     </div>
