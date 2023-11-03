@@ -5,6 +5,9 @@ import { getBase64ImageUrl, getImageUrl } from '@/utils/cloudinaryUtils'
 import type { ItemType, SliderImageType, OfferImageType } from '@/data'
 import { sliderImagesData, featuredItemsData, offerImageData } from '@/data'
 
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+
 export type FullSliderImageType = SliderImageType & {
   blurDataUrl: string
 }
@@ -59,6 +62,10 @@ async function getData() {
 }
 
 export default async function Home() {
+  // Get user session from server
+  // and pass it to the SessionProvider (=> user session available in "use client" components from useSession hook)
+  await getServerSession(authOptions)
+
   const { sliderImages, featuredItems, offerImage } = await getData()
 
   return (
