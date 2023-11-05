@@ -1,11 +1,9 @@
 import { notFound } from 'next/navigation'
-import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
 import Image from 'next/image'
 import ItemMiniCart from '@/app/components/menu/category/item/ItemMiniCart'
-import type { MenuItemType } from '@/utils/types'
-
-const handleCache =
-  process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store'
+import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
+import { handleCache } from '@/utils/handleCache'
+import type { MenuItemType } from '@/types'
 
 async function getData(id: string) {
   try {
@@ -15,7 +13,7 @@ async function getData(id: string) {
         headers: {
           method: 'GET',
           'Content-Type': 'application/json',
-          cache: 'no-store',
+          cache: handleCache,
         },
       }
     )
@@ -68,6 +66,7 @@ const Item = async ({ params }: ItemProps) => {
           blurDataURL={menuItemData.imgBlur}
           alt={menuItemData.name}
           fill
+          priority
           sizes='(max-width: 768px) 50vw,(max-width: 1024px) 33vw, 50vw'
           className='rounded-3xl object-contain transition-all duration-300 md:hover:rotate-[8deg] md:hover:scale-105'
         />

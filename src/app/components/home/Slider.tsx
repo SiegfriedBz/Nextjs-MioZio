@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { buttonEnterVariants } from '@/utils/motionVariants'
-import type { PageImageType } from '@/utils/types'
+import type { PageImageType } from '@/types'
 
 type SliderProps = { images: PageImageType[] }
 

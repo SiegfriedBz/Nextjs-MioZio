@@ -1,14 +1,12 @@
-import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
+import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
-import type { MenuCategoryType } from '@/utils/types'
-import { notFound } from 'next/navigation'
+import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
+import { handleCache } from '@/utils/handleCache'
+import type { MenuCategoryType } from '@/types'
 
 // trick tailwind
 const possibleBgColors = ['bg-[#009345]', 'bg-[#CF2B36]', 'bg-transparent']
-
-const handleCache =
-  process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store'
 
 async function getData() {
   try {
@@ -18,7 +16,7 @@ async function getData() {
         headers: {
           method: 'GET',
           'Content-Type': 'application/json',
-          cache: 'no-store',
+          cache: handleCache,
         },
       }
     )

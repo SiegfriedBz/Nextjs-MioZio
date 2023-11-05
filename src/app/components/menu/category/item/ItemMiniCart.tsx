@@ -5,7 +5,7 @@ import { useAppContext } from '@/app/context/appContext'
 import { twMerge } from 'tailwind-merge'
 import { v4 as uuidv4 } from 'uuid'
 import type { CartItemType } from '@/app/context/appContext'
-import type { MenuItemType } from '@/utils/types'
+import type { MenuItemType } from '@/types'
 
 type ItemMiniCartProps = {
   item: MenuItemType
