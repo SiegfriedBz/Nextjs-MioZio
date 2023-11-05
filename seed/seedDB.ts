@@ -358,6 +358,25 @@ const menuItems = [
 
 const load = async () => {
   try {
+    // CLEAN UP DB
+    console.log('⏳ CLEAN UP DB...')
+    console.log('⏳ Deleting home & login pages in DB...')
+    await prisma.image.deleteMany()
+    console.log('✅ Deleting home & login pages in DB...DONE.')
+    console.log('===')
+    console.log('⏳ Deleting menu items in DB...')
+    await prisma.menuItem.deleteMany()
+    console.log('✅ Deleting menu items in DB...DONE.')
+    console.log('===')
+    console.log('⏳ Deleting menu categories in DB...')
+    await prisma.menuCategory.deleteMany()
+    console.log('✅ Deleting menu categories in DB...DONE.')
+    console.log('===')
+    console.log('✅ ✅ CLEAN UP DB...DONE')
+    console.log('===')
+
+    // SEED DB
+    console.log('⏳ SEED DB...')
     // create (pages) images
     console.log('⏳ Seeding home & login pages in DB...')
     await prisma.image.createMany({
@@ -381,6 +400,7 @@ const load = async () => {
     })
     console.log('✅ Seeding menu items in DB...DONE.')
     console.log('===')
+    console.log('✅ ✅ SEED DB...DONE')
   } catch (e) {
     console.error(e)
     process.exit(1)
