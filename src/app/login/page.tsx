@@ -59,10 +59,10 @@ const Login = async () => {
         {/* IMG */}
         <div className='relative h-1/3 w-full md:h-full md:w-1/2'>
           <Image
-            src={loginImgData?.img}
+            src='/login.png'
             placeholder='blur'
             blurDataURL={loginImgData?.imgBlur}
-            alt={loginImgData?.alt}
+            alt='login'
             fill
             className='rounded-md rounded-r-none object-cover'
           />
