@@ -10,7 +10,8 @@ export const GET = async (request: Request) => {
     const pageImages = await prisma.image.findMany({
       where: { page: page },
     })
-    return new NextResponse(JSON.stringify({ pageImages }), { status: 200 })
+
+    return NextResponse.json({ pageImages }, { status: 200 })
   } catch (error) {
     return NextResponse.json(`Error: ${error}`, { status: 500 })
   }

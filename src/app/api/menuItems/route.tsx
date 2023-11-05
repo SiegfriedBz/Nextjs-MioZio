@@ -28,7 +28,7 @@ export const GET = async (request: Request) => {
       where: query,
     })
 
-    return new NextResponse(JSON.stringify({ menuItems }), { status: 200 })
+    return NextResponse.json({ menuItems }, { status: 200 })
   } catch (error) {
     return NextResponse.json(`Error: ${error}`, { status: 500 })
   }
