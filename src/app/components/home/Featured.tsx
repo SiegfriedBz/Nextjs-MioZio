@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import type { MenuItemType } from '@/utils/types'
+import type { MenuItemType } from '@/types'
 
 type FeaturedProps = { featuredItems: MenuItemType[] }
 

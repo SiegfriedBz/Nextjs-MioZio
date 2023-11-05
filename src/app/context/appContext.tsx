@@ -17,13 +17,7 @@ export type CartItemType = {
 type AppContextType = {
   cart: CartItemType[]
   setCart: (cart: CartItemType[]) => void
-  handleToast: ({
-    type,
-    message,
-  }: {
-    type?: string | undefined
-    message?: string | undefined
-  }) => void
+  handleToast: ({ type, message }: { type?: string; message: string }) => void
 }
 
 const AppContext = createContext<AppContextType | null>(null)

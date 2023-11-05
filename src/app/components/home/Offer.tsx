@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Counter from './Counter'
 import { twMerge } from 'tailwind-merge'
-import type { PageImageType } from '@/utils/types'
+import type { PageImageType } from '@/types'
 
 type OfferProps = {
   image: PageImageType

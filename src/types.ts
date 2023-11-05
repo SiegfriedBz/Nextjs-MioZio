@@ -37,7 +37,12 @@ export type MenuItemType = {
   updatedAt?: Date
 
   categorySlug: MenuCategoryType['slug'] // FK to MenuCategory model
-  options?: JsonObject[]
+  options?: MenuOptionType[]
+}
+
+type MenuOptionType = {
+  title: string
+  additionalPrice: number
 }
 
 export type OrderType = {
@@ -56,7 +61,7 @@ export type CartItemType = {
   name: string
   img: string
   imgBlur?: string
-  selectedOption: JsonObject
+  selectedOption: MenuOptionType
   quantity: number
   totalPrice: number
 }

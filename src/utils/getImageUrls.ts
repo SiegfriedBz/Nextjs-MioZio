@@ -1,4 +1,4 @@
-import type { SocialImageType } from './types'
+import { SocialImageType } from '@/types'
 
 export function getImageUrl(imageId: string) {
   try {

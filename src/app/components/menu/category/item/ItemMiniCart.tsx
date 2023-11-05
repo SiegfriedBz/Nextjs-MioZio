@@ -1,11 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useAppContext } from '@/app/context/appContext'
+import { motion, AnimatePresence } from 'framer-motion'
 import { twMerge } from 'tailwind-merge'
 import { v4 as uuidv4 } from 'uuid'
 import type { CartItemType } from '@/app/context/appContext'
-import type { MenuItemType } from '@/utils/types'
+import type { MenuItemType } from '@/types'
 
 type ItemMiniCartProps = {
   item: MenuItemType
@@ -14,7 +17,7 @@ type ItemMiniCartProps = {
 const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
   const { id, name, price, options, img } = item
 
-  const { cart, setCart } = useAppContext()
+  const { cart, setCart, handleToast } = useAppContext()
   const [quantity, setQuantity] = useState(1)
   const [selectedOption, setSelectedOption] = useState('Small')
   const [totalPrice, setTotalPrice] = useState(price)
@@ -28,6 +31,7 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
   }, [selectedOption, quantity, price, options])
 
   const onAddToCart = () => {
+    console.log('onAddToCart')
     const cartItem: CartItemType = {
       cartItemId: uuidv4(),
       id: id!,
@@ -39,6 +43,10 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
     }
 
     setCart([...cart, cartItem])
+    handleToast({
+      type: 'success',
+      message: `${quantity} x ${selectedOption} ${name} added successfully!`,
+    })
   }
 
   return (
@@ -71,7 +79,7 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
         })}
       </div>
 
-      {/* quantityER + CTA */}
+      {/* quantity + ADD TO CART CTA */}
       <div className='flex items-center justify-between text-primary'>
         <div>
           <span className='text-lg md:text-xl md:font-bold'>Quantity</span>
@@ -111,6 +119,37 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
           </button>
         </div>
       </div>
+
+      {/* GO TO CART CTA */}
+      <AnimatePresence>
+        {cart.length > 0 ? (
+          <motion.div
+            initial={{ opacity: 0, x: '100vw' }}
+            animate={{ opacity: 1, x: '0vw' }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, type: 'spring', stiffness: 180 }}
+            className='flex w-full items-center justify-end'
+          >
+            <Link
+              href='/cart'
+              className={twMerge(
+                'btn',
+                'text-base font-bold tracking-wide transition duration-300 sm:hover:scale-110 md:p-4 md:text-lg'
+              )}
+            >
+              <div className='relative h-6 w-6'>
+                <Image
+                  src='/cart.png'
+                  fill
+                  sizes='(max-width: 768px) 100vw, 100vw'
+                  alt='cart'
+                />
+              </div>
+              <span className='ps-2'>Go to cart</span>
+            </Link>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </div>
   )
 }

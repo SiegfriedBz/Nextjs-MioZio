@@ -4,6 +4,7 @@
 // 1.2. run `npm run seed:cloudinary`
 
 // 2. SEED DB
+// run `npm run seed:db`
 import { prisma } from '../src/utils/prismaClient'
 
 const pageImages = [

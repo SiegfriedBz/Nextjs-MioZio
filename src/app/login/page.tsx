@@ -1,61 +1,56 @@
+import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import GoogleSignIn from '../components/login/GoogleSignIn'
 import MagicLinkSignIn from '../components/login/MagicLinkSignIn'
 import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
-import type { PageImageType } from '@/utils/types'
-import { notFound } from 'next/navigation'
+import { handleCache } from '@/utils/handleCache'
+import type { PageImageType } from '@/types'
 
-const handleCache =
-  process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store'
+async function getData() {
+  try {
+    // FETCH LGGIN IMAGE
+    const pageImagesResponse = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/pages?page=login`,
+      {
+        headers: {
+          method: 'GET',
+          'Content-Type': 'application/json',
+          cache: handleCache,
+        },
+      }
+    )
+    if (!pageImagesResponse.ok)
+      throw new Error('Fetch pageImages: Network response was not ok.')
 
-// async function getData() {
-//   try {
-//     // FETCH LGGIN IMAGE
-//     const pageImagesResponse = await fetch(
-//       `${process.env.NEXTAUTH_URL}/api/pages?page=login`,
-//         {
-//   headers: {
-//     method: 'GET',
-//     'Content-Type': 'application/json',
-//     cache: 'no-store',
-//   },
-// }
-//     )
-//     if (!pageImagesResponse.ok)
-//       throw new Error('Fetch pageImages: Network response was not ok.')
+    const { pageImages } = await pageImagesResponse.json()
+    const pageImage = pageImages?.[0] as PageImageType
 
-//     const { pageImages } = await pageImagesResponse.json()
-//     const pageImage = pageImages?.[0] as PageImageType
+    if (!pageImage)
+      throw new Error('Fetch login pageImages: No pageImage found.')
 
-//     if (!pageImage)
-//       throw new Error('Fetch login pageImages: No pageImage found.')
+    const promise = async (data: PageImageType) => {
+      const img = getImageUrl(data.img)
+      const imgBlur = await getBase64ImageUrl(data.img)
+      const fullData: PageImageType = {
+        ...data,
+        img,
+        imgBlur,
+      }
 
-//     const promise = async (data: PageImageType) => {
-//       const img = getImageUrl(data.img)
-//       const imgBlur = await getBase64ImageUrl(data.img)
-//       const fullData: PageImageType = {
-//         ...data,
-//         img,
-//         imgBlur,
-//       }
+      return fullData
+    }
 
-//       return fullData
-//     }
+    const loginImgData: PageImageType = await promise(pageImage)
 
-//     const loginImgData: PageImageType = await promise(pageImage)
-
-//     return {
-//       ...loginImgData,
-//       img: 'https://res.cloudinary.com/dygpd9pkl/image/upload/v1699163090/MioZio/login/login.webp',
-//     }
-//   } catch (error) {
-//     console.log(`Error: ${error}`)
-//     return notFound()
-//   }
-// }
+    return loginImgData
+  } catch (error) {
+    console.log(`Error: ${error}`)
+    return notFound()
+  }
+}
 
 const Login = async () => {
-  // const loginImgData = await getData()
+  const imgData = await getData()
 
   return (
     <section className='flex items-center justify-center p-4 lg:px-16 xl:px-32 2xl:px-64'>
@@ -63,11 +58,13 @@ const Login = async () => {
         {/* IMG */}
         <div className='relative h-1/3 w-full md:h-full md:w-1/2'>
           <Image
-            src='/login.png'
-            // placeholder='blur'
-            // blurDataURL={loginImgData?.imgBlur}
+            src={imgData.img}
+            placeholder='blur'
+            blurDataURL={imgData.imgBlur}
             alt='login'
             fill
+            priority
+            sizes='(max-width: 768px) 100vw, 50vw'
             className='rounded-md rounded-r-none object-cover'
           />
         </div>

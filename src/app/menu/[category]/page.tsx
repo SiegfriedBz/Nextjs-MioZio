@@ -1,12 +1,10 @@
-import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
+import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
-import type { MenuItemType } from '@/utils/types'
-import { notFound } from 'next/navigation'
-
-const handleCache =
-  process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store'
+import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
+import { handleCache } from '@/utils/handleCache'
+import type { MenuItemType } from '@/types'
 
 async function getData(category: string) {
   try {
@@ -16,7 +14,7 @@ async function getData(category: string) {
         headers: {
           method: 'GET',
           'Content-Type': 'application/json',
-          cache: 'no-store',
+          cache: handleCache,
         },
       }
     )
@@ -75,6 +73,7 @@ const MenuByCategory = async ({ params }: MenuByCategoryProps) => {
                 blurDataURL={item.imgBlur}
                 alt={item.name}
                 fill
+                priority
                 sizes='(max-width: 768px) 100vw, 50vw'
                 className='rounded-3xl object-contain transition duration-300 ease-in-out group-hover:rotate-[8deg] 2xl:group-hover:scale-105'
               />

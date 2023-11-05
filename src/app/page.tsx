@@ -1,14 +1,12 @@
+import { notFound } from 'next/navigation'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/utils/authOptions'
 import Slider from './components/home/Slider'
 import Featured from './components/home/Featured'
 import Offer from './components/home/Offer'
 import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
-import type { MenuItemType, PageImageType } from '@/utils/types'
-import { notFound } from 'next/navigation'
-
-const handleCache =
-  process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store'
+import { handleCache } from '@/utils/handleCache'
+import type { MenuItemType, PageImageType } from '@/types'
 
 async function getData() {
   try {
@@ -19,7 +17,7 @@ async function getData() {
         headers: {
           method: 'GET',
           'Content-Type': 'application/json',
-          cache: 'no-store',
+          cache: handleCache,
         },
       }
     )
