@@ -27,8 +27,8 @@ async function getData() {
       throw new Error('Fetch login pageImages: No pageImage found.')
 
     const promise = async (data: PageImageType) => {
-      const img = getImageUrl(data.img!)
-      const imgBlur = await getBase64ImageUrl(data.img!)
+      const img = getImageUrl(data.img)
+      const imgBlur = await getBase64ImageUrl(data.img)
       const fullData: PageImageType = {
         ...data,
         img,
@@ -39,7 +39,11 @@ async function getData() {
     }
 
     const loginImgData: PageImageType = await promise(pageImage)
-    return loginImgData
+
+    return {
+      ...loginImgData,
+      img: `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/MioZio/login/login.png`,
+    }
   } catch (error) {
     console.log(`Error: ${error}`)
     return notFound()
@@ -55,12 +59,12 @@ const Login = async () => {
         {/* IMG */}
         <div className='relative h-1/3 w-full md:h-full md:w-1/2'>
           <Image
-            src={loginImgData.img}
+            src={loginImgData?.img}
             placeholder='blur'
-            blurDataURL={loginImgData.imgBlur}
-            alt={loginImgData.alt}
+            blurDataURL={loginImgData?.imgBlur}
+            alt={loginImgData?.alt}
             fill
-            sizes='(max-width: 768px) 50vw,(max-width: 1024px) 33vw, 50vw'
+            sizes='(max-width: 768px) 100vw, 100vw'
             className='rounded-md rounded-r-none object-cover'
           />
         </div>
