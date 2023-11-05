@@ -39,7 +39,7 @@ const pageImages = [
   {
     page: 'login',
     img: 'MioZio/login/login',
-    alt: '',
+    alt: 'cheesy login',
   },
 ]
 
