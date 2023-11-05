@@ -84,13 +84,13 @@ const Slider = ({ images }: SliderProps) => {
       {/* slider images container */}
       <div className='relative flex-1'>
         <Image
-          src={images[currentSlideId]?.img}
+          src={images[currentSlideId].img!}
           placeholder='blur'
-          blurDataURL={images[currentSlideId]?.imgBlur}
+          blurDataURL={images[currentSlideId].imgBlur!}
           className='h-full w-full object-cover'
           fill={true}
           priority={true}
-          alt={images[currentSlideId]?.alt!}
+          alt={images[currentSlideId].alt!}
           sizes='(max-width: 768px) 100vw, 50vw'
         />
       </div>

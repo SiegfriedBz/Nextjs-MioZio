@@ -1,11 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import Counter from './Counter'
-import type { FullOfferImageType } from '@/app/page'
 import { twMerge } from 'tailwind-merge'
+import type { PageImageType } from '@/utils/types'
 
 type OfferProps = {
-  image: FullOfferImageType
+  image: PageImageType
 }
 
 const Offer = ({ image }: OfferProps) => {
@@ -43,12 +43,13 @@ const Offer = ({ image }: OfferProps) => {
       {/* OFFER IMG container */}
       <div className='relative flex h-full w-full flex-1 items-center justify-center'>
         <Image
-          src={image?.img}
+          src={image.img!}
           placeholder='blur'
-          blurDataURL={image?.imgBlur}
+          blurDataURL={image.imgBlur!}
           fill
-          alt={image?.alt}
-          className='object-contain'
+          sizes='(max-width: 768px) 100vw, 50vw'
+          alt='special offer'
+          className='rounded-3xl object-contain'
         />
       </div>
     </section>
