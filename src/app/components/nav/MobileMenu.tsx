@@ -34,7 +34,7 @@ const MobileMenu = () => {
       {/* mobile menu icon */}
       <div
         onClick={() => setIsOpen((prev) => !prev)}
-        className='cursor-pointer'
+        className='relative h-6 w-6 cursor-pointer'
       >
         <AnimatePresence>
           {isOpen ? (
@@ -44,9 +44,9 @@ const MobileMenu = () => {
               exit={{ opacity: 0, rotateZ: -720, scale: 0 }}
               transition={{ duration: 0.5 }}
               src='/close.png'
-              alt='menu'
-              width={20}
-              height={20}
+              alt='close menu'
+              fill
+              sizes='(max-width: 768px) 100vw, 100vw'
             />
           ) : (
             <MotionImage
@@ -55,9 +55,9 @@ const MobileMenu = () => {
               exit={{ opacity: 0, scale: 0 }}
               transition={{ duration: 0.5 }}
               src='/open.png'
-              alt='menu'
-              width={20}
-              height={20}
+              alt='open menu'
+              fill
+              sizes='(max-width: 768px) 100vw, 100vw'
             />
           )}
         </AnimatePresence>

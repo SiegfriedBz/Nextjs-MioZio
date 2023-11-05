@@ -65,14 +65,17 @@ const MenuByCategory = async ({ params }: MenuByCategoryProps) => {
           >
             {/* ITEM IMAGE CONTAINER */}
             <div className='relative mt-2 flex flex-1 place-content-center 2xl:mt-8'>
-              <Image
-                src={item.img}
-                placeholder='blur'
-                blurDataURL={item.imgBlur}
-                alt={item.name}
-                fill={true}
-                className='rounded-3xl object-contain transition duration-300 ease-in-out group-hover:rotate-[8deg] 2xl:group-hover:scale-105'
-              />
+              {item?.img && (
+                <Image
+                  src={item.img}
+                  placeholder='blur'
+                  blurDataURL={item.imgBlur}
+                  alt={item.name}
+                  fill
+                  sizes='(max-width: 768px) 100vw, 50vw'
+                  className='rounded-3xl object-contain transition duration-300 ease-in-out group-hover:rotate-[8deg] 2xl:group-hover:scale-105'
+                />
+              )}
             </div>
 
             {/* ITEM TEXT CONTAINER */}

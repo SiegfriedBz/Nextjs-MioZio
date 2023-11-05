@@ -30,7 +30,12 @@ const CartLink = ({
       }`}
     >
       <div className='relative h-8 w-8'>
-        <Image src='/cart.png' fill={true} alt='cart' />
+        <Image
+          src='/cart.png'
+          fill
+          sizes='(max-width: 768px) 100vw, 100vw'
+          alt='cart'
+        />
       </div>
       <div
         className={`${

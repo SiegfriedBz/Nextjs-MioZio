@@ -35,7 +35,10 @@ const Cart = () => {
             <h3>Your Cart is Empty</h3>
             <span className='text-center text-lg'>
               Add something from the{' '}
-              <Link href='/menu' className='underline underline-offset-4'>
+              <Link
+                href='/menu'
+                className='font-bold underline underline-offset-4'
+              >
                 menu
               </Link>{' '}
               <span className='whitespace-nowrap'>to get started</span>
@@ -51,12 +54,15 @@ const Cart = () => {
                 >
                   {/* ITEM IMG */}
                   <div className='relative h-32 w-32'>
-                    <Image
-                      src={item.img}
-                      fill={true}
-                      alt='cart'
-                      className='object-contain'
-                    />
+                    {item?.img && (
+                      <Image
+                        src={item.img}
+                        fill={true}
+                        alt='cart'
+                        sizes='(max-width: 768px) 16w, 16vw'
+                        className='object-contain'
+                      />
+                    )}
                   </div>
 
                   {/* ITEM DETAILS */}

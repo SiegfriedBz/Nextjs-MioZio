@@ -67,9 +67,9 @@ export type PageImageType = {
   page?: string // home, login, about, contact
   kw?: string // slider, specialOffer
   contentTitle?: string // title of the content if any
-  img?: string
+  img: string
   imgBlur?: string
-  alt?: string
+  alt: string
 }
 
 //
