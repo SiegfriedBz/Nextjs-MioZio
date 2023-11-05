@@ -5,9 +5,9 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { buttonEnterVariants } from '@/utils/motionVariants'
-import type { FullSliderImageType } from '@/app/page'
+import type { PageImageType } from '@/utils/types'
 
-type SliderProps = { images: FullSliderImageType[] }
+type SliderProps = { images: PageImageType[] }
 
 const Slider = ({ images }: SliderProps) => {
   const router = useRouter()
@@ -64,7 +64,7 @@ const Slider = ({ images }: SliderProps) => {
               }}
               className='inline-block'
             >
-              {images[currentSlideId]?.title}
+              {images[currentSlideId]?.contentTitle}
             </motion.h3>
           </div>
         </div>
@@ -84,13 +84,13 @@ const Slider = ({ images }: SliderProps) => {
       {/* slider images container */}
       <div className='relative flex-1'>
         <Image
-          src={images[currentSlideId]?.src}
+          src={images[currentSlideId].img!}
           placeholder='blur'
-          blurDataURL={images[currentSlideId]?.blurDataUrl}
+          blurDataURL={images[currentSlideId].imgBlur!}
           className='h-full w-full object-cover'
           fill={true}
           priority={true}
-          alt={images[currentSlideId]?.alt}
+          alt={images[currentSlideId].alt!}
           sizes='(max-width: 768px) 100vw, 50vw'
         />
       </div>

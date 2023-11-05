@@ -6,12 +6,12 @@ import 'react-toastify/dist/ReactToastify.css'
 
 export type CartItemType = {
   cartItemId: string
-  id: number
-  title: string
+  id: string
+  name: string
   quantity: number
   totalPrice: number
   selectedOption: string
-  src: string
+  img: string
 }
 
 type AppContextType = {

@@ -19,6 +19,71 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  isAdmin       Boolean   @default(false)
+
+  // 1 user has many orders
+  orders        Order[]
+}
+
+model Image {
+  id            String    @id @default(cuid())
+  page          String?   // home, menu, about, contact
+  kw            String?   // keyword
+  contentTitle  String?   // title of the content if any
+  img           String
+  alt           String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model MenuCategory {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  name        String    @unique // Pizza, Pasta, Burgers
+  description String
+  img         String
+  bgColor     String?   // bg color for category
+  textColor   String?   // text color for category
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // 1 menuCategory has many menuItems
+  menuItems   MenuItem[]
+}
+
+model MenuItem {
+  id          String        @id @default(cuid())
+  name        String
+  description String?
+  price       Decimal
+  img         String
+  isFeatured  Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // 1 menuItem belongs to 1 menuCategory
+  category      MenuCategory  @relation(fields: [categorySlug], references: [slug])
+  categorySlug  String
+
+// array of Json objects
+  options     Json[]
+}
+
+model Order {
+  id          String        @id @default(cuid())
+  status      String
+  totalPrice  Decimal
+  intent_id   String?        @unique // stripe payment intent id
+
+  // 1 order belongs to 1 user
+  user        User          @relation(fields: [userEmail], references: [email])
+  userEmail   String // unique
+
+  // array of Json objects
+  cartItems   Json[]
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 }
 
 model Account {

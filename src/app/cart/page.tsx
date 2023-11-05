@@ -52,7 +52,7 @@ const Cart = () => {
                   {/* ITEM IMG */}
                   <div className='relative h-32 w-32'>
                     <Image
-                      src={item.src}
+                      src={item.img}
                       fill={true}
                       alt='cart'
                       className='object-contain'
@@ -64,7 +64,7 @@ const Cart = () => {
                     {/* title & option */}
                     <div className='flex max-w-[50%] flex-col gap-y-1'>
                       <h3 className='text-lg font-bold uppercase tracking-wide 2xl:text-xl'>
-                        {item.title}
+                        {item.name}
                       </h3>
                       <h4 className='text-lg 2xl:text-xl'>
                         {item.selectedOption}

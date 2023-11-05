@@ -1,31 +1,44 @@
-import { ItemType, menuItemByCategoryData } from '@/data'
-import { getBase64ImageUrl, getImageUrl } from '@/utils/cloudinaryUtils'
+import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
 import Image from 'next/image'
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
+import type { MenuItemType } from '@/utils/types'
+import { notFound } from 'next/navigation'
 
-export type FullItemType = ItemType & {
-  blurDataUrl: string
-}
+const handleCache =
+  process.env.NODE_ENV === 'production' ? 'force-cache' : 'no-store'
 
 async function getData(category: string) {
-  const itemsData = menuItemByCategoryData[category]
+  try {
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/menuItems?categorySlug=${category}`,
+      {
+        cache: handleCache,
+      }
+    )
+    if (!response.ok) throw new Error('Network response was not ok.')
 
-  const itemsDataPromises = itemsData.map(async (data) => {
-    const src = getImageUrl(data.src)
-    const blurDataUrl = await getBase64ImageUrl(data.src)
-    const fullData: FullItemType = {
-      ...data,
-      src,
-      blurDataUrl,
-    }
+    const { menuItems } = await response.json()
 
-    return fullData
-  })
+    const promises = menuItems.map(async (data: MenuItemType) => {
+      const img = getImageUrl(data.img!)
+      const imgBlur = await getBase64ImageUrl(data.img!)
+      const fullData: MenuItemType = {
+        ...data,
+        img,
+        imgBlur,
+      }
 
-  const items = await Promise.all(itemsDataPromises)
+      return fullData
+    })
 
-  return items
+    const menuItemsData: MenuItemType[] = await Promise.all(promises)
+
+    return menuItemsData
+  } catch (error) {
+    console.log(`Error: ${error}`)
+    return notFound()
+  }
 }
 
 type MenuByCategoryProps = {
@@ -37,36 +50,38 @@ type MenuByCategoryProps = {
 const MenuByCategory = async ({ params }: MenuByCategoryProps) => {
   const { category } = params
 
-  const menuItems = await getData(category)
+  const menuItemsData = await getData(category)
 
   return (
     // ITEMS WRAPPER
     <div className='flex flex-wrap items-center justify-center rounded-sm md:py-24'>
-      {menuItems.map((item) => {
+      {menuItemsData?.map((item) => {
         // ITEM CONTAINER
         return (
           <Link
             key={item.id}
             href={`${category}/item/${item.id}`}
-            className='border-primary even:bg-quaternary group flex h-[60vh] w-full flex-col justify-between border-[0.01em] hover:shadow-sm sm:w-1/2 lg:w-[30%]'
+            className='group flex h-[60vh] w-full flex-col justify-between border-[0.01em] border-primary even:bg-quaternary hover:shadow-sm sm:w-1/2 lg:w-[30%]'
           >
             {/* ITEM IMAGE CONTAINER */}
             <div className='relative mt-2 flex flex-1 place-content-center 2xl:mt-8'>
               <Image
-                src={item.src}
-                alt={item.alt}
+                src={item.img}
+                placeholder='blur'
+                blurDataURL={item.imgBlur}
+                alt={item.name}
                 fill={true}
-                className='rounded-full object-contain transition duration-300 ease-in-out group-hover:rotate-[8deg] 2xl:group-hover:scale-105'
+                className='rounded-3xl object-contain transition duration-300 ease-in-out group-hover:rotate-[8deg] 2xl:group-hover:scale-105'
               />
             </div>
 
             {/* ITEM TEXT CONTAINER */}
             <div className='relative flex flex-col items-center space-y-2 p-4 2xl:flex-row 2xl:justify-between 2xl:space-y-0 2xl:p-4'>
-              <h2 className='text-primary text-xl font-bold uppercase tracking-wide'>
-                {item.title}
+              <h2 className='text-xl font-bold uppercase tracking-wide text-primary'>
+                {item.name}
               </h2>
               {/* PRICE - CTA */}
-              <h2 className='text-primary text-xl font-semibold 2xl:font-bold'>
+              <h2 className='text-xl font-semibold text-primary 2xl:font-bold'>
                 ${item.price}
               </h2>
               <button

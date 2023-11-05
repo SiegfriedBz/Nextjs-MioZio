@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const cloudinaryBaseUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/`
+const cloudinaryBaseUrl = `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/`
 
 const nextConfig = {
   reactStrictMode: true,
