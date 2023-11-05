@@ -1,4 +1,4 @@
-type UserType = {
+export type UserType = {
   id: string
   name?: string
   email: string
@@ -24,7 +24,7 @@ export type MenuCategoryType = {
   updatedAt?: Date
 }
 
-type MenuItemType = {
+export type MenuItemType = {
   id?: string
   name: string
   description: string
@@ -61,8 +61,19 @@ export type CartItemType = {
   totalPrice: number
 }
 
+// home page slider + special offer img
+export type PageImageType = {
+  id?: string
+  page?: string // home, login, about, contact
+  kw?: string // slider, specialOffer
+  contentTitle?: string // title of the content if any
+  img?: string
+  imgBlur?: string
+  alt?: string
+}
+
 //
-type SocialImageType = {
+export type SocialImageType = {
   title: string
   cloudName: string
   imagePublicID: string
