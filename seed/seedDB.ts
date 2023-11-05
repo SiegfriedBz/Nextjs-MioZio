@@ -31,8 +31,8 @@ const pageImages = [
   },
   {
     page: 'home',
-    kw: 'specialOffer',
-    img: 'MioZio/home/specialOffer',
+    kw: 'specialoffer',
+    img: 'MioZio/home/specialoffer',
     alt: 'special Offer',
   },
   // login page
