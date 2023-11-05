@@ -5,7 +5,6 @@ export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url)
 
   const page = searchParams.get('page')
-  console.log(page)
 
   try {
     const pageImages = await prisma.image.findMany({
