@@ -133,10 +133,12 @@ const Cart = () => {
             <span className='text-primary'>Delivery cost: </span>
             <span
               className={`text-right ${
-                deliveryPrice === 0 ? 'font-bold text-secondary' : 'text-dark'
+                deliveryPrice === 0
+                  ? 'font-bold text-secondary'
+                  : 'text-primary'
               }`}
             >
-              {deliveryPrice === 0 ? 'FREE!' : deliveryPrice}
+              {deliveryPrice === 0 ? 'FREE!' : deliveryPrice.toFixed(2)}
             </span>
           </div>
         </div>
