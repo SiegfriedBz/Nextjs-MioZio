@@ -16,7 +16,11 @@ async function getData() {
     const pageImagesResponse = await fetch(
       `${process.env.NEXTAUTH_URL}/api/pages?page=home`,
       {
-        cache: handleCache,
+        headers: {
+          method: 'GET',
+          'Content-Type': 'application/json',
+          cache: 'no-store',
+        },
       }
     )
     if (!pageImagesResponse.ok)
@@ -49,7 +53,11 @@ async function getData() {
     const featuredItemsResponse = await fetch(
       `${process.env.NEXTAUTH_URL}/api/menuItems?isFeatured=true`,
       {
-        cache: handleCache,
+        headers: {
+          method: 'GET',
+          'Content-Type': 'application/json',
+          cache: 'no-store',
+        },
       }
     )
     if (!featuredItemsResponse.ok)

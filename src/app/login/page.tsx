@@ -13,9 +13,13 @@ const handleCache =
 //     // FETCH LGGIN IMAGE
 //     const pageImagesResponse = await fetch(
 //       `${process.env.NEXTAUTH_URL}/api/pages?page=login`,
-//       {
-//         cache: handleCache,
-//       }
+//         {
+//   headers: {
+//     method: 'GET',
+//     'Content-Type': 'application/json',
+//     cache: 'no-store',
+//   },
+// }
 //     )
 //     if (!pageImagesResponse.ok)
 //       throw new Error('Fetch pageImages: Network response was not ok.')

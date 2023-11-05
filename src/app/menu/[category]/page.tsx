@@ -13,7 +13,11 @@ async function getData(category: string) {
     const response = await fetch(
       `${process.env.NEXTAUTH_URL}/api/menuItems?categorySlug=${category}`,
       {
-        cache: handleCache,
+        headers: {
+          method: 'GET',
+          'Content-Type': 'application/json',
+          cache: 'no-store',
+        },
       }
     )
     if (!response.ok) throw new Error('Network response was not ok.')

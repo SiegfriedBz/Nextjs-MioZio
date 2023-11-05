@@ -12,7 +12,11 @@ async function getData(id: string) {
     const response = await fetch(
       `${process.env.NEXTAUTH_URL}/api/menuItems?id=${id}`,
       {
-        cache: handleCache,
+        headers: {
+          method: 'GET',
+          'Content-Type': 'application/json',
+          cache: 'no-store',
+        },
       }
     )
     if (!response.ok) throw new Error('Network response was not ok.')
