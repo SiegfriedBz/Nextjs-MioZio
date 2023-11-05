@@ -44,10 +44,10 @@ async function getData() {
       await Promise.all(pageImagesPromises)
 
     const sliderImagesData: PageImageType[] = pageImagesData.filter(
-      (img) => img?.kw === 'slider'
+      (img) => img?.kw == 'slider'
     )
     const [specialOfferImageData]: PageImageType[] = pageImagesData.filter(
-      (img) => img?.kw === 'specialOffer'
+      (img) => img?.kw == 'specialoffer'
     )
     // FETCH FEATURED ITEMS
     const featuredItemsResponse = await fetch(
