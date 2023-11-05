@@ -16,7 +16,7 @@
     "prisma:generate": "npx dotenv -e .env.local -- prisma generate",
     "prisma:studio": "npx dotenv -e .env.local -- prisma studio",
     "production:build": "npx prisma generate && npx prisma migrate deploy && next build",
-    "production:seedDB:build": "npx prisma generate && npx prisma migrate deploy && tsx ./seed/seedCloudinary.ts && next build"
+    "production:seedDB:build": "npx prisma generate && npx prisma migrate deploy && tsx ./seed/seedDB.ts && next build"
   },
   "engines": {
     "node": "18.17.1"
