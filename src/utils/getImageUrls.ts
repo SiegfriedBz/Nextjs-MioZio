@@ -1,3 +1,5 @@
+import type { SocialImageType } from './types'
+
 export function getImageUrl(imageId: string) {
   try {
     return `${process.env.NEXT_PUBLIC_CLOUDINARY_BASE_URL}${imageId}`
