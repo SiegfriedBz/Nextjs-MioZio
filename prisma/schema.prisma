@@ -25,6 +25,17 @@ model User {
   orders        Order[]
 }
 
+model Image {
+  id            String    @id @default(cuid())
+  page          String?   // home, menu, about, contact
+  kw            String?   // keyword
+  contentTitle  String?   // title of the content if any
+  img           String
+  alt           String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
 model MenuCategory {
   id          String    @id @default(cuid())
   slug        String    @unique
