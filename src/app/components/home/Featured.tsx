@@ -1,15 +1,12 @@
 'use client'
 
 import Image from 'next/image'
-import type { FullItemType } from '@/app/page'
+import Link from 'next/link'
+import type { MenuItemType } from '@/utils/types'
 
-type FeaturedProps = { featuredItems: FullItemType[] }
+type FeaturedProps = { featuredItems: MenuItemType[] }
 
 const Featured = ({ featuredItems }: FeaturedProps) => {
-  const addToCart = (id: number): void => {
-    console.log(id)
-  }
-
   return (
     <section id='featured' className='w-screen overflow-x-scroll'>
       {/* WRAPPER */}
@@ -22,15 +19,16 @@ const Featured = ({ featuredItems }: FeaturedProps) => {
               className='flex h-full w-screen flex-col space-y-4 px-2 py-4 text-center text-primary lg:w-[50vw] lg:px-8 2xl:w-[33vw]'
             >
               {/* ITEM IMG */}
-              <div className='relative flex-1'>
+              <div className='relative flex-1 rounded-none'>
                 <Image
-                  src={item?.src}
+                  src={item.img}
                   placeholder='blur'
-                  blurDataURL={item?.blurDataUrl}
-                  alt={item?.alt}
+                  blurDataURL={item.imgBlur}
                   fill={true}
                   priority={true}
-                  className='cursor-pointer rounded-full object-contain transition duration-300 ease-in-out hover:rotate-[8deg] hover:scale-110'
+                  sizes='(max-width: 768px) 50vw,(max-width: 1024px) 24vw, 16vw'
+                  alt={item.name}
+                  className='cursor-pointer rounded-3xl object-contain transition duration-300 ease-in-out hover:rotate-[8deg] hover:scale-110'
                 />
               </div>
 
@@ -38,19 +36,21 @@ const Featured = ({ featuredItems }: FeaturedProps) => {
               <div className='flex flex-1 flex-col items-center justify-end space-y-4 pb-8'>
                 {/* item title */}
                 <h2 className='text-3xl font-semibold sm:text-4xl'>
-                  {item?.title}
+                  {item.name}
                 </h2>
                 {/* item description */}
-                <p className='px-4 sm:px-24 md:px-32 lg:px-0'>{item?.desc}</p>
+                <p className='px-4 sm:px-24 md:px-32 lg:px-0'>
+                  {item.description}
+                </p>
                 {/* item price */}
-                <h2 className='text-3xl sm:text-4xl'>${item?.price}</h2>
+                <h2 className='text-3xl sm:text-4xl'>${item.price}</h2>
                 {/*  CTA */}
-                <button
-                  onClick={() => addToCart(item?.id)}
+                <Link
+                  href={`/menu/${item.categorySlug}/item/${item.id}`}
                   className='btn mx-auto transition duration-300 ease-in-out hover:scale-110'
                 >
                   Add to Cart
-                </button>
+                </Link>
               </div>
             </div>
           )

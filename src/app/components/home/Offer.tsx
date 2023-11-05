@@ -43,9 +43,9 @@ const Offer = ({ image }: OfferProps) => {
       {/* OFFER IMG container */}
       <div className='relative flex h-full w-full flex-1 items-center justify-center'>
         <Image
-          src={image?.src}
+          src={image?.img}
           placeholder='blur'
-          blurDataURL={image?.blurDataUrl}
+          blurDataURL={image?.imgBlur}
           fill
           alt={image?.alt}
           className='object-contain'

@@ -4,15 +4,15 @@ import { useState, useEffect } from 'react'
 import { useAppContext } from '@/app/context/appContext'
 import { twMerge } from 'tailwind-merge'
 import { v4 as uuidv4 } from 'uuid'
-import type { ItemType } from '@/data'
 import type { CartItemType } from '@/app/context/appContext'
+import type { MenuItemType } from '@/utils/types'
 
 type ItemMiniCartProps = {
-  item: ItemType
+  item: MenuItemType
 }
 
 const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
-  const { id, title, price, options, src } = item
+  const { id, name, price, options, img } = item
 
   const { cart, setCart } = useAppContext()
   const [quantity, setQuantity] = useState(1)
@@ -30,12 +30,12 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
   const onAddToCart = () => {
     const cartItem: CartItemType = {
       cartItemId: uuidv4(),
-      id,
-      title,
+      id: id!,
+      name,
       quantity,
       totalPrice,
       selectedOption,
-      src,
+      img,
     }
 
     setCart([...cart, cartItem])
@@ -45,7 +45,7 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
     <div className='flex w-full flex-col space-y-2 md:space-y-4'>
       {/* TOTAL PRICE */}
       <h2 className='text-2xl font-bold uppercase tracking-wide'>
-        ${totalPrice.toFixed(2)}
+        ${Number(totalPrice)?.toFixed(2)}
       </h2>
 
       {/* OPTIONS */}
