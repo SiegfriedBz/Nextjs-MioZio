@@ -6,6 +6,9 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
   secure: true,
+  // unique_filename: false,
+  overwrite: true,
+  invalidate: true, // Invalidate the CDN old assests cache
 })
 
 export default cloudinary
