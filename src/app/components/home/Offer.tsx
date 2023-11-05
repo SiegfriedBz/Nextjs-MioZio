@@ -42,18 +42,16 @@ const Offer = ({ image }: OfferProps) => {
 
       {/* OFFER IMG container */}
       <div className='relative flex h-full w-full flex-1 items-center justify-center'>
-        {image?.img && (
-          <Image
-            src={image.img}
-            placeholder='blur'
-            blurDataURL={image.imgBlur}
-            fill
-            priority
-            sizes='(max-width: 768px) 100vw, 50vw'
-            alt='special offer'
-            className='rounded-3xl object-contain'
-          />
-        )}
+        <Image
+          src={image.img}
+          placeholder='blur'
+          blurDataURL={image.imgBlur}
+          fill
+          priority
+          sizes='(max-width: 768px) 100vw, 50vw'
+          alt='special offer'
+          className='rounded-3xl object-contain'
+        />
       </div>
     </section>
   )

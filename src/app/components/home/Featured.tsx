@@ -20,18 +20,16 @@ const Featured = ({ featuredItems }: FeaturedProps) => {
             >
               {/* ITEM IMG */}
               <div className='relative flex-1 rounded-none'>
-                {item?.img && (
-                  <Image
-                    src={item.img}
-                    placeholder='blur'
-                    blurDataURL={item.imgBlur}
-                    fill
-                    priority
-                    sizes='(max-width: 768px) 50vw,(max-width: 1024px) 24vw, 16vw'
-                    alt={item.name}
-                    className='cursor-pointer rounded-3xl object-contain transition duration-300 ease-in-out hover:rotate-[8deg] hover:scale-110'
-                  />
-                )}
+                <Image
+                  src={item.img}
+                  placeholder='blur'
+                  blurDataURL={item.imgBlur}
+                  fill
+                  priority
+                  sizes='(max-width: 768px) 50vw,(max-width: 1024px) 24vw, 16vw'
+                  alt={item.name}
+                  className='cursor-pointer rounded-3xl object-contain transition duration-300 ease-in-out hover:rotate-[8deg] hover:scale-110'
+                />
               </div>
 
               {/* ITEM TEXT  */}

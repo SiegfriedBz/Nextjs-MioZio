@@ -54,17 +54,15 @@ const Login = async () => {
       <div className='h-section flex w-full flex-col items-center rounded-md shadow-lg md:h-3/4 md:flex-row'>
         {/* IMG */}
         <div className='relative h-1/3 w-full md:h-full md:w-1/2'>
-          {loginImgData.img && (
-            <Image
-              src={loginImgData.img}
-              placeholder='blur'
-              blurDataURL={loginImgData.imgBlur}
-              alt={loginImgData.alt}
-              fill
-              sizes='(max-width: 768px) 50vw,(max-width: 1024px) 33vw, 50vw'
-              className='rounded-md rounded-r-none object-cover'
-            />
-          )}
+          <Image
+            src={loginImgData.img}
+            placeholder='blur'
+            blurDataURL={loginImgData.imgBlur}
+            alt={loginImgData.alt}
+            fill
+            sizes='(max-width: 768px) 50vw,(max-width: 1024px) 33vw, 50vw'
+            className='rounded-md rounded-r-none object-cover'
+          />
         </div>
 
         {/* LOGIN  */}

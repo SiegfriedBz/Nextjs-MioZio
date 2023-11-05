@@ -58,17 +58,15 @@ const Item = async ({ params }: ItemProps) => {
     <section className='flex flex-col items-center justify-around space-y-1 p-4 sm:space-y-2 sm:px-16 md:flex-row md:space-x-4 md:px-8 lg:px-24 xl:px-32 2xl:px-48'>
       {/* IMAGE CONTAINER */}
       <div className='relative h-full w-full flex-1 pt-1'>
-        {menuItemData?.img && (
-          <Image
-            src={menuItemData.img}
-            placeholder='blur'
-            blurDataURL={menuItemData.imgBlur}
-            alt={menuItemData.name}
-            fill
-            sizes='(max-width: 768px) 50vw,(max-width: 1024px) 33vw, 50vw'
-            className='rounded-3xl object-contain transition-all duration-300 md:hover:rotate-[8deg] md:hover:scale-105'
-          />
-        )}
+        <Image
+          src={menuItemData.img}
+          placeholder='blur'
+          blurDataURL={menuItemData.imgBlur}
+          alt={menuItemData.name}
+          fill
+          sizes='(max-width: 768px) 50vw,(max-width: 1024px) 33vw, 50vw'
+          className='rounded-3xl object-contain transition-all duration-300 md:hover:rotate-[8deg] md:hover:scale-105'
+        />
       </div>
 
       {/* TEXT CONTAINER */}
