@@ -42,7 +42,7 @@ async function getData() {
 
     return {
       ...loginImgData,
-      img: `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/MioZio/login/login.png`,
+      img: 'https://res.cloudinary.com/dygpd9pkl/image/upload/v1699163090/MioZio/login/login.webp',
     }
   } catch (error) {
     console.log(`Error: ${error}`)
@@ -64,7 +64,6 @@ const Login = async () => {
             blurDataURL={loginImgData?.imgBlur}
             alt={loginImgData?.alt}
             fill
-            sizes='(max-width: 768px) 100vw, 100vw'
             className='rounded-md rounded-r-none object-cover'
           />
         </div>
