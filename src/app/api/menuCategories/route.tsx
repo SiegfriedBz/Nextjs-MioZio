@@ -1,19 +1,18 @@
-import { NextResponse } from 'next/server'
 import { prisma } from '../../../utils/prismaClient'
 
-// import type { NextRequest } from 'next/server.js'
-
-export const GET = async () => {
+export async function GET() {
   try {
-    const menuCategories = await prisma.menuCategory.findMany({
+    const menuCategoriesPrisma = await prisma.menuCategory.findMany({
       include: {
         menuItems: true,
       },
     })
 
-    return NextResponse.json({ menuCategories }, { status: 200 })
+    const menuCategories = JSON.parse(JSON.stringify(menuCategoriesPrisma))
+
+    return Response.json({ menuCategories }, { status: 200 })
   } catch (error) {
-    return NextResponse.json(`Error: ${error}`, { status: 500 })
+    return Response.json(`Error: ${error}`, { status: 500 })
   }
 }
 

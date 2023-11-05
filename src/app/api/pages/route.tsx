@@ -1,18 +1,19 @@
-import { NextResponse } from 'next/server'
 import { prisma } from '../../../utils/prismaClient'
 
-export const GET = async (request: Request) => {
+export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
 
   const page = searchParams.get('page')
 
   try {
-    const pageImages = await prisma.image.findMany({
+    const pageImagesPrisma = await prisma.image.findMany({
       where: { page: page },
     })
 
-    return NextResponse.json({ pageImages }, { status: 200 })
+    const pageImages = JSON.parse(JSON.stringify(pageImagesPrisma))
+
+    return Response.json({ pageImages }, { status: 200 })
   } catch (error) {
-    return NextResponse.json(`Error: ${error}`, { status: 500 })
+    return Response.json(`Error: ${error}`, { status: 500 })
   }
 }

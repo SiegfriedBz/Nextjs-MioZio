@@ -1,13 +1,11 @@
-import { NextResponse } from 'next/server'
 import { prisma } from '../../../utils/prismaClient'
 
-export const GET = async (request: Request) => {
+export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
 
   const menuItemId = searchParams.get('id')
   const categorySlug = searchParams.get('categorySlug')
   const isFeatured = searchParams.get('isFeatured') === 'true'
-  console.log(menuItemId)
 
   const query =
     menuItemId !== null
@@ -24,12 +22,14 @@ export const GET = async (request: Request) => {
         }
 
   try {
-    const menuItems = await prisma.menuItem.findMany({
+    const menuItemsPrisma = await prisma.menuItem.findMany({
       where: query,
     })
 
-    return NextResponse.json({ menuItems }, { status: 200 })
+    const menuItems = JSON.parse(JSON.stringify(menuItemsPrisma))
+
+    return Response.json({ menuItems }, { status: 200 })
   } catch (error) {
-    return NextResponse.json(`Error: ${error}`, { status: 500 })
+    return Response.json(`Error: ${error}`, { status: 500 })
   }
 }
