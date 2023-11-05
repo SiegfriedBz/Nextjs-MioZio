@@ -1,6 +1,8 @@
 import { v2 as cloudinary } from 'cloudinary'
 import 'dotenv/config'
 
+const PROD_ENV = process.env.NODE_ENV === 'production'
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -8,7 +10,7 @@ cloudinary.config({
   secure: true,
   // unique_filename: false,
   overwrite: true,
-  invalidate: true, // Invalidate the CDN old assests cache
+  invalidate: !PROD_ENV, // Invalidate the CDN old assests cache if not in production
 })
 
 export default cloudinary
