@@ -1,12 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-import { useSession, signIn } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { twMerge } from 'tailwind-merge'
 
 const GoogleSignIn = () => {
-  //   const { data: session, status } = useSession()
-
   return (
     <button
       onClick={() => signIn('google', { callbackUrl: '/' })}
