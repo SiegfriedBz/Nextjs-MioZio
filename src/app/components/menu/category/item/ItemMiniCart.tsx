@@ -7,8 +7,7 @@ import { useAppContext } from '@/app/context/appContext'
 import { motion, AnimatePresence } from 'framer-motion'
 import { twMerge } from 'tailwind-merge'
 import { v4 as uuidv4 } from 'uuid'
-import type { CartItemType } from '@/app/context/appContext'
-import type { MenuItemType } from '@/types'
+import type { CartItemType, MenuItemType } from '@/types'
 
 type ItemMiniCartProps = {
   item: MenuItemType
@@ -16,36 +15,35 @@ type ItemMiniCartProps = {
 
 const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
   const { id, name, price, options, img } = item
-
   const { cart, setCart, handleToast } = useAppContext()
+
   const [quantity, setQuantity] = useState(1)
-  const [selectedOption, setSelectedOption] = useState('Small')
+  const [selectedOptionName, setSelectedOptionName] = useState('small')
   const [totalPrice, setTotalPrice] = useState(price)
 
   useEffect(() => {
-    const option = options?.find((option) => option.title === selectedOption)
+    const option = options?.find((option) => option.name === selectedOptionName)
+
     const additionalPrice = option?.additionalPrice || 0
     const totalPrice = (price + additionalPrice) * quantity
 
     setTotalPrice(totalPrice)
-  }, [selectedOption, quantity, price, options])
+  }, [selectedOptionName, quantity, price, options])
 
   const onAddToCart = () => {
-    console.log('onAddToCart')
     const cartItem: CartItemType = {
-      cartItemId: uuidv4(),
-      id: id!,
+      cartemId: uuidv4(),
       name,
       quantity,
       totalPrice,
-      selectedOption,
+      selectedOptionName,
       img,
     }
 
     setCart([...cart, cartItem])
     handleToast({
       type: 'success',
-      message: `${quantity} x ${selectedOption} ${name} added successfully!`,
+      message: `${quantity} x ${selectedOptionName} ${name} added successfully!`,
     })
   }
 
@@ -58,21 +56,21 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
 
       {/* OPTIONS */}
       <div className='flex justify-between'>
-        {options?.map((option, index) => {
+        {options?.map((option) => {
           return (
-            <div key={index} className='flex flex-col'>
+            <div key={option.name} className='flex flex-col'>
               <button
-                onClick={() => setSelectedOption(option.title)}
+                onClick={() => setSelectedOptionName(option.name)}
                 className={twMerge(
                   'btn',
                   ` text-sm font-bold tracking-wide ring ${
-                    option.title === selectedOption
+                    option.name === selectedOptionName
                       ? 'bg-primary ring-light'
                       : 'bg-light text-primary ring-primary'
                   }`
                 )}
               >
-                {option.title}
+                {option.name}
               </button>
             </div>
           )
@@ -123,31 +121,27 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
       {/* GO TO CART CTA */}
       <AnimatePresence>
         {cart.length > 0 ? (
-          <motion.div
-            initial={{ opacity: 0, x: '100vw' }}
-            animate={{ opacity: 1, x: '0vw' }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, type: 'spring', stiffness: 180 }}
-            className='flex w-full items-center justify-end'
+          <MotionLink
+            href='/cart'
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            whileHover={{ scale: 1.5 }}
+            exit={{ scale: 0, opacity: 0 }}
+            // transition={{ duration: 0.5 }}
+            className={twMerge(
+              'btn',
+              'absolute right-1.5 top-[5.75rem] flex h-12 w-12 items-center justify-center rounded-full p-2 transition duration-300 sm:hover:scale-110 md:h-16 md:w-16 md:p-4 md:text-lg'
+            )}
           >
-            <Link
-              href='/cart'
-              className={twMerge(
-                'btn',
-                'text-base font-bold tracking-wide transition duration-300 sm:hover:scale-110 md:p-4 md:text-lg'
-              )}
-            >
-              <div className='relative h-6 w-6'>
-                <Image
-                  src='/cart.png'
-                  fill
-                  sizes='(max-width: 768px) 100vw, 100vw'
-                  alt='cart'
-                />
-              </div>
-              <span className='ps-2'>Go to cart</span>
-            </Link>
-          </motion.div>
+            <div className='relative flex h-12 w-12 items-center justify-center md:h-16 md:w-16'>
+              <Image
+                src='/cart.png'
+                fill
+                alt='cart'
+                className='object-contain'
+              />
+            </div>
+          </MotionLink>
         ) : null}
       </AnimatePresence>
     </div>
@@ -155,3 +149,5 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
 }
 
 export default ItemMiniCart
+
+const MotionLink = motion(Link)
