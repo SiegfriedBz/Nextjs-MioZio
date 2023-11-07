@@ -5,6 +5,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import { AuthProviders } from './context/AuthProviders'
 import { AppContextProvider } from './context/appContext'
+import QueryProvider from './context/QueryProvider'
 
 const roboto = Roboto({
   weight: ['100', '300', '400', '700'],
@@ -27,12 +28,14 @@ export default function RootLayout({
     <html lang='en' className='scroll-smooth'>
       <body className={`text-dark dark:text-light ${roboto.className}`}>
         <AuthProviders>
-          <AppContextProvider>
-            <Header />
-            {/* fixed header with h-24 */}
-            <main className='mt-24'>{children}</main>
-            <Footer />
-          </AppContextProvider>
+          <QueryProvider>
+            <AppContextProvider>
+              <Header />
+              {/* fixed header with h-24 */}
+              <main className='mt-24'>{children}</main>
+              <Footer />
+            </AppContextProvider>
+          </QueryProvider>
         </AuthProviders>
       </body>
     </html>
