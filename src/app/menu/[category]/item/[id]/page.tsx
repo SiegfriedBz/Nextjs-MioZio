@@ -6,7 +6,6 @@ import { handleCache } from '@/utils/handleCache'
 import type { MenuItemType } from '@/types'
 
 async function getData(id: string) {
-  console.log(id)
   // FETCH MENU ITEM BY ID
   try {
     const response = await fetch(
