@@ -7,6 +7,12 @@
 // run `npm run seed:db`
 import { prisma } from '../src/utils/prismaClient'
 
+const users = [
+  { name: 'admin01', email: 'admin01@example.com', isAdmin: true },
+  { name: 'user02', email: 'user02@example.com' },
+  { name: 'user03', email: 'user03@example.com' },
+]
+
 const pageImages = [
   // home page
   {
@@ -85,15 +91,15 @@ const menuItems = [
     categorySlug: 'pizza',
     options: [
       {
-        title: 'Small',
+        name: 'small',
         additionalPrice: 0,
       },
       {
-        title: 'Medium',
+        name: 'medium',
         additionalPrice: 4,
       },
       {
-        title: 'Large',
+        name: 'large',
         additionalPrice: 6,
       },
     ],
@@ -108,15 +114,15 @@ const menuItems = [
     categorySlug: 'pizza',
     options: [
       {
-        title: 'Small',
+        name: 'small',
         additionalPrice: 0,
       },
       {
-        title: 'Medium',
+        name: 'medium',
         additionalPrice: 4,
       },
       {
-        title: 'Large',
+        name: 'large',
         additionalPrice: 6,
       },
     ],
@@ -131,15 +137,15 @@ const menuItems = [
     categorySlug: 'pizza',
     options: [
       {
-        title: 'Small',
+        name: 'small',
         additionalPrice: 0,
       },
       {
-        title: 'Medium',
+        name: 'medium',
         additionalPrice: 4,
       },
       {
-        title: 'Large',
+        name: 'large',
         additionalPrice: 6,
       },
     ],
@@ -154,15 +160,15 @@ const menuItems = [
     categorySlug: 'pizza',
     options: [
       {
-        title: 'Small',
+        name: 'small',
         additionalPrice: 0,
       },
       {
-        title: 'Medium',
+        name: 'medium',
         additionalPrice: 4,
       },
       {
-        title: 'Large',
+        name: 'large',
         additionalPrice: 6,
       },
     ],
@@ -179,15 +185,15 @@ const menuItems = [
     categorySlug: 'burgers',
     options: [
       {
-        title: 'Small',
+        name: 'small',
         additionalPrice: 0,
       },
       {
-        title: 'Medium',
+        name: 'medium',
         additionalPrice: 4,
       },
       {
-        title: 'Large',
+        name: 'large',
         additionalPrice: 6,
       },
     ],
@@ -202,15 +208,15 @@ const menuItems = [
     categorySlug: 'burgers',
     options: [
       {
-        title: 'Small',
+        name: 'small',
         additionalPrice: 0,
       },
       {
-        title: 'Medium',
+        name: 'medium',
         additionalPrice: 4,
       },
       {
-        title: 'Large',
+        name: 'large',
         additionalPrice: 6,
       },
     ],
@@ -225,15 +231,15 @@ const menuItems = [
     categorySlug: 'burgers',
     options: [
       {
-        title: 'Small',
+        name: 'small',
         additionalPrice: 0,
       },
       {
-        title: 'Medium',
+        name: 'medium',
         additionalPrice: 4,
       },
       {
-        title: 'Large',
+        name: 'large',
         additionalPrice: 6,
       },
     ],
@@ -248,15 +254,15 @@ const menuItems = [
     categorySlug: 'burgers',
     options: [
       {
-        title: 'Small',
+        name: 'small',
         additionalPrice: 0,
       },
       {
-        title: 'Medium',
+        name: 'medium',
         additionalPrice: 4,
       },
       {
-        title: 'Large',
+        name: 'large',
         additionalPrice: 6,
       },
     ],
@@ -273,15 +279,15 @@ const menuItems = [
     categorySlug: 'pasta',
     options: [
       {
-        title: 'Small',
+        name: 'small',
         additionalPrice: 0,
       },
       {
-        title: 'Medium',
+        name: 'medium',
         additionalPrice: 4,
       },
       {
-        title: 'Large',
+        name: 'large',
         additionalPrice: 6,
       },
     ],
@@ -296,15 +302,15 @@ const menuItems = [
     categorySlug: 'pasta',
     options: [
       {
-        title: 'Small',
+        name: 'small',
         additionalPrice: 0,
       },
       {
-        title: 'Medium',
+        name: 'medium',
         additionalPrice: 4,
       },
       {
-        title: 'Large',
+        name: 'large',
         additionalPrice: 6,
       },
     ],
@@ -319,15 +325,15 @@ const menuItems = [
     categorySlug: 'pasta',
     options: [
       {
-        title: 'Small',
+        name: 'small',
         additionalPrice: 0,
       },
       {
-        title: 'Medium',
+        name: 'medium',
         additionalPrice: 4,
       },
       {
-        title: 'Large',
+        name: 'large',
         additionalPrice: 6,
       },
     ],
@@ -342,15 +348,15 @@ const menuItems = [
     categorySlug: 'pasta',
     options: [
       {
-        title: 'Small',
+        name: 'small',
         additionalPrice: 0,
       },
       {
-        title: 'Medium',
+        name: 'medium',
         additionalPrice: 4,
       },
       {
-        title: 'Large',
+        name: 'large',
         additionalPrice: 6,
       },
     ],
@@ -361,23 +367,40 @@ const load = async () => {
   try {
     // CLEAN UP DB
     console.log('⏳ CLEAN UP DB...')
+
+    console.log('⏳ Deleting users in DB...')
+    await prisma.user.deleteMany()
+    console.log('✅ Deleting users in DB...DONE.')
+    console.log('===')
+
     console.log('⏳ Deleting home & login pages in DB...')
     await prisma.image.deleteMany()
     console.log('✅ Deleting home & login pages in DB...DONE.')
     console.log('===')
+
     console.log('⏳ Deleting menu items in DB...')
     await prisma.menuItem.deleteMany()
     console.log('✅ Deleting menu items in DB...DONE.')
     console.log('===')
+
     console.log('⏳ Deleting menu categories in DB...')
     await prisma.menuCategory.deleteMany()
     console.log('✅ Deleting menu categories in DB...DONE.')
     console.log('===')
+
     console.log('✅ ✅ CLEAN UP DB...DONE')
     console.log('===')
 
     // SEED DB
     console.log('⏳ SEED DB...')
+    // create users
+    console.log('⏳ Seeding users in DB...')
+    await prisma.user.createMany({
+      data: users,
+    })
+    console.log('✅ Seeding users in DB...DONE.')
+    console.log('===')
+
     // create (pages) images
     console.log('⏳ Seeding home & login pages in DB...')
     await prisma.image.createMany({

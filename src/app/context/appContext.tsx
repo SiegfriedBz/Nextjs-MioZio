@@ -3,16 +3,7 @@
 import { createContext, useContext, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
-export type CartItemType = {
-  cartItemId: string
-  id: string
-  name: string
-  quantity: number
-  totalPrice: number
-  selectedOption: string
-  img: string
-}
+import type { CartItemType } from '@/types'
 
 type AppContextType = {
   cart: CartItemType[]

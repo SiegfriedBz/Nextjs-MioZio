@@ -9,9 +9,10 @@ import type { MenuCategoryType } from '@/types'
 const possibleBgColors = ['bg-[#009345]', 'bg-[#CF2B36]', 'bg-transparent']
 
 async function getData() {
+  // FETCH MENU CATEGORIES
   try {
     const response = await fetch(
-      `${process.env.NEXTAUTH_URL}/api/menuCategories`,
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/menuCategories`,
       {
         headers: {
           method: 'GET',
@@ -20,6 +21,7 @@ async function getData() {
         },
       }
     )
+
     if (!response.ok) throw new Error('Network response was not ok.')
 
     const { menuCategories } = await response.json()

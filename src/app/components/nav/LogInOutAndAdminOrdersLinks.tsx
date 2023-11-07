@@ -1,6 +1,5 @@
 'use client'
 
-import { useAppContext } from '@/app/context/appContext'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
 
@@ -16,8 +15,6 @@ const LogInOutAndAdminOrdersLinks = ({
   const { data: session, status } = useSession()
 
   const isSignedIn = status === 'authenticated'
-  const isAdmin = true
-  // && session?.user?.type?.toLowercase() === 'admin'
 
   return (
     <>
@@ -41,19 +38,17 @@ const LogInOutAndAdminOrdersLinks = ({
             Log out
           </button>
 
-          {isAdmin && (
-            <Link
-              href='/orders'
-              onClick={() => closeModalMenu && closeModalMenu()}
-              className={`uppercase tracking-wide ${
-                isMobileMenu
-                  ? 'bg-primary text-light'
-                  : 'bg-light font-bold text-primary'
-              }`}
-            >
-              Orders
-            </Link>
-          )}
+          <Link
+            href='/orders'
+            onClick={() => closeModalMenu && closeModalMenu()}
+            className={`uppercase tracking-wide ${
+              isMobileMenu
+                ? 'bg-primary text-light'
+                : 'bg-light font-bold text-primary'
+            }`}
+          >
+            Orders
+          </Link>
         </div>
       ) : (
         <Link

@@ -6,9 +6,10 @@ import { handleCache } from '@/utils/handleCache'
 import type { MenuItemType } from '@/types'
 
 async function getData(id: string) {
+  // FETCH MENU ITEM BY ID
   try {
     const response = await fetch(
-      `${process.env.NEXTAUTH_URL}/api/menuItems?id=${id}`,
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/menuItems?id=${id}`,
       {
         headers: {
           method: 'GET',
@@ -17,6 +18,7 @@ async function getData(id: string) {
         },
       }
     )
+
     if (!response.ok) throw new Error('Network response was not ok.')
 
     const { menuItems } = await response.json()

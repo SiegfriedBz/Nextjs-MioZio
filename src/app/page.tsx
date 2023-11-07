@@ -1,18 +1,19 @@
 import { notFound } from 'next/navigation'
-import { getServerSession } from 'next-auth/next'
+
 import Slider from './components/home/Slider'
 import Featured from './components/home/Featured'
 import Offer from './components/home/Offer'
-import { authOptions } from '@/utils/authOptions'
+
 import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
 import { handleCache } from '@/utils/handleCache'
 import type { MenuItemType, PageImageType } from '@/types'
+import { getSCSession } from '@/utils/auth'
 
 async function getData() {
   try {
-    // FETCH SLIDER & SPECIAL OFFER IMAGES
+    // FETCH SLIDER IMAGES & SPECIAL OFFER IMAGES
     const pageImagesResponse = await fetch(
-      `${process.env.NEXTAUTH_URL}/api/pages?page=home`,
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/pages?page=home`,
       {
         headers: {
           method: 'GET',
@@ -47,9 +48,10 @@ async function getData() {
     const [specialOfferImageData]: PageImageType[] = pageImagesData.filter(
       (img) => img?.kw == 'specialoffer'
     )
+
     // FETCH FEATURED ITEMS
     const featuredItemsResponse = await fetch(
-      `${process.env.NEXTAUTH_URL}/api/menuItems?isFeatured=true`,
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/menuItems?isFeatured=true`,
       {
         headers: {
           method: 'GET',
@@ -91,7 +93,7 @@ async function getData() {
 export default async function Home() {
   // Get user session from server
   // and pass it to the SessionProvider (=> user session available in "use client" components from useSession hook)
-  await getServerSession(authOptions)
+  const session = await getSCSession()
 
   const { sliderImagesData, specialOfferImageData, featuredItemsData } =
     await getData()

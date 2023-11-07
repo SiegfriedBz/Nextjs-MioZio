@@ -14,10 +14,8 @@ export type MenuCategoryType = {
   description: string
   img?: string
   imgBlur?: string
-
   bgColor?: string
   textColor?: string
-
   menuItems?: MenuItemType[]
 
   createdAt?: Date
@@ -31,39 +29,48 @@ export type MenuItemType = {
   price: number
   img: string
   imgBlur?: string
-
   isFeatured?: boolean
-  createdAt?: Date
-  updatedAt?: Date
+  options?: MenuOptionType[]
 
   categorySlug: MenuCategoryType['slug'] // FK to MenuCategory model
-  options?: MenuOptionType[]
+
+  createdAt?: Date
+  updatedAt?: Date
 }
 
-type MenuOptionType = {
-  title: string
-  additionalPrice: number
-}
+type MenuOptionType = { name: string; additionalPrice: number }
 
 export type OrderType = {
-  id: string
-  status: string
+  id?: string
+  status?: OrderStatusEnum
   totalPrice: number
-  intent_id: string // Stripe PaymentIntent
-  userEmail: UserType['email'] // FK to User model
+  intent_id?: string // Stripe PaymentIntent
   cartItems: CartItemType[]
-  createdAt: Date
-  updatedAt: Date
+
+  userEmail: UserType['email'] // FK to User model
+
+  createdAt?: Date
+  updatedAt?: Date
+}
+
+export enum OrderStatusEnum {
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  ON_THE_WAY = 'ON_THE_WAY',
+  DELIVERED = 'DELIVERED',
+  CANCELLED = 'CANCELLED',
 }
 
 export type CartItemType = {
-  id: string // itemId
+  cartemId?: string // cart client side (appContext)
+  id?: string // cart db side (item.id)
   name: string
-  img: string
-  imgBlur?: string
-  selectedOption: MenuOptionType
-  quantity: number
   totalPrice: number
+  quantity: number
+  selectedOptionName: MenuOptionType['name']
+  img?: string
+
+  orderId?: string // FK to Order model
 }
 
 // home page slider + special offer img

@@ -71,12 +71,12 @@ model MenuItem {
 
 model Order {
   id          String        @id @default(cuid())
-  status      String
+  status      OrderStatus    @default(PENDING)
   totalPrice  Decimal
   intent_id   String?        @unique // stripe payment intent id
 
   // 1 order belongs to 1 user
-  user        User          @relation(fields: [userEmail], references: [email])
+  user        User          @relation(fields: [userEmail], references: [email], onDelete: Cascade)
   userEmail   String // unique
 
   // array of Json objects
@@ -84,6 +84,14 @@ model Order {
 
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+}
+
+enum OrderStatus {
+ PENDING 
+  PAID 
+  ON_THE_WAY 
+  DELIVERED 
+  CANCELLED 
 }
 
 model Account {

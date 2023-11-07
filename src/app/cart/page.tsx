@@ -1,15 +1,99 @@
 'use client'
 
-import React from 'react'
-
+import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { useAppContext } from '../context/appContext'
 import { twMerge } from 'tailwind-merge'
-import Link from 'next/link'
+import { useQueryClient, useMutation } from '@tanstack/react-query'
+import { OrderType } from '@/types'
 
 const Cart = () => {
-  const { cart, setCart } = useAppContext()
+  const router = useRouter()
+  const { cart, setCart, handleToast } = useAppContext()
+  const { data: session } = useSession()
+  const userEmail = session?.user?.email
 
+  // Access the client
+  const queryClient = useQueryClient()
+
+  // checkout
+  const handleCheckout = () => {
+    // notify user to login if not logged in
+    if (!userEmail) {
+      handleToast({
+        type: 'info',
+        message: 'Please login to checkout',
+      })
+      // redirect to login page
+      return router.push('/login')
+    }
+
+    // populate order
+    const newOrder = {
+      totalPrice: totalPrice,
+      userEmail: userEmail,
+      cartItems: cart.map((item) => {
+        return {
+          name: item.name,
+          totalPrice: item.totalPrice,
+          quantity: item.quantity,
+          selectedOptionName: item.selectedOptionName,
+        }
+      }),
+    }
+
+    checkOut.mutate(newOrder)
+  }
+
+  const checkOut = useMutation({
+    mutationFn: async (newOrder: OrderType) => {
+      const queryString = `?userEmail=${userEmail}`
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/orders${queryString}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newOrder),
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      return response.json()
+    },
+    onSuccess: () => {
+      handleToast({
+        type: 'success',
+        message: 'Order placed successfully!',
+      })
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['orders'] })
+      // clear cart
+      setCart([])
+      // redirect to orders page
+      router.push('/orders')
+    },
+    onError(error, variables, context) {
+      console.log(error)
+      handleToast({
+        type: 'error',
+        message: 'Error placing order, please try again',
+      })
+    },
+  })
+
+  // delete cart item from cart
+  const onDeleteCartItem = (cartItemId: string) => {
+    setCart(cart.filter((item) => item.cartemId !== cartItemId))
+  }
+
+  // helpers
   const totalItemsCount = cart.reduce((acc, item) => {
     return acc + item.quantity
   }, 0)
@@ -19,12 +103,7 @@ const Cart = () => {
   }, 0)
 
   const deliveryPrice = totalItemsPrice >= 50 ? 0 : totalItemsPrice * 0.1
-
   const totalPrice = totalItemsPrice + deliveryPrice
-
-  const onDeleteCartItem = (cartItemId: string) => {
-    setCart(cart.filter((item) => item.cartItemId !== cartItemId))
-  }
 
   return (
     <div className='min-h-section flex flex-col justify-between md:flex-row md:gap-x-4 lg:gap-x-8'>
@@ -43,13 +122,22 @@ const Cart = () => {
               </Link>{' '}
               <span className='whitespace-nowrap'>to get started</span>
             </span>
+            <span className='text-center text-lg'>
+              or{' '}
+              <Link
+                href='/orders'
+                className='font-bold underline underline-offset-4'
+              >
+                check your orders
+              </Link>
+            </span>
           </div>
         ) : (
           <ul className='flex h-full w-full flex-col gap-y-16'>
             {cart?.map((item) => {
               return (
                 <li
-                  key={item.cartItemId}
+                  key={item.cartemId}
                   className='flex h-full w-full items-center justify-center gap-x-2 md:gap-x-16'
                 >
                   {/* ITEM IMG */}
@@ -73,7 +161,7 @@ const Cart = () => {
                         {item.name}
                       </h3>
                       <h4 className='text-lg 2xl:text-xl'>
-                        {item.selectedOption}
+                        {item.selectedOptionName}
                       </h4>
                     </div>
 
@@ -89,7 +177,7 @@ const Cart = () => {
                       {/* delete btn */}
                       <span
                         className='cursor-pointer text-xl font-semibold'
-                        onClick={() => onDeleteCartItem(item.cartItemId)}
+                        onClick={() => onDeleteCartItem(item.cartemId!)}
                       >
                         X
                       </span>
@@ -151,6 +239,7 @@ const Cart = () => {
         </div>
 
         <button
+          onClick={handleCheckout}
           className={twMerge(
             'btn',
             'w-1/2 self-end px-4 py-2 text-base transition duration-300 ease-in-out hover:scale-110 2xl:px-8 2xl:py-4 2xl:text-lg'
