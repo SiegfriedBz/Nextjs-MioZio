@@ -7,9 +7,10 @@ import { handleCache } from '@/utils/handleCache'
 import type { MenuItemType } from '@/types'
 
 async function getData(category: string) {
+  // FETCH MENU ITEMS BY CATEGORY
   try {
     const response = await fetch(
-      `${process.env.NEXTAUTH_URL}/api/menuItems?categorySlug=${category}`,
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/menuItems?categorySlug=${category}`,
       {
         headers: {
           method: 'GET',
