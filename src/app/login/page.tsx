@@ -10,7 +10,7 @@ async function getData() {
   try {
     // FETCH LGGIN IMAGE
     const pageImagesResponse = await fetch(
-      `${process.env.NEXTAUTH_URL}/api/pages?page=login`,
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/pages?page=login`,
       {
         headers: {
           method: 'GET',
@@ -45,7 +45,7 @@ async function getData() {
     return loginImgData
   } catch (error) {
     console.log(`Error: ${error}`)
-    return notFound()
+    // return notFound()
   }
 }
 
@@ -57,16 +57,18 @@ const Login = async () => {
       <div className='h-section flex w-full flex-col items-center rounded-md shadow-lg md:h-3/4 md:flex-row'>
         {/* IMG */}
         <div className='relative h-1/3 w-full md:h-full md:w-1/2'>
-          <Image
-            src={imgData.img}
-            placeholder='blur'
-            blurDataURL={imgData.imgBlur}
-            alt='login'
-            fill
-            priority
-            sizes='(max-width: 768px) 100vw, 50vw'
-            className='rounded-md rounded-r-none object-cover'
-          />
+          {imgData && (
+            <Image
+              src={imgData.img}
+              placeholder='blur'
+              blurDataURL={imgData.imgBlur}
+              alt='login'
+              fill
+              priority
+              sizes='(max-width: 768px) 100vw, 50vw'
+              className='rounded-md rounded-r-none object-cover'
+            />
+          )}
         </div>
 
         {/* LOGIN  */}
