@@ -1,9 +1,7 @@
-import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import GoogleSignIn from '../components/login/GoogleSignIn'
 import MagicLinkSignIn from '../components/login/MagicLinkSignIn'
 import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
-import { handleCache } from '@/utils/handleCache'
 import type { PageImageType } from '@/types'
 
 async function getData() {
@@ -15,7 +13,7 @@ async function getData() {
         headers: {
           method: 'GET',
           'Content-Type': 'application/json',
-          cache: handleCache,
+          cache: 'no-store',
         },
       }
     )

@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
 import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
-import { handleCache } from '@/utils/handleCache'
 import type { MenuCategoryType } from '@/types'
 
 // trick tailwind
@@ -17,7 +16,7 @@ async function getData() {
         headers: {
           method: 'GET',
           'Content-Type': 'application/json',
-          cache: handleCache,
+          cache: 'no-store',
         },
       }
     )

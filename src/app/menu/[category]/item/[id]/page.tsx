@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import ItemMiniCart from '@/app/components/menu/category/item/ItemMiniCart'
 import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
-import { handleCache } from '@/utils/handleCache'
 import type { MenuItemType } from '@/types'
 
 async function getData(id: string) {
@@ -14,7 +13,7 @@ async function getData(id: string) {
         headers: {
           method: 'GET',
           'Content-Type': 'application/json',
-          cache: handleCache,
+          cache: 'no-store',
         },
       }
     )
@@ -22,7 +21,6 @@ async function getData(id: string) {
     if (!response.ok) throw new Error('Network response was not ok.')
 
     const { menuItem } = await response.json()
-    console.log(menuItem)
 
     if (!menuItem) throw new Error('MenuItem not found.')
 
