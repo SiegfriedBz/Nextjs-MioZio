@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useAppContext } from '../context/appContext'
+import { useCartStore } from '@/utils/zustand/store'
 
 type CartLinkProps = {
   onClick?: () => void
@@ -15,9 +15,10 @@ const CartLink = ({
   mobileMenu = false,
   className = '',
 }: CartLinkProps) => {
-  const { cart } = useAppContext()
+  // zustand
+  const { cartItems } = useCartStore()
 
-  const totalItemsCount = cart.reduce((acc, item) => {
+  const totalItemsCount = cartItems.reduce((acc, item) => {
     return acc + item.quantity
   }, 0)
 

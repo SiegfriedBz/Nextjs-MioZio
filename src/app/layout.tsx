@@ -1,11 +1,9 @@
 import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
 import './globals.css'
+import Providers from './context/Providers'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import { AuthProviders } from './context/AuthProviders'
-import { AppContextProvider } from './context/appContext'
-import QueryProvider from './context/QueryProvider'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -29,17 +27,13 @@ export default function RootLayout({
   return (
     <html lang='en' className='scroll-smooth'>
       <body className={`text-dark dark:text-light ${roboto.className}`}>
-        <AuthProviders>
-          <QueryProvider>
-            <AppContextProvider>
-              <Header />
-              {/* fixed header with h-24 */}
-              <main className='mt-24'>{children}</main>
-              <ToastContainer position='bottom-right' />
-              <Footer />
-            </AppContextProvider>
-          </QueryProvider>
-        </AuthProviders>
+        <Providers>
+          <Header />
+          {/* fixed header with h-24 */}
+          <main className='mt-24'>{children}</main>
+          <ToastContainer position='bottom-right' />
+          <Footer />
+        </Providers>
       </body>
     </html>
   )

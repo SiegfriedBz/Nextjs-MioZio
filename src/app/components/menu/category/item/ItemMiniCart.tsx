@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useAppContext } from '@/app/context/appContext'
 import { motion, AnimatePresence } from 'framer-motion'
 import { twMerge } from 'tailwind-merge'
 import { v4 as uuidv4 } from 'uuid'
+import { useCartStore } from '@/utils/zustand/store'
 import { handleToast } from '@/utils/handleToast'
 import type { CartItemType, MenuItemType } from '@/types'
 
@@ -16,21 +16,25 @@ type ItemMiniCartProps = {
 
 const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
   const { id, name, price, options, img } = item
-  const { cart, setCart } = useAppContext()
 
+  // local state
   const [quantity, setQuantity] = useState(1)
   const [selectedOptionName, setSelectedOptionName] = useState('small')
   const [totalPrice, setTotalPrice] = useState(price)
 
+  // zustand
+  const { cartItems, addToCart } = useCartStore()
+
+  // update total price on quantity/option change
   useEffect(() => {
     const option = options?.find((option) => option.name === selectedOptionName)
-
     const additionalPrice = option?.additionalPrice || 0
     const totalPrice = (price + additionalPrice) * quantity
 
     setTotalPrice(totalPrice)
   }, [selectedOptionName, quantity, price, options])
 
+  // handlers
   const onAddToCart = () => {
     const cartItem: CartItemType = {
       cartemId: uuidv4(),
@@ -41,7 +45,9 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
       img,
     }
 
-    setCart([...cart, cartItem])
+    // add to cart store
+    addToCart(cartItem)
+    // notify user
     handleToast({
       type: 'success',
       message: `${quantity} x ${selectedOptionName} ${name} added successfully!`,
@@ -121,7 +127,7 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
 
       {/* GO TO CART CTA */}
       <AnimatePresence>
-        {cart.length > 0 ? (
+        {cartItems.length > 0 ? (
           <MotionLink
             href='/cart'
             initial={{ scale: 0, opacity: 0 }}
