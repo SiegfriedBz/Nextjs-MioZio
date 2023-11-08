@@ -4,22 +4,30 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { useAppContext } from '../context/appContext'
 import { twMerge } from 'tailwind-merge'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
+import { useCartStore } from '@/utils/zustand/store'
 import { handleToast } from '@/utils/handleToast'
 import { OrderType } from '@/types'
+import { useEffect } from 'react'
 
 const Cart = () => {
   const router = useRouter()
-  const { cart, setCart } = useAppContext()
+  // zustand
+  const { cartItems, removeFromCart, clearCart } = useCartStore()
+  // session
   const { data: session } = useSession()
   const userEmail = session?.user?.email
 
   // Access the client
   const queryClient = useQueryClient()
 
-  // checkout
+  // rehydrate zustand cart store
+  useEffect(() => {
+    useCartStore.persist.rehydrate()
+  }, [])
+
+  // handlers
   const handleCheckout = () => {
     // notify user to login if not logged in
     if (!userEmail) {
@@ -35,12 +43,12 @@ const Cart = () => {
     const newOrder = {
       totalPrice: totalPrice,
       userEmail: userEmail,
-      cartItems: cart.map((item) => {
+      cartItems: cartItems.map((cartItem) => {
         return {
-          name: item.name,
-          totalPrice: item.totalPrice,
-          quantity: item.quantity,
-          selectedOptionName: item.selectedOptionName,
+          name: cartItem.name,
+          totalPrice: cartItem.totalPrice,
+          quantity: cartItem.quantity,
+          selectedOptionName: cartItem.selectedOptionName,
         }
       }),
     }
@@ -75,8 +83,9 @@ const Cart = () => {
       })
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['orders'] })
-      // clear cart
-      setCart([])
+
+      // clear cart store
+      clearCart()
       // redirect to orders page
       router.push('/orders')
     },
@@ -89,17 +98,17 @@ const Cart = () => {
     },
   })
 
-  // delete cart item from cart
+  // delete cart item from cart store
   const onDeleteCartItem = (cartItemId: string) => {
-    setCart(cart.filter((item) => item.cartemId !== cartItemId))
+    removeFromCart(cartItemId)
   }
 
   // helpers
-  const totalItemsCount = cart.reduce((acc, item) => {
+  const totalItemsCount = cartItems.reduce((acc, item) => {
     return acc + item.quantity
   }, 0)
 
-  const totalItemsPrice = cart.reduce((acc, item) => {
+  const totalItemsPrice = cartItems.reduce((acc, item) => {
     return acc + item.totalPrice
   }, 0)
 
@@ -110,7 +119,7 @@ const Cart = () => {
     <div className='min-h-section flex flex-col justify-between md:flex-row md:gap-x-4 lg:gap-x-8'>
       {/* LIST */}
       <div className='md:h-section flex h-1/2 flex-1 items-center overflow-scroll p-4 text-primary md:me-8 lg:ps-16 xl:ps-32 2xl:ps-48'>
-        {cart.length === 0 ? (
+        {cartItems.length === 0 ? (
           <div className='flex flex-col items-center justify-center'>
             <h3>Your Cart is Empty</h3>
             <span className='text-center text-lg'>
@@ -135,17 +144,17 @@ const Cart = () => {
           </div>
         ) : (
           <ul className='flex h-full w-full flex-col gap-y-16'>
-            {cart?.map((item) => {
+            {cartItems?.map((cartItem) => {
               return (
                 <li
-                  key={item.cartemId}
+                  key={cartItem.cartemId}
                   className='flex h-full w-full items-center justify-center gap-x-2 md:gap-x-16'
                 >
                   {/* ITEM IMG */}
                   <div className='relative h-32 w-32'>
-                    {item?.img && (
+                    {cartItem?.img && (
                       <Image
-                        src={item.img}
+                        src={cartItem.img}
                         fill={true}
                         alt='cart'
                         sizes='(max-width: 768px) 16w, 16vw'
@@ -159,26 +168,26 @@ const Cart = () => {
                     {/* title & option */}
                     <div className='flex max-w-[50%] flex-col gap-y-1'>
                       <h3 className='text-lg font-bold uppercase tracking-wide 2xl:text-xl'>
-                        {item.name}
+                        {cartItem.name}
                       </h3>
                       <h4 className='text-lg 2xl:text-xl'>
-                        {item.selectedOptionName}
+                        {cartItem.selectedOptionName}
                       </h4>
                     </div>
 
                     <div className='flex items-center gap-x-8 md:gap-x-16 lg:gap-x-24'>
                       {/* quantity & price */}
                       <div className='flex flex-col-reverse items-center gap-x-2 lg:flex-row lg:gap-x-4'>
-                        <span className='text-lg'>x {item.quantity}</span>
+                        <span className='text-lg'>x {cartItem.quantity}</span>
                         <span className='text-lg'>
-                          ${item.totalPrice.toFixed(2)}
+                          ${cartItem.totalPrice.toFixed(2)}
                         </span>
                       </div>
 
                       {/* delete btn */}
                       <span
                         className='cursor-pointer text-xl font-semibold'
-                        onClick={() => onDeleteCartItem(item.cartemId!)}
+                        onClick={() => onDeleteCartItem(cartItem.cartemId!)}
                       >
                         X
                       </span>
