@@ -9,6 +9,7 @@ import { useQueryClient, useMutation } from '@tanstack/react-query'
 import { useCartStore } from '@/utils/zustand/store'
 import { handleToast } from '@/utils/handleToast'
 import { OrderType } from '@/types'
+import { useEffect } from 'react'
 
 const Cart = () => {
   const router = useRouter()
@@ -20,6 +21,11 @@ const Cart = () => {
 
   // Access the client
   const queryClient = useQueryClient()
+
+  // rehydrate zustand cart store
+  useEffect(() => {
+    useCartStore.persist.rehydrate()
+  }, [])
 
   // handlers
   const handleCheckout = () => {

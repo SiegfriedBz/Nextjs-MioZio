@@ -25,6 +25,11 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
   // zustand
   const { cartItems, addToCart } = useCartStore()
 
+  // rehydrate zustand cart store
+  useEffect(() => {
+    useCartStore.persist.rehydrate()
+  }, [])
+
   // update total price on quantity/option change
   useEffect(() => {
     const option = options?.find((option) => option.name === selectedOptionName)

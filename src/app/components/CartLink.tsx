@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCartStore } from '@/utils/zustand/store'
+import { useEffect } from 'react'
 
 type CartLinkProps = {
   onClick?: () => void
@@ -17,6 +18,11 @@ const CartLink = ({
 }: CartLinkProps) => {
   // zustand
   const { cartItems } = useCartStore()
+
+  // rehydrate zustand cart store
+  useEffect(() => {
+    useCartStore.persist.rehydrate()
+  }, [])
 
   const totalItemsCount = cartItems.reduce((acc, item) => {
     return acc + item.quantity

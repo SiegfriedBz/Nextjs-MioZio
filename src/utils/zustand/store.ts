@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { CartItemType } from '@/types'
 
 type ActionsType = {
@@ -11,15 +12,22 @@ type useCartStoreType = {
   cartItems: CartItemType[]
 } & ActionsType
 
-export const useCartStore = create<useCartStoreType>((set, get) => ({
-  cartItems: [],
-  addToCart: (cartItem) =>
-    set((state) => ({
-      cartItems: [...state.cartItems, cartItem],
-    })),
-  removeFromCart: (cartemId: string) =>
-    set((state) => ({
-      cartItems: state.cartItems.filter((item) => item.cartemId !== cartemId),
-    })),
-  clearCart: () => set({ cartItems: [] }),
-}))
+export const useCartStore = create(
+  persist<useCartStoreType>(
+    (set, get) => ({
+      cartItems: [],
+      addToCart: (cartItem) =>
+        set((state) => ({
+          cartItems: [...state.cartItems, cartItem],
+        })),
+      removeFromCart: (cartemId: string) =>
+        set((state) => ({
+          cartItems: state.cartItems.filter(
+            (item) => item.cartemId !== cartemId
+          ),
+        })),
+      clearCart: () => set({ cartItems: [] }),
+    }),
+    { name: 'mio-zio-cart', skipHydration: true }
+  )
+)
