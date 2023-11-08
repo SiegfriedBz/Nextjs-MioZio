@@ -21,8 +21,7 @@ async function getData(id: string) {
     if (!response.ok) throw new Error('Network response was not ok.')
 
     const { menuItem } = await response.json()
-
-    if (!menuItem) throw new Error('MenuItem not found.')
+    console.log('menuItem', menuItem)
 
     const menuItemPromise = async (menuItem: MenuItemType) => {
       const img = getImageUrl(menuItem.img!)
