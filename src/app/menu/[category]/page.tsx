@@ -8,7 +8,6 @@ import type { MenuItemType } from '@/types'
 async function getData(category: string) {
   // FETCH MENU ITEMS BY CATEGORY
 
-  console.log(category)
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/menuCategories/${category}`,
@@ -16,12 +15,12 @@ async function getData(category: string) {
         headers: {
           method: 'GET',
           'Content-Type': 'application/json',
-          cache: 'no-store',
         },
+        cache: 'no-store',
+        next: { revalidate: 0 },
       }
     )
 
-    console.log(response)
     if (!response.ok) throw new Error('Network response was not ok.')
 
     const { menuCategoryItems } = await response.json()
