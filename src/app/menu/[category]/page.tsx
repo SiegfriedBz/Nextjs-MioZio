@@ -3,7 +3,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
 import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
-import { handleCache } from '@/utils/handleCache'
 import type { MenuItemType } from '@/types'
 
 async function getData(category: string) {
@@ -15,7 +14,7 @@ async function getData(category: string) {
         headers: {
           method: 'GET',
           'Content-Type': 'application/json',
-          cache: handleCache,
+          cache: 'no-store',
         },
       }
     )

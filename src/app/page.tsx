@@ -5,7 +5,6 @@ import Featured from './components/home/Featured'
 import Offer from './components/home/Offer'
 
 import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
-import { handleCache } from '@/utils/handleCache'
 import type { MenuItemType, PageImageType } from '@/types'
 import { getSCSession } from '@/utils/auth'
 
@@ -18,7 +17,7 @@ async function getData() {
         headers: {
           method: 'GET',
           'Content-Type': 'application/json',
-          cache: handleCache,
+          cache: 'no-store',
         },
       }
     )
