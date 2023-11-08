@@ -16,17 +16,39 @@ export const useCartStore = create(
   persist<useCartStoreType>(
     (set, get) => ({
       cartItems: [],
-      addToCart: (cartItem) =>
-        set((state) => ({
-          cartItems: [...state.cartItems, cartItem],
-        })),
-      removeFromCart: (cartemId: string) =>
+      addToCart(cartItem) {
+        const cartItemExists = get().cartItems.find(
+          (item) =>
+            item.name === cartItem.name &&
+            item.selectedOptionName === cartItem.selectedOptionName
+        )
+        if (cartItemExists) {
+          set((state) => ({
+            cartItems: state.cartItems.map((item) => {
+              return item.name !== cartItem.name
+                ? item
+                : {
+                    ...item,
+                    quantity: item.quantity + cartItem.quantity,
+                  }
+            }),
+          }))
+        } else {
+          set((state) => ({
+            cartItems: [...state.cartItems, cartItem],
+          }))
+        }
+      },
+      removeFromCart(cartemId: string) {
         set((state) => ({
           cartItems: state.cartItems.filter(
             (item) => item.cartemId !== cartemId
           ),
-        })),
-      clearCart: () => set({ cartItems: [] }),
+        }))
+      },
+      clearCart() {
+        set({ cartItems: [] })
+      },
     }),
     { name: 'mio-zio-cart', skipHydration: true }
   )
