@@ -1,9 +1,9 @@
 'use client'
 
+import { useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCartStore } from '@/utils/zustand/store'
-import { useEffect } from 'react'
 
 type CartLinkProps = {
   onClick?: () => void
