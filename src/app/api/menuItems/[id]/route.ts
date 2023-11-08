@@ -20,3 +20,25 @@ export async function GET(
     return Response.json(`Error: ${error}`, { status: 500 })
   }
 }
+
+// admin route
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params
+  try {
+    await prisma.menuItem.delete({
+      where: {
+        id: id,
+      },
+    })
+
+    return Response.json(
+      { message: 'Menu item deleted successfully.' },
+      { status: 200 }
+    )
+  } catch (error) {
+    return Response.json(`Error: ${error}`, { status: 500 })
+  }
+}
