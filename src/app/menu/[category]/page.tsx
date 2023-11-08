@@ -7,9 +7,11 @@ import type { MenuItemType } from '@/types'
 
 async function getData(category: string) {
   // FETCH MENU ITEMS BY CATEGORY
+
+  console.log(category)
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/menuItems?categorySlug=${category}`,
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/menuCategories/${category}`,
       {
         headers: {
           method: 'GET',
@@ -18,11 +20,13 @@ async function getData(category: string) {
         },
       }
     )
+
+    console.log(response)
     if (!response.ok) throw new Error('Network response was not ok.')
 
-    const { menuItems } = await response.json()
+    const { menuCategoryItems } = await response.json()
 
-    const promises = menuItems.map(async (data: MenuItemType) => {
+    const promises = menuCategoryItems.map(async (data: MenuItemType) => {
       const img = getImageUrl(data.img!)
       const imgBlur = await getBase64ImageUrl(data.img!)
       const fullData: MenuItemType = {
@@ -34,9 +38,9 @@ async function getData(category: string) {
       return fullData
     })
 
-    const menuItemsData: MenuItemType[] = await Promise.all(promises)
+    const menuCategoryItemsData: MenuItemType[] = await Promise.all(promises)
 
-    return menuItemsData
+    return menuCategoryItemsData
   } catch (error) {
     console.log(`Error: ${error}`)
     return notFound()
@@ -51,13 +55,12 @@ type MenuByCategoryProps = {
 
 const MenuByCategory = async ({ params }: MenuByCategoryProps) => {
   const { category } = params
-
-  const menuItemsData = await getData(category)
+  const menuCategoryItemsData = await getData(category)
 
   return (
     // ITEMS WRAPPER
     <div className='flex flex-wrap items-center justify-center rounded-sm md:py-24'>
-      {menuItemsData?.map((item) => {
+      {menuCategoryItemsData?.map((item) => {
         // ITEM CONTAINER
         return (
           <Link

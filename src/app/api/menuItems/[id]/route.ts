@@ -12,7 +12,6 @@ export async function GET(
       },
     })
 
-    console.log('menuItemPrisma', menuItemPrisma)
     // not serializable prisma dates
     const menuItem = JSON.parse(JSON.stringify(menuItemPrisma))
 
