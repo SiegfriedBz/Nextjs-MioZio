@@ -2,10 +2,12 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useAppContext } from '@/app/context/appContext'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { formatDate } from '@/utils/formatDate'
 import { twMerge } from 'tailwind-merge'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCloudArrowUp, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { handleToast } from '@/utils/handleToast'
+import { formatDate } from '@/utils/formatDate'
 import type { OrderType } from '@/types'
 import { OrderStatusEnum } from '@/types'
 
@@ -28,9 +30,6 @@ type Props = {
 
 const OrderDetails = ({ isAdmin, order }: Props) => {
   const router = useRouter()
-  const { handleToast } = useAppContext()
-
-  console.log(isAdmin)
 
   // local state
   const [orderStatus, setOrderStatus] = useState<OrderStatusEnum>(
@@ -44,7 +43,12 @@ const OrderDetails = ({ isAdmin, order }: Props) => {
 
   // mutation - update order status
   const handleUpdateOrderStatus = () => {
+    // protect route
     if (!isAdmin) {
+      handleToast({
+        type: 'info',
+        message: `You must be an admin to update an order status`,
+      })
       router.push('/')
       return
     }
@@ -56,31 +60,30 @@ const OrderDetails = ({ isAdmin, order }: Props) => {
   }
 
   const updateOrderStatus = useMutation({
-    mutationFn: async (updatedOrder: { id: string; status: string }) => {
-      // protect route
-      const queryString = `?isAdmin=${isAdmin}`
+    mutationFn: async ({ id, status }: { id: string; status: string }) => {
       // fetch
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/orders${queryString}`,
+        `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/orders/${id}`,
         {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(updatedOrder),
+          body: JSON.stringify({ status }),
         }
       )
 
       if (!response.ok) {
-        throw new Error('Network response was not ok')
+        throw new Error('Server error')
       }
 
-      return response.json()
+      const data = response.json()
+      return data
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       handleToast({
         type: 'success',
-        message: 'Order status updated successfully!',
+        message: `${data?.message}`,
       })
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['orders'] })
@@ -89,7 +92,7 @@ const OrderDetails = ({ isAdmin, order }: Props) => {
       console.log(error)
       handleToast({
         type: 'error',
-        message: 'Error updating order status, please try again',
+        message: `${error.message}. Error while updating order status, please try again.`,
       })
     },
   })
@@ -97,7 +100,12 @@ const OrderDetails = ({ isAdmin, order }: Props) => {
   //
   // mutation - delete order status
   const handleDeleteOrder = () => {
+    // protect route
     if (!isAdmin) {
+      handleToast({
+        type: 'info',
+        message: `You must be an admin to delete an order`,
+      })
       router.push('/')
       return
     }
@@ -109,11 +117,9 @@ const OrderDetails = ({ isAdmin, order }: Props) => {
 
   const deleteOrder = useMutation({
     mutationFn: async (id: string) => {
-      // protect route & pass id
-      const queryString = `?isAdmin=${isAdmin}&orderId=${id}`
       // fetch
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/orders${queryString}`,
+        `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/orders/${id}`,
         {
           method: 'DELETE',
           headers: {
@@ -122,15 +128,16 @@ const OrderDetails = ({ isAdmin, order }: Props) => {
         }
       )
       if (!response.ok) {
-        throw new Error('Network response was not ok')
+        throw new Error('Server error')
       }
 
-      return response.json()
+      const data = response.json()
+      return data
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       handleToast({
         type: 'success',
-        message: 'Order deleted successfully.',
+        message: `${data?.message}`,
       })
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['orders'] })
@@ -139,7 +146,7 @@ const OrderDetails = ({ isAdmin, order }: Props) => {
       console.log(error)
       handleToast({
         type: 'error',
-        message: 'Error deleting order, please try again',
+        message: `${error.message}. Error while deleting order, please try again.`,
       })
     },
   })
@@ -186,20 +193,26 @@ const OrderDetails = ({ isAdmin, order }: Props) => {
                 )
               )}
             </select>
-            <div className='mt-1 flex flex-col space-y-1'>
+            <div className='mt-1 flex justify-between'>
               <button
                 onClick={handleUpdateOrderStatus}
                 type='button'
-                className={twMerge('btn', 'px-2 py-1 text-sm')}
+                className={twMerge(
+                  'btn',
+                  'flex h-8 w-8 items-center justify-center rounded-full p-1 text-sm'
+                )}
               >
-                Update
+                <FontAwesomeIcon icon={faCloudArrowUp} className='h-5 w-5' />
               </button>
               <button
                 onClick={handleDeleteOrder}
                 type='button'
-                className={twMerge('btn', 'bg-amber-500 px-2 py-1 text-sm')}
+                className={twMerge(
+                  'btn',
+                  'flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 p-1 text-sm'
+                )}
               >
-                Delete
+                <FontAwesomeIcon icon={faTrash} />
               </button>
             </div>
           </form>

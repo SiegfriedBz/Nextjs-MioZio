@@ -1,16 +1,15 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useQuery } from '@tanstack/react-query'
-import { useAppContext } from '@/app/context/appContext'
 import OrderDetails from './OrderDetails'
 import LoadingPulse from '../LoadingPulse'
+import { handleToast } from '@/utils/handleToast'
 import type { OrderType } from '@/types'
-import Link from 'next/link'
 
 const Dashboard = () => {
-  const { handleToast } = useAppContext()
   const router = useRouter()
 
   /**  get user session from SessionProvider */
@@ -25,11 +24,19 @@ const Dashboard = () => {
    * - user's orders if not admin
    */
   const fetchOrders = async () => {
+    // protect route
+    if (!userEmail) {
+      handleToast({
+        type: 'info',
+        message: `Please log in to access your orders`,
+      })
+      router.push('/login')
+      return
+    }
+
     const queryString = isAdmin
       ? `?userIsAdmin=true&userEmail=${userEmail}`
-      : userEmail !== undefined
-      ? `?userEmail=${session?.user?.email}`
-      : ''
+      : `?userEmail=${session?.user?.email}`
 
     const queryResponse = await fetch(
       `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/orders${queryString}`
@@ -40,7 +47,7 @@ const Dashboard = () => {
 
   const {
     isLoading: queryIsLoading,
-    isError,
+    error: queryError,
     data,
   } = useQuery({
     queryKey: ['orders'],
@@ -49,11 +56,12 @@ const Dashboard = () => {
     enabled: isAuthenticated,
   })
 
-  if (isError) {
+  if (queryError) {
+    console.log(queryError.message)
     /** notify user and redirect */
     handleToast({
       type: 'info',
-      message: 'Please make sure you are logged in to view your orders',
+      message: `Server Error. Please make sure you are logged in to view your orders.`,
     })
     router.push('/login')
   }
