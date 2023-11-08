@@ -6,6 +6,8 @@ import Footer from './components/Footer'
 import { AuthProviders } from './context/AuthProviders'
 import { AppContextProvider } from './context/appContext'
 import QueryProvider from './context/QueryProvider'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const roboto = Roboto({
   weight: ['100', '300', '400', '700'],
@@ -33,6 +35,7 @@ export default function RootLayout({
               <Header />
               {/* fixed header with h-24 */}
               <main className='mt-24'>{children}</main>
+              <ToastContainer position='bottom-right' />
               <Footer />
             </AppContextProvider>
           </QueryProvider>
