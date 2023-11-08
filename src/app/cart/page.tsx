@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -9,7 +10,6 @@ import { useQueryClient, useMutation } from '@tanstack/react-query'
 import { useCartStore } from '@/utils/zustand/store'
 import { handleToast } from '@/utils/handleToast'
 import { OrderType } from '@/types'
-import { useEffect } from 'react'
 
 const Cart = () => {
   const router = useRouter()

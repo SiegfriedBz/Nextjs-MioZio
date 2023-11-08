@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faWandMagicSparkles,
