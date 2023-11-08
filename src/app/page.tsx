@@ -17,8 +17,9 @@ async function getData() {
         headers: {
           method: 'GET',
           'Content-Type': 'application/json',
-          cache: 'no-store',
         },
+        cache: 'no-store',
+        next: { revalidate: 0 },
       }
     )
     if (!pageImagesResponse.ok)
@@ -55,8 +56,9 @@ async function getData() {
         headers: {
           method: 'GET',
           'Content-Type': 'application/json',
-          cache: 'no-store',
         },
+        cache: 'no-store',
+        next: { revalidate: 0 },
       }
     )
     if (!featuredItemsResponse.ok)
@@ -92,7 +94,7 @@ async function getData() {
 export default async function Home() {
   // Get user session from server
   // and pass it to the SessionProvider (=> user session available in "use client" components from useSession hook)
-  const session = await getSCSession()
+  await getSCSession()
 
   const { sliderImagesData, specialOfferImageData, featuredItemsData } =
     await getData()

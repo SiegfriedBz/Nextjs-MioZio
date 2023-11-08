@@ -7,8 +7,6 @@ export async function GET(request: Request) {
     const categorySlug = searchParams.get('categorySlug')
     const isFeatured = searchParams.get('isFeatured') === 'true'
 
-    console.log(categorySlug)
-
     const menuItemsPrisma = await prisma.menuItem.findMany({
       where: {
         ...(searchParams.get('categorySlug') != null

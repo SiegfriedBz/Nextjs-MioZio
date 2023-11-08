@@ -1,6 +1,6 @@
 import { prisma } from '@/utils/prismaClient'
 
-// ADMIN CAN UPDATE ORDER STATUS
+// admin route - update order status
 export async function PATCH(
   request: Request,
   { params: { id } }: { params: { id: string } },
@@ -25,7 +25,7 @@ export async function PATCH(
   }
 }
 
-// ADMIN CAN DELETE ORDER
+// admin route
 export async function DELETE(
   request: Request,
   { params: { id } }: { params: { id: string } },

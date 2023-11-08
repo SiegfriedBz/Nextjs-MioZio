@@ -1,8 +1,8 @@
 import { prisma } from '@/utils/prismaClient'
 import { Prisma } from '@prisma/client'
 
-// ADMIN CAN GET ALL ORDERS
-// LOGGED IN USER CAN GET THEIR ORDERS
+// admin fetch all orders
+// logged in user fetch their orders
 export async function GET(request: Request, response: Response) {
   const { searchParams } = new URL(request.url)
   const userIsAdmin = searchParams.get('userIsAdmin') === 'true'
@@ -27,7 +27,7 @@ export async function GET(request: Request, response: Response) {
   }
 }
 
-// LOGGED IN USER CAN CREATE A NEW ORDER
+// logged in user create order
 export async function POST(request: Request, response: Response) {
   const { searchParams } = new URL(request.url)
   const userEmail = searchParams.get('userEmail')

@@ -16,8 +16,9 @@ async function getData() {
         headers: {
           method: 'GET',
           'Content-Type': 'application/json',
-          cache: 'no-store',
         },
+        cache: 'no-store',
+        next: { revalidate: 0 },
       }
     )
 

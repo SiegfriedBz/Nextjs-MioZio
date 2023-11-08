@@ -2,6 +2,7 @@
 
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
+import LoadingPulse from '../LoadingPulse'
 
 type Props = {
   closeModalMenu?: () => void
@@ -12,9 +13,12 @@ const LogInOutAndAdminOrdersLinks = ({
   closeModalMenu,
   isMobileMenu = false,
 }: Props) => {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
 
+  const isLoading = status === 'loading'
   const isSignedIn = status === 'authenticated'
+
+  if (isLoading) return <LoadingPulse />
 
   return (
     <>
