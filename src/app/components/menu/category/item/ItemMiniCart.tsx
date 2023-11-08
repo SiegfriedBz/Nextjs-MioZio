@@ -7,6 +7,7 @@ import { useAppContext } from '@/app/context/appContext'
 import { motion, AnimatePresence } from 'framer-motion'
 import { twMerge } from 'tailwind-merge'
 import { v4 as uuidv4 } from 'uuid'
+import { handleToast } from '@/utils/handleToast'
 import type { CartItemType, MenuItemType } from '@/types'
 
 type ItemMiniCartProps = {
@@ -15,7 +16,7 @@ type ItemMiniCartProps = {
 
 const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
   const { id, name, price, options, img } = item
-  const { cart, setCart, handleToast } = useAppContext()
+  const { cart, setCart } = useAppContext()
 
   const [quantity, setQuantity] = useState(1)
   const [selectedOptionName, setSelectedOptionName] = useState('small')

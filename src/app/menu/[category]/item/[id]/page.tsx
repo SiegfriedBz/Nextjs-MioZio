@@ -9,7 +9,7 @@ async function getData(id: string) {
   // FETCH MENU ITEM BY ID
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/menuItems?id=${id}`,
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/menuItems/${id}`,
       {
         headers: {
           method: 'GET',
@@ -21,8 +21,8 @@ async function getData(id: string) {
 
     if (!response.ok) throw new Error('Network response was not ok.')
 
-    const { menuItems } = await response.json()
-    const menuItem = menuItems?.[0] as MenuItemType
+    const { menuItem } = await response.json()
+    console.log(menuItem)
 
     if (!menuItem) throw new Error('MenuItem not found.')
 
@@ -38,7 +38,7 @@ async function getData(id: string) {
       return fullData
     }
 
-    const menuItemData = menuItemPromise(menuItem)
+    const menuItemData = await menuItemPromise(menuItem)
     return menuItemData
   } catch (error) {
     console.log(`Error: ${error}`)

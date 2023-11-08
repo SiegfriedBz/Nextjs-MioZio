@@ -4,18 +4,12 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
 
   try {
-    const menuItemId = searchParams.get('id')
     const categorySlug = searchParams.get('categorySlug')
     const isFeatured = searchParams.get('isFeatured') === 'true'
 
     const menuItemsPrisma = await prisma.menuItem.findMany({
       where: {
-        ...(menuItemId != null
-          ? // item page - fetch 1 item by id
-            {
-              id: menuItemId as string,
-            }
-          : searchParams.get('categorySlug') != null
+        ...(searchParams.get('categorySlug') != null
           ? // MenuByCategory page - fetch all items by category slug
             {
               categorySlug: categorySlug as string,

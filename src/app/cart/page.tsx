@@ -7,11 +7,12 @@ import { useSession } from 'next-auth/react'
 import { useAppContext } from '../context/appContext'
 import { twMerge } from 'tailwind-merge'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
+import { handleToast } from '@/utils/handleToast'
 import { OrderType } from '@/types'
 
 const Cart = () => {
   const router = useRouter()
-  const { cart, setCart, handleToast } = useAppContext()
+  const { cart, setCart } = useAppContext()
   const { data: session } = useSession()
   const userEmail = session?.user?.email
 
@@ -83,7 +84,7 @@ const Cart = () => {
       console.log(error)
       handleToast({
         type: 'error',
-        message: 'Error placing order, please try again',
+        message: `${error.message}, Error placing order, please try again`,
       })
     },
   })
