@@ -74,20 +74,22 @@ const Cart = () => {
       if (!response.ok) {
         throw new Error('Network response was not ok')
       }
-      return response.json()
+      const data = await response.json()
+      return data
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      const { orderId, message } = data
       handleToast({
-        type: 'success',
-        message: 'Order placed successfully!',
+        type: 'info',
+        message: message,
       })
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['orders'] })
 
       // clear cart store
       clearCart()
-      // redirect to orders page
-      router.push('/orders')
+      // redirect to payment page
+      router.push(`/stripe/${orderId}`)
     },
     onError(error, variables, context) {
       console.log(error)
