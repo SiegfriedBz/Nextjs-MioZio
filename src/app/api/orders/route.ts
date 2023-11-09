@@ -45,12 +45,13 @@ export async function POST(request: Request, response: Response) {
   }
 
   try {
-    await prisma.order.create({
+    const order = await prisma.order.create({
       data: data,
     })
 
     return Response.json({
-      message: 'Order submitted successfully!',
+      orderId: order.id,
+      message: 'Order created, loading checkout page...',
       status: 201,
     })
   } catch (error) {

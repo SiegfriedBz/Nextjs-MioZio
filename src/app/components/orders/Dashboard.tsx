@@ -19,7 +19,7 @@ const Dashboard = () => {
   const sessionIsLoading = status === 'loading'
   const isAuthenticated = status === 'authenticated'
 
-  /** fetch user's orders if athenticated
+  /** fetch user's orders if authenticated
    * - all orders if admin
    * - user's orders if not admin
    */
