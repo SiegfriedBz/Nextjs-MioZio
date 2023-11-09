@@ -65,7 +65,7 @@ const MenuByCategory = async ({ params }: MenuByCategoryProps) => {
           <Link
             key={item.id}
             href={`${category}/item/${item.id}`}
-            className='group flex h-[60vh] w-full flex-col justify-between border-[0.01em] border-primary even:bg-quaternary hover:shadow-sm sm:w-1/2 lg:w-[30%]'
+            className='group flex h-[60dvh] w-full flex-col justify-between border-[0.01em] border-primary even:bg-quaternary hover:shadow-sm sm:w-1/2 lg:w-[30%]'
           >
             {/* ITEM IMAGE CONTAINER */}
             <div className='relative mt-2 flex flex-1 place-content-center 2xl:mt-8'>

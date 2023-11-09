@@ -106,7 +106,7 @@ export default function CheckoutForm({ orderId }: Props) {
         <div className='my-4'>
           <h4 className='text-lg text-secondary'>
             We&apos;ve just passed 10&apos;000 orders and{' '}
-            <span className='text-xl font-bold uppercase'>
+            <span className='whitespace-nowrap text-xl font-bold uppercase'>
               you win a free meal!
             </span>
           </h4>

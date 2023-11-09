@@ -25,15 +25,15 @@ body {
   /* with header h: 6rem */
   section,
   .h-section {
-    @apply h-[calc(100vh-6rem)];
+    @apply h-[calc(100dvh-6rem)];
   }
 
   .min-h-section {
-    @apply min-h-[calc(100vh-6rem)];
+    @apply min-h-[calc(100dvh-6rem)];
   }
 
   .h-section-third {
-    @apply h-[calc((100vh-6rem)/3)];
+    @apply h-[calc((100dvh-6rem)/3)];
   }
 
   .btn {
