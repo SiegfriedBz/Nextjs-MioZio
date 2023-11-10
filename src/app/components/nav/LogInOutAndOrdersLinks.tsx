@@ -9,7 +9,7 @@ type Props = {
   isMobileMenu?: boolean
 }
 
-const LogInOutAndAdminOrdersLinks = ({
+const LogInOutAndOrdersLinks = ({
   closeModalMenu,
   isMobileMenu = false,
 }: Props) => {
@@ -71,4 +71,4 @@ const LogInOutAndAdminOrdersLinks = ({
   )
 }
 
-export default LogInOutAndAdminOrdersLinks
+export default LogInOutAndOrdersLinks

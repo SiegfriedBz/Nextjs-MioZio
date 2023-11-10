@@ -6,7 +6,9 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import CartLink from '../CartLink'
-import LogInOutAndAdminOrdersLinks from './LogInOutAndAdminOrdersLinks'
+import LogInOutAndOrdersLinks from './LogInOutAndOrdersLinks'
+import LoadingPulse from '../LoadingPulse'
+import { useSession } from 'next-auth/react'
 
 const MENU_LINKS = [
   {
@@ -23,11 +25,17 @@ const MobileMenu = () => {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
 
+  const { data: session, status } = useSession()
+  const isLoading = status === 'loading'
+  const isAdmin = session?.user?.isAdmin
+
   const isActiveRoute = (href: string) => {
     return pathname === href
   }
 
   const MotionImage = motion(Image)
+
+  if (isLoading) return <LoadingPulse />
 
   return (
     <div>
@@ -91,19 +99,28 @@ const MobileMenu = () => {
                 )
               })}
 
-              {/* links for login, logout + link for Orders if admin logged in */}
-              <LogInOutAndAdminOrdersLinks
+              {/* links for login, logout, & Orders */}
+              <LogInOutAndOrdersLinks
                 closeModalMenu={() => setIsOpen((prev) => !prev)}
                 isMobileMenu={true}
               />
 
-              <CartLink
-                onClick={() => setIsOpen((prev) => !prev)}
-                mobileMenu={true}
-                className={
-                  isActiveRoute('/cart') ? 'underline underline-offset-4' : ''
-                }
-              />
+              {isAdmin ? (
+                <Link
+                  href='/admin/add-menu-item'
+                  className='font-bold uppercase tracking-wide text-primary'
+                >
+                  Add Menu Item
+                </Link>
+              ) : (
+                <CartLink
+                  onClick={() => setIsOpen((prev) => !prev)}
+                  mobileMenu={true}
+                  className={
+                    isActiveRoute('/cart') ? 'underline underline-offset-4' : ''
+                  }
+                />
+              )}
             </>
           </motion.div>
         )}
