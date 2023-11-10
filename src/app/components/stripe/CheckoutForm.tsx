@@ -98,64 +98,33 @@ export default function CheckoutForm({ orderId }: Props) {
   }
 
   return (
-    <div>
-      <div className='my-8'>
-        <h1 className='text-3xl font-extrabold uppercase tracking-wide text-secondary md:text-2xl'>
-          Congratulations!
-        </h1>
-        <div className='my-4'>
-          <h4 className='text-lg text-secondary'>
-            We&apos;ve just passed 10&apos;000 orders and{' '}
-            <span className='whitespace-nowrap text-xl font-bold uppercase'>
-              you win a free meal!
-            </span>
-          </h4>
-          <h4 className='mt-2 text-base'>Use the following card details:</h4>
-          <ul>
-            <li>
-              <span className='text-lg font-bold text-secondary'>
-                Card number:{' '}
-              </span>
-              4242 4242 4242 4242
-            </li>
-            <li>
-              <span className='text-lg font-bold text-secondary'>Expiry: </span>
-              04/24
-            </li>
-            <li>
-              <span className='text-lg font-bold text-secondary'>CVC: </span>
-              424
-            </li>
-          </ul>
-        </div>
-      </div>
-
+    <>
       {/* payment form */}
-      <form id='payment-form' onSubmit={handleSubmit}>
-        <PaymentElement id='payment-element' options={{ layout: 'tabs' }} />
-        <button disabled={isLoading || !stripe || !elements} id='submit'>
-          <span id='button-text'>
-            {isLoading ? (
-              <div className='spinner' id='spinner'></div>
-            ) : (
-              <span
-                className={twMerge(
-                  'btn',
-                  'my-2 bg-secondary px-4 py-2 text-lg transition duration-300 ease-in-out hover:bg-secondary-dark'
-                )}
-              >
-                Pay now
-              </span>
-            )}
-          </span>
-        </button>
-        {/* Show any error or success messages */}
-        {message && <div id='payment-message'>{message}</div>}
-      </form>
+      <div className='rounded-md border border-dark/40 px-4 py-8 shadow-sm shadow-dark/40'>
+        <form id='payment-form' onSubmit={handleSubmit}>
+          <PaymentElement id='payment-element' options={{ layout: 'tabs' }} />
+          <button disabled={isLoading || !stripe || !elements} id='submit'>
+            <span id='button-text'>
+              {isLoading ? (
+                <div className='spinner' id='spinner'></div>
+              ) : (
+                <span
+                  className={twMerge(
+                    'btn',
+                    'my-2 bg-secondary px-4 py-2 text-base transition duration-300 ease-in-out hover:bg-secondary-dark'
+                  )}
+                >
+                  Pay now
+                </span>
+              )}
+            </span>
+          </button>
+          {/* Show any error or success messages */}
+          {message && <div id='payment-message'>{message}</div>}
+        </form>
 
-      {/* address form */}
-      <div className='my-8'>
-        <h1 className='text-lg font-bold uppercase tracking-wide text-primary md:text-xl'>
+        {/* address form */}
+        <h1 className='mt-8 text-lg font-bold uppercase tracking-wide text-primary md:text-xl'>
           Shipping address
         </h1>
         <AddressElement
@@ -168,6 +137,25 @@ export default function CheckoutForm({ orderId }: Props) {
           }}
         />
       </div>
-    </div>
+
+      {/* fake card details */}
+      <div className='mt-4 rounded-md border border-secondary-light px-4 py-2 shadow-sm shadow-secondary-light'>
+        <h4 className='mt-2 text-lg italic text-dark/80'>Test card details:</h4>
+        <ul>
+          <li className='text-dark/60'>
+            <span className='text-base text-secondary/90'>Card number: </span>
+            4242 4242 4242 4242
+          </li>
+          <li className='text-dark/60'>
+            <span className='text-base text-secondary/90'>Expiry: </span>
+            04/25
+          </li>
+          <li className='text-dark/60'>
+            <span className='text-base text-secondary/90'>CVC: </span>
+            424
+          </li>
+        </ul>
+      </div>
+    </>
   )
 }
