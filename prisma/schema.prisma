@@ -38,7 +38,7 @@ model Image {
 model MenuCategory {
   id          String   @id @default(cuid())
   slug        String   @unique
-  name        String   @unique // Pizza, Pasta, Burgers
+  name        String   @unique // Pizza, Pasta, BURGER
   description String
   img         String
   bgColor     String? // bg color for category
