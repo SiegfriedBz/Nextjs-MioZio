@@ -27,3 +27,32 @@ export async function GET(request: Request) {
     return Response.json(`Error: ${error}`, { status: 500 })
   }
 }
+
+export async function POST(request: Request, response: Response) {
+  const body = await request.json()
+
+  console.log(body)
+
+  try {
+    const newMenuItemPrisma = await prisma.menuItem.create({
+      data: {
+        name: body.name,
+        description: body.description,
+        price: body.price,
+        img: body.img,
+        isFeatured: body.isFeatured || false,
+        categorySlug: body.categorySlug,
+        options: body.options,
+      },
+    })
+
+    // not serializable prisma dates
+    const newMenuItem = JSON.parse(JSON.stringify(newMenuItemPrisma))
+
+    console.log(newMenuItem)
+
+    return Response.json({ newMenuItem }, { status: 201 })
+  } catch (error) {
+    return Response.json(`Error: ${error}`, { status: 500 })
+  }
+}
