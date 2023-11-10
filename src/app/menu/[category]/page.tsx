@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
-import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
+import { getBase64ImageUrl, getImageUrl } from '@/utils/cloudinary/getImageUrls'
 import type { MenuItemType } from '@/types'
 
 async function getData(category: string) {

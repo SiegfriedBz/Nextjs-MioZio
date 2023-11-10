@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
-import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
+import { getBase64ImageUrl, getImageUrl } from '@/utils/cloudinary/getImageUrls'
 import type { MenuCategoryType } from '@/types'
 
 // trick tailwind
