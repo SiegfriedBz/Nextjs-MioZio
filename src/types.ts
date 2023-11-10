@@ -9,8 +9,8 @@ export type UserType = {
 
 export type MenuCategoryType = {
   id?: string
-  slug: string // pizza, pasta, burgers
-  name: string // pizza, pasta, burgers
+  slug: MenuCategorySlugEnum
+  name: MenuCategorySlugEnum
   description: string
   img?: string
   imgBlur?: string
@@ -20,6 +20,12 @@ export type MenuCategoryType = {
 
   createdAt?: Date
   updatedAt?: Date
+}
+
+export enum MenuCategorySlugEnum {
+  PIZZA = 'pizza',
+  PASTA = 'pasta',
+  BURGER = 'burger',
 }
 
 export type MenuItemType = {
@@ -38,7 +44,7 @@ export type MenuItemType = {
   updatedAt?: Date
 }
 
-type MenuOptionType = { name: string; additionalPrice: number }
+export type MenuOptionType = { name: string; additionalPrice: number }
 
 export type OrderType = {
   id?: string
