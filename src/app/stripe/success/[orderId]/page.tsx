@@ -72,67 +72,83 @@ const StripeSuccessPage = ({ params }: Props) => {
   return (
     <div className='min-h-section p-4 lg:px-16 xl:px-32 2xl:px-48'>
       <h1 className='text-xl font-bold uppercase tracking-wide text-primary md:text-2xl'>
-        Order details
+        Thank you for your order!
       </h1>
+      <h2 className='mt-2 text-lg font-bold uppercase tracking-wide text-primary md:text-xl'>
+        Order details
+      </h2>
 
-      <div className='my-4'>
+      <div className='mb-2'>
         {!confirmedOrder ? (
           <LoadingPulse />
         ) : (
-          <>
-            {/* order summary */}
-            <div>
-              <span className='text-lg text-primary'>Order Id: </span>
-              {confirmedOrder.id}
-            </div>
-            <div>
-              <span className='text-lg text-primary'>Your email: </span>
-              {confirmedOrder.userEmail}
-            </div>
-            <div>
-              <span className='text-lg text-primary'>Order Status: </span>
-              {orderStatusDisplayNames[confirmedOrder.status!]}
-            </div>
-            <div>
-              <span className='text-lg text-primary'>Order Total: </span>$
-              {confirmedOrder.totalPrice}
-            </div>
+          <div className=''>
+            <div className='bg-quaternary p-4'>
+              {/* order summary */}
+              <div>
+                <span className='text-lg text-primary'>Order Id: </span>
+                <span className='text-dark/80'>{confirmedOrder.id}</span>
+              </div>
+              <div>
+                <span className='text-lg text-primary'>Your email: </span>
+                <span className='text-dark/80'>{confirmedOrder.userEmail}</span>
+              </div>
+              <div>
+                <span className='text-lg capitalize text-primary'>
+                  Order Status:{' '}
+                </span>
+                <span className='text-dark/80'>
+                  {orderStatusDisplayNames[confirmedOrder.status!]}
+                </span>
+              </div>
+              <div>
+                <span className='text-lg text-primary'>Order Total: </span>
+                <span className='text-dark/80'>
+                  ${confirmedOrder.totalPrice}
+                </span>
+              </div>
 
-            {/* order items */}
-            <div className='my-2'>
-              <span className='text-lg text-primary'> Order Items: </span>
-              <ul className='list-disc'>
-                <>
-                  {confirmedOrder.cartItems.map((item, index) => {
-                    return (
-                      <li key={index} className='ms-5'>
-                        <div>
-                          <span className='text-lg text-primary'>
-                            Menu item:{' '}
-                          </span>
-                          {item.quantity} x {item.name}
-                        </div>
-                        <div>
-                          <span className='text-lg text-primary'>Option: </span>
-                          <span className='capitalize'>
-                            {item.selectedOptionName}
-                          </span>
-                        </div>
-                        <div>
-                          <span className='text-lg text-primary'>
-                            Item price:{' '}
-                          </span>
-                          ${item.totalPrice}
-                        </div>
-                      </li>
-                    )
-                  })}
-                </>
-              </ul>
+              {/* order items */}
+              <div className='my-2'>
+                <span className='text-lg text-primary'> Order Items: </span>
+                <ul className='list-disc'>
+                  <>
+                    {confirmedOrder.cartItems.map((item, index) => {
+                      return (
+                        <li key={index} className='ms-5'>
+                          <div>
+                            <span className='text-lg text-primary'>
+                              Menu item:{' '}
+                            </span>
+                            <span className='text-dark/80'>
+                              {item.quantity} x {item.name}
+                            </span>
+                          </div>
+                          <div>
+                            <span className='text-lg text-primary'>
+                              Option:{' '}
+                            </span>
+                            <span className='capitalize text-dark/80'>
+                              {item.selectedOptionName}
+                            </span>
+                          </div>
+                          <div>
+                            <span className='text-lg text-primary'>
+                              Item price:{' '}
+                            </span>
+                            <span className='text-dark/80'>
+                              ${item.totalPrice}
+                            </span>
+                          </div>
+                        </li>
+                      )
+                    })}
+                  </>
+                </ul>
+              </div>
             </div>
-
             {/* link to orders */}
-            <div className='mt-8 flex justify-start'>
+            <div className='mt-2 flex justify-end'>
               <Link
                 replace
                 href='/orders'
@@ -141,7 +157,7 @@ const StripeSuccessPage = ({ params }: Props) => {
                 Check your orders
               </Link>
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>
