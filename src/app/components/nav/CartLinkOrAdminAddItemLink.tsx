@@ -5,7 +5,7 @@ import CartLink from '../CartLink'
 import LoadingPulse from '../LoadingPulse'
 import Link from 'next/link'
 
-const AdminForm = () => {
+const CartLinkOrAdminAddItemLink = () => {
   const { data: session, status } = useSession()
 
   const isLoading = status === 'loading'

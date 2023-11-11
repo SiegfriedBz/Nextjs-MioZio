@@ -59,75 +59,33 @@ const AdminForm = () => {
       })
     }
 
-    // upload img to server => cloudinary /MioZio/menuCategory/categorySlug/public_id
-    let cloudinaryPublicId: string | undefined = undefined
-
     try {
       const formData = new FormData()
-      formData.set('menuItemCategory', categorySlug)
-      formData.set('menuItemImage', imgFile)
 
-      const cldResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/admin/cloudinary`,
-        {
-          method: 'POST',
-          body: formData,
+      // populate form data except img
+      const newItemBase: Omit<MenuItemType, 'img'> = {
+        name: name,
+        description: description,
+        price: price,
+        isFeatured: isFeatured || false,
+        options: options,
+        categorySlug: categorySlug,
+      }
+      for (var key in newItemBase) {
+        if (newItemBase.hasOwnProperty(key)) {
+          formData.append(key, newItemBase[key])
         }
-      )
-
-      if (!cldResponse.ok) {
-        throw new Error('Error uploading image to Cloudinary')
       }
 
-      const data = await cldResponse.json()
-      const { public_id } = data
+      // append img to form data
+      formData.set('imgFile', imgFile)
 
-      cloudinaryPublicId = public_id as string
-
-      if (cloudinaryPublicId == undefined) {
-        throw new Error()
-      }
-
-      // notify user
-      handleToast({
-        type: 'success',
-        message:
-          'Image uploaded to Cloudinary successfully! Adding menu item to database...',
-      })
-    } catch (error) {
-      console.log(error)
-      // notify user
-      handleToast({
-        type: 'error',
-        message: 'Error uploading image to Cloudinary',
-      })
-    }
-
-    if (!cloudinaryPublicId)
-      // notify user
-      return handleToast({
-        type: 'error',
-        message: 'Error uploading image to Cloudinary',
-      })
-
-    // populate new menu item
-    const newItem: MenuItemType = {
-      name: name,
-      description: description,
-      price: price,
-      img: cloudinaryPublicId,
-      isFeatured: isFeatured || false,
-      options: options,
-      categorySlug: categorySlug,
-    }
-
-    // add new menu item to db
-    try {
+      // post new menu item to db
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/menuItems`,
         {
           method: 'POST',
-          body: JSON.stringify(newItem),
+          body: formData,
         }
       )
 
@@ -148,7 +106,7 @@ const AdminForm = () => {
       // notify user
       handleToast({
         type: 'error',
-        message: 'Error uploading image to Cloudinary',
+        message: 'Error uploading image to Cloudinary / adding menu item to db',
       })
     }
   }
