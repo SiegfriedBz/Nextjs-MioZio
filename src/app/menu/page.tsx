@@ -3,9 +3,20 @@ import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
 import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
 import type { MenuCategoryType } from '@/types'
+import type { Metadata } from 'next'
 
 // trick tailwind
 const possibleBgColors = ['bg-[#009345]', 'bg-[#CF2B36]', 'bg-transparent']
+
+// metadata
+export const metadata: Metadata = {
+  title: 'Mio Zio | Menu',
+  openGraph: {
+    title: 'Mio Zio | Menu',
+    description: 'Always fresh, always delicious',
+    url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/menu/`,
+  },
+}
 
 async function getData() {
   // FETCH MENU CATEGORIES

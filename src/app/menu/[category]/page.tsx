@@ -4,10 +4,34 @@ import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
 import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
 import type { MenuItemType } from '@/types'
+import type { Metadata, ResolvingMetadata } from 'next'
 
+// metadata
+type MetadataProps = {
+  params: { category: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export async function generateMetadata(
+  { params, searchParams }: MetadataProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const category = params.category
+
+  return {
+    title: `Mio Zio | Menu | ${category.toUpperCase()}`,
+    openGraph: {
+      title: `Mio Zio | Menu | ${category.toUpperCase()}`,
+      description: 'Always fresh, always delicious',
+      url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/menu/${category}`,
+    },
+  }
+}
+
+// data
 async function getData(category: string) {
   // FETCH MENU ITEMS BY CATEGORY
-
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/menuCategories/${category}`,
