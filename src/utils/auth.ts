@@ -1,16 +1,8 @@
-import NextAuth, {
-  NextAuthOptions,
-  getServerSession,
-  DefaultSession,
-  User,
-} from 'next-auth'
-import { JWT } from 'next-auth/jwt'
+import { NextAuthOptions, getServerSession, User } from 'next-auth'
 
 import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { prisma } from './prismaClient'
-import { get } from 'http'
-import { GetSessionParams } from 'next-auth/react'
 
 // augment jwt user type to include isAdmin
 declare module 'next-auth/jwt' {
@@ -37,6 +29,62 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_SECRET_ID as string,
     }),
+    // Email Provider
+    {
+      id: 'email',
+      type: 'email',
+      from: 'miozio@miozio.com',
+      server: {},
+      maxAge: 24 * 60 * 60,
+      name: 'Email',
+      options: {},
+      sendVerificationRequest: async (params) => {
+        const { identifier: email, url } = params
+
+        const data = {
+          sender: {
+            name: 'MioZio',
+            email: 'miozio@miozio.com',
+          },
+          to: [
+            {
+              email: email,
+              name: email,
+            },
+          ],
+          subject: 'Mio Zio Login - Magic Link',
+          htmlContent: `
+            <html>
+              <head></head>
+              <body>
+                <p>Hello,</p>
+                <p>Click <a href="${url}">here</a> to login and indulge in the magic of MioZio!</p>
+                <p>Your secure login awaits for quick and delicious online orders.</p>
+                <p>Bon appétit! The MioZio Team 🎉</p>
+              </body>
+            </html>
+          `,
+        }
+        const headers = new Headers({
+          accept: 'application/json',
+          'api-key': process.env.BREVO_API_KEY as string,
+          'content-type': 'application/json',
+        })
+
+        const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result)
+          })
+          .catch((error) => {
+            console.error('Error:', error)
+          })
+      },
+    },
   ],
   secret: process.env.NEXTAUTH_SECRET as string,
 
