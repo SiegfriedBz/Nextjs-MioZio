@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { Roboto } from 'next/font/google'
 import './globals.css'
 import Providers from './context/Providers'
@@ -34,6 +35,18 @@ export default function RootLayout({
           <ToastContainer position='bottom-right' />
           <Footer />
         </Providers>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=G-S76TYPBYJQ`}
+        />
+        <Script id='google-analytics'>
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+ 
+          gtag('config', 'G-S76TYPBYJQ');
+        `}
+        </Script>
       </body>
     </html>
   )
