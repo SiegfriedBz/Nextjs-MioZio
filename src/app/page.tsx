@@ -1,9 +1,7 @@
 import { notFound } from 'next/navigation'
-
 import Slider from './components/home/Slider'
 import Featured from './components/home/Featured'
 import Offer from './components/home/Offer'
-
 import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
 import type { MenuItemType, PageImageType } from '@/types'
 import { getSCSession } from '@/utils/auth'
