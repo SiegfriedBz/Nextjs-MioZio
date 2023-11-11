@@ -1,9 +1,9 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
 import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
 import type { MenuCategoryType } from '@/types'
-import type { Metadata } from 'next'
 
 // trick tailwind
 const possibleBgColors = ['bg-[#009345]', 'bg-[#CF2B36]', 'bg-transparent']

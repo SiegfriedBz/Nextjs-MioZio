@@ -1,22 +1,19 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
 import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
 import type { MenuItemType } from '@/types'
-import type { Metadata, ResolvingMetadata } from 'next'
 
 // metadata
 type MetadataProps = {
   params: { category: string }
-  searchParams: { [key: string]: string | string[] | undefined }
 }
 
-export async function generateMetadata(
-  { params, searchParams }: MetadataProps,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  // read route params
+export async function generateMetadata({
+  params,
+}: MetadataProps): Promise<Metadata> {
   const category = params.category
 
   return {

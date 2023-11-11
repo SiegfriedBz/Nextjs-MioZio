@@ -1,22 +1,19 @@
+import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import AdminDeleteMenuItemButton from '@/app/components/admin/AdminDeleteMenuItemButton'
 import ItemMiniCart from '@/app/components/menu/category/item/ItemMiniCart'
 import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
 import type { MenuItemType } from '@/types'
-import { Metadata, ResolvingMetadata } from 'next'
 
 // metadata
 type MetadataProps = {
   params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
 }
 
-export async function generateMetadata(
-  { params, searchParams }: MetadataProps,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  // read route params
+export async function generateMetadata({
+  params,
+}: MetadataProps): Promise<Metadata> {
   const { id } = params
 
   try {
