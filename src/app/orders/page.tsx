@@ -1,4 +1,13 @@
+import { Metadata } from 'next'
 import Dashboard from '../components/orders/Dashboard'
+
+export const metadata: Metadata = {
+  title: 'Mio Zio | Orders',
+  openGraph: {
+    title: 'Mio Zio | Orders',
+    description: 'Always fresh, always delicious',
+  },
+}
 
 const Orders = () => {
   return (

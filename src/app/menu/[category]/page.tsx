@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -5,9 +6,29 @@ import { twMerge } from 'tailwind-merge'
 import { getBase64ImageUrl, getImageUrl } from '@/utils/cloudinary/getImageUrls'
 import type { MenuItemType } from '@/types'
 
+// metadata
+type MetadataProps = {
+  params: { category: string }
+}
+
+export async function generateMetadata({
+  params,
+}: MetadataProps): Promise<Metadata> {
+  const category = params.category
+
+  return {
+    title: `Mio Zio | Menu | ${category.toUpperCase()}`,
+    openGraph: {
+      title: `Mio Zio | Menu | ${category.toUpperCase()}`,
+      description: 'Always fresh, always delicious',
+      url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/menu/${category}`,
+    },
+  }
+}
+
+// data
 async function getData(category: string) {
   // FETCH MENU ITEMS BY CATEGORY
-
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/menuCategories/${category}`,

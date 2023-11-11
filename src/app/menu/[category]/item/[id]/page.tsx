@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import AdminDeleteMenuItemButton from '@/app/components/admin/AdminDeleteMenuItemButton'
@@ -5,6 +6,55 @@ import ItemMiniCart from '@/app/components/menu/category/item/ItemMiniCart'
 import { getBase64ImageUrl, getImageUrl } from '@/utils/cloudinary/getImageUrls'
 import type { MenuItemType } from '@/types'
 
+// metadata
+type MetadataProps = {
+  params: { id: string }
+}
+
+export async function generateMetadata({
+  params,
+}: MetadataProps): Promise<Metadata> {
+  const { id } = params
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/menuItems/${id}`,
+      {
+        headers: {
+          method: 'GET',
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-store',
+        next: { revalidate: 0 },
+      }
+    )
+    if (!response.ok) throw new Error('Network response was not ok.')
+
+    const { menuItem } = await response.json()
+    const { name, categorySlug } = menuItem
+
+    return {
+      title: `Mio Zio | Menu | ${categorySlug.toUpperCase()} | ${name}`,
+      openGraph: {
+        title: `Mio Zio | Menu | ${categorySlug.toUpperCase()} | ${name}`,
+        description: 'Always fresh, always delicious',
+        url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/menu/${categorySlug}/item/${id}`,
+      },
+    }
+  } catch (error) {
+    console.log(`Error: ${error}. Error generating metadata.`)
+    return {
+      title: `Mio Zio | Menu`,
+      openGraph: {
+        title: `Mio Zio | Menu`,
+        description: 'Always fresh, always delicious',
+        url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/menu`,
+      },
+    }
+  }
+}
+
+// data
 async function getData(id: string) {
   // FETCH MENU ITEM BY ID
   try {
