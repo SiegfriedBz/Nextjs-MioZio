@@ -5,7 +5,12 @@ import CartLink from '../CartLink'
 import LoadingPulse from '../LoadingPulse'
 import Link from 'next/link'
 
-const CartLinkOrAdminAddItemLink = () => {
+type Props = {
+  mobileMenu?: boolean
+  closeModalMenu?: () => void
+}
+
+const CartLinkOrAdminAddItemLink = ({ mobileMenu, closeModalMenu }: Props) => {
   const { data: session, status } = useSession()
 
   const isLoading = status === 'loading'
@@ -17,13 +22,24 @@ const CartLinkOrAdminAddItemLink = () => {
     <div>
       {isAdmin ? (
         <Link
+          onClick={() =>
+            mobileMenu && closeModalMenu ? closeModalMenu() : null
+          }
           href='/admin/add-menu-item'
-          className='font-bold uppercase tracking-wide text-primary'
+          className={`uppercase tracking-wide ${
+            mobileMenu ? '' : 'font-bold text-primary '
+          } `}
         >
           Add Menu Item
         </Link>
       ) : (
-        <CartLink className='uppercase tracking-wide text-primary' />
+        <CartLink
+          onClick={closeModalMenu}
+          mobileMenu={mobileMenu}
+          className={`uppercase tracking-wide ${
+            mobileMenu ? '' : 'font-bold text-primary '
+          } `}
+        />
       )}
     </div>
   )

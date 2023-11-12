@@ -3,12 +3,11 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { motion, AnimatePresence } from 'framer-motion'
-import CartLink from '../CartLink'
 import LogInOutAndOrdersLinks from './LogInOutAndOrdersLinks'
 import LoadingPulse from '../LoadingPulse'
-import { useSession } from 'next-auth/react'
+import CartLinkOrAdminAddItemLink from './CartLinkOrAdminAddItemLink'
 
 const MENU_LINKS = [
   {
@@ -17,21 +16,14 @@ const MENU_LINKS = [
     href: '/',
   },
   { id: 2, title: 'Menu', href: '/menu' },
-  { id: 3, title: 'Working Hours', href: '/#working-hours' },
-  { id: 4, title: 'Contact', href: '/#contact' },
+  { id: 3, title: 'Contact', href: '/#contact' },
 ]
 
 const MobileMenu = () => {
-  const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
 
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   const isLoading = status === 'loading'
-  const isAdmin = session?.user?.isAdmin
-
-  const isActiveRoute = (href: string) => {
-    return pathname === href
-  }
 
   const MotionImage = motion(Image)
 
@@ -88,11 +80,6 @@ const MobileMenu = () => {
                     key={link.id}
                     href={link.href}
                     onClick={() => setIsOpen((prev) => !prev)}
-                    className={
-                      isActiveRoute(link.href)
-                        ? 'underline underline-offset-4'
-                        : ''
-                    }
                   >
                     {link.title}
                   </Link>
@@ -105,22 +92,11 @@ const MobileMenu = () => {
                 isMobileMenu={true}
               />
 
-              {isAdmin ? (
-                <Link
-                  href='/admin/add-menu-item'
-                  className='font-bold uppercase tracking-wide text-primary'
-                >
-                  Add Menu Item
-                </Link>
-              ) : (
-                <CartLink
-                  onClick={() => setIsOpen((prev) => !prev)}
-                  mobileMenu={true}
-                  className={
-                    isActiveRoute('/cart') ? 'underline underline-offset-4' : ''
-                  }
-                />
-              )}
+              {/* CartLink or AdminAddMenuItemForm */}
+              <CartLinkOrAdminAddItemLink
+                mobileMenu={true}
+                closeModalMenu={() => setIsOpen((prev) => !prev)}
+              />
             </>
           </motion.div>
         )}
