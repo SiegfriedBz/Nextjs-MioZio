@@ -282,7 +282,7 @@ const menuItems = [
     price: 24.9,
     img: 'MioZio/menuCategory/pasta/pasta01',
     isFeatured: true,
-    categorySlug: 'BURGER' as keyof typeof MenuCategorySlugEnum,
+    categorySlug: 'PASTA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
