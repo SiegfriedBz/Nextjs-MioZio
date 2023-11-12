@@ -50,10 +50,16 @@ const pageImages = [
   },
 ]
 
+enum MenuCategorySlugEnum {
+  PIZZA = 'pizza',
+  PASTA = 'pasta',
+  BURGER = 'burger',
+}
+
 const menuCategories = [
   {
     name: 'Italian Pasta',
-    slug: 'pasta',
+    slug: 'PASTA' as keyof typeof MenuCategorySlugEnum,
     bgColor: 'bg-[#009345]',
     textColor: 'text-light',
     description:
@@ -61,17 +67,17 @@ const menuCategories = [
     img: 'MioZio/menuCategory/pastaCategory',
   },
   {
-    name: 'Juicy Burgers',
-    slug: 'burgers',
+    name: 'Juicy burger',
+    slug: 'BURGER' as keyof typeof MenuCategorySlugEnum,
     bgColor: 'bg-transparent',
     textColor: 'text-dark',
     description:
-      'Our burgers are made with the finest ingredients and cooked to perfection.',
+      'Our burger are made with the finest ingredients and cooked to perfection.',
     img: 'MioZio/menuCategory/burgerCategory',
   },
   {
     name: 'Cheesy Pizza',
-    slug: 'pizza',
+    slug: 'PIZZA' as keyof typeof MenuCategorySlugEnum,
     bgColor: 'bg-[#CF2B36]',
     textColor: 'text-light',
     description:
@@ -88,7 +94,7 @@ const menuItems = [
     price: 24.9,
     img: 'MioZio/menuCategory/pizza/pizza01',
     isFeatured: true,
-    categorySlug: 'pizza',
+    categorySlug: 'PIZZA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -111,7 +117,7 @@ const menuItems = [
     price: 32.9,
     img: 'MioZio/menuCategory/pizza/pizza02',
     isFeatured: true,
-    categorySlug: 'pizza',
+    categorySlug: 'PIZZA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -134,7 +140,7 @@ const menuItems = [
     price: 26.9,
     img: 'MioZio/menuCategory/pizza/pizza03',
     isFeatured: false,
-    categorySlug: 'pizza',
+    categorySlug: 'PIZZA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -157,7 +163,7 @@ const menuItems = [
     price: 28.9,
     img: 'MioZio/menuCategory/pizza/pizza04',
     isFeatured: false,
-    categorySlug: 'pizza',
+    categorySlug: 'PIZZA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -174,15 +180,15 @@ const menuItems = [
     ],
   },
 
-  // burgers
+  // burger
   {
-    name: 'Burger Supreme',
+    name: 'burger Supreme',
     description:
       'A classic Italian delight featuring a thin, crispy crust, tangy tomato sauce, fresh mozzarella, and a medley of aromatic herbs topped with lettuce, tomatoes, and a dollop of tangy mayo.',
     price: 24.9,
     img: 'MioZio/menuCategory/burger/burger01',
     isFeatured: true,
-    categorySlug: 'burgers',
+    categorySlug: 'BURGER' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -199,13 +205,13 @@ const menuItems = [
     ],
   },
   {
-    name: 'Burger Delight',
+    name: 'burger Delight',
     description:
       'A classic Italian delight featuring a thin, crispy crust, tangy tomato sauce, fresh mozzarella, and a medley of aromatic herbs topped with lettuce, tomatoes, and a dollop of tangy mayo.',
     price: 24.9,
     img: 'MioZio/menuCategory/burger/burger02',
     isFeatured: true,
-    categorySlug: 'burgers',
+    categorySlug: 'BURGER' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -222,13 +228,13 @@ const menuItems = [
     ],
   },
   {
-    name: 'Burger Exquis',
+    name: 'burger Exquis',
     description:
       'A classic Italian delight featuring a thin, crispy crust, tangy tomato sauce, fresh mozzarella, and a medley of aromatic herbs topped with lettuce, tomatoes, and a dollop of tangy mayo.',
     price: 29.9,
     img: 'MioZio/menuCategory/burger/burger01',
     isFeatured: false,
-    categorySlug: 'burgers',
+    categorySlug: 'BURGER' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -245,13 +251,13 @@ const menuItems = [
     ],
   },
   {
-    name: 'Burger Magnus',
+    name: 'burger Magnus',
     description:
       'A classic Italian delight featuring a thin, crispy crust, tangy tomato sauce, fresh mozzarella, and a medley of aromatic herbs topped with lettuce, tomatoes, and a dollop of tangy mayo.',
     price: 32.9,
     img: 'MioZio/menuCategory/burger/burger02',
     isFeatured: false,
-    categorySlug: 'burgers',
+    categorySlug: 'BURGER' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -276,7 +282,7 @@ const menuItems = [
     price: 24.9,
     img: 'MioZio/menuCategory/pasta/pasta01',
     isFeatured: true,
-    categorySlug: 'pasta',
+    categorySlug: 'BURGER' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -299,7 +305,7 @@ const menuItems = [
     price: 28.9,
     img: 'MioZio/menuCategory/pasta/pasta02',
     isFeatured: true,
-    categorySlug: 'pasta',
+    categorySlug: 'PASTA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -322,7 +328,7 @@ const menuItems = [
     price: 24.9,
     img: 'MioZio/menuCategory/pasta/pasta01',
     isFeatured: false,
-    categorySlug: 'pasta',
+    categorySlug: 'PASTA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -345,7 +351,7 @@ const menuItems = [
     price: 24.9,
     img: 'MioZio/menuCategory/pasta/pasta02',
     isFeatured: false,
-    categorySlug: 'pasta',
+    categorySlug: 'PASTA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',

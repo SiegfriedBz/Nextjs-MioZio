@@ -1,14 +1,15 @@
+import { MenuCategorySlugEnum } from '@/types'
 import { prisma } from '@/utils/prismaClient'
 
 export async function GET(
   request: Request,
-  { params }: { params: { category: string } }
+  { params }: { params: { category: MenuCategorySlugEnum } }
 ) {
   const { category } = params
 
   try {
     const menuCategoryWithItemsPrisma = await prisma.menuCategory.findMany({
-      where: { slug: category },
+      where: { slug: category as unknown as keyof typeof MenuCategorySlugEnum },
       include: {
         menuItems: true,
       },

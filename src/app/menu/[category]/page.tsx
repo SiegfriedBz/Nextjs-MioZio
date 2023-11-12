@@ -3,12 +3,13 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
-import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
+import { getBase64ImageUrl, getImageUrl } from '@/utils/cloudinary/getImageUrls'
 import type { MenuItemType } from '@/types'
+import { MenuCategorySlugEnum } from '@/types'
 
 // metadata
 type MetadataProps = {
-  params: { category: string }
+  params: { category: MenuCategorySlugEnum }
 }
 
 export async function generateMetadata({
@@ -27,7 +28,7 @@ export async function generateMetadata({
 }
 
 // data
-async function getData(category: string) {
+async function getData(category: MenuCategorySlugEnum) {
   // FETCH MENU ITEMS BY CATEGORY
   try {
     const response = await fetch(
@@ -69,7 +70,7 @@ async function getData(category: string) {
 
 type MenuByCategoryProps = {
   params: {
-    category: string
+    category: MenuCategorySlugEnum
   }
 }
 

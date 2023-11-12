@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import AdminDeleteMenuItemButton from '@/app/components/admin/AdminDeleteMenuItemButton'
 import ItemMiniCart from '@/app/components/menu/category/item/ItemMiniCart'
-import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
+import { getBase64ImageUrl, getImageUrl } from '@/utils/cloudinary/getImageUrls'
 import type { MenuItemType } from '@/types'
 
 // metadata

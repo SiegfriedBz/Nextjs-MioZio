@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import GoogleSignIn from '../components/login/GoogleSignIn'
 import MagicLinkSignIn from '../components/login/MagicLinkSignIn'
-import { getBase64ImageUrl, getImageUrl } from '@/utils/getImageUrls'
+import { getBase64ImageUrl, getImageUrl } from '@/utils/cloudinary/getImageUrls'
 import type { PageImageType } from '@/types'
 
 async function getData() {

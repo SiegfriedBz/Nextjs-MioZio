@@ -1,5 +1,5 @@
 // SEED CLOUDINARY WITH IMAGES
-import cloudinary from './cloudinaryConfig'
+import cloudinary from '@/utils/cloudinary/cloudinaryConfig'
 import 'dotenv/config'
 import fs from 'fs'
 import path from 'path'
@@ -9,7 +9,7 @@ type ImagePathType = {
   public_id: string
 }
 
-const cldAppName = process.env.CLOUDINARY_APP_NAME
+const CLOUDINARY_APP_NAME = process.env.CLOUDINARY_APP_NAME
 const FOLDER_PATH = './seed/data/images'
 
 // Log cloudinary configuration
@@ -49,9 +49,9 @@ function getImagesInDirectory(directory: string) {
 
         let public_id
         if (subfolder) {
-          public_id = `${cldAppName}/${subfolder}/${fileNameWithoutExtension}`
+          public_id = `${CLOUDINARY_APP_NAME}/${subfolder}/${fileNameWithoutExtension}`
         } else {
-          public_id = `${cldAppName}/${fileNameWithoutExtension}`
+          public_id = `${CLOUDINARY_APP_NAME}/${fileNameWithoutExtension}`
         }
         imagePaths.push({
           filePath,

@@ -11,18 +11,6 @@ import { formatDate } from '@/utils/formatDate'
 import type { OrderType } from '@/types'
 import { OrderStatusEnum } from '@/types'
 
-const orderStatusDisplayNames: { [key in OrderStatusEnum]: string } = {
-  [OrderStatusEnum.PENDING]: 'pending',
-  [OrderStatusEnum.PAID]: 'paid',
-  [OrderStatusEnum.ON_THE_WAY]: 'on the way',
-  [OrderStatusEnum.DELIVERED]: 'delivered',
-  [OrderStatusEnum.CANCELLED]: 'cancelled',
-}
-
-function isOrderStatusValid(key: string): key is keyof typeof OrderStatusEnum {
-  return key in OrderStatusEnum
-}
-
 type Props = {
   isAdmin: boolean
   order: OrderType
@@ -32,11 +20,7 @@ const OrderDetails = ({ isAdmin, order }: Props) => {
   const router = useRouter()
 
   // local state
-  const [orderStatus, setOrderStatus] = useState<OrderStatusEnum>(
-    isOrderStatusValid(order.status!)
-      ? OrderStatusEnum[order.status]
-      : OrderStatusEnum.PENDING
-  )
+  const [orderStatus, setOrderStatus] = useState<OrderStatusEnum>(order.status)
 
   // Access the client
   const queryClient = useQueryClient()
@@ -60,7 +44,13 @@ const OrderDetails = ({ isAdmin, order }: Props) => {
   }
 
   const updateOrderStatus = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
+    mutationFn: async ({
+      id,
+      status,
+    }: {
+      id: string
+      status: OrderStatusEnum
+    }) => {
       // fetch
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/orders/${id}`,
@@ -88,7 +78,7 @@ const OrderDetails = ({ isAdmin, order }: Props) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['orders'] })
     },
-    onError(error, variables, context) {
+    onError(error) {
       console.log(error)
       handleToast({
         type: 'error',
@@ -142,7 +132,7 @@ const OrderDetails = ({ isAdmin, order }: Props) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['orders'] })
     },
-    onError(error, variables, context) {
+    onError(error) {
       console.log(error)
       handleToast({
         type: 'error',
@@ -185,13 +175,11 @@ const OrderDetails = ({ isAdmin, order }: Props) => {
                 setOrderStatus(e.target.value as OrderStatusEnum)
               }
             >
-              {Object.entries(orderStatusDisplayNames).map(
-                ([key, displayName]) => (
-                  <option key={key} value={key}>
-                    {displayName}
-                  </option>
-                )
-              )}
+              <option value='PENDING'>pending</option>
+              <option value='PAID'>paid</option>
+              <option value='ON_THE_WAY'>on the way</option>
+              <option value='DELIVERED'>delivered</option>
+              <option value='CANCELLED'>cancelled</option>
             </select>
             <div className='mt-1 flex justify-between'>
               <button
@@ -217,7 +205,13 @@ const OrderDetails = ({ isAdmin, order }: Props) => {
             </div>
           </form>
         ) : (
-          orderStatusDisplayNames[orderStatus]
+          <span>
+            {
+              OrderStatusEnum[
+                orderStatus.toUpperCase() as keyof typeof OrderStatusEnum
+              ]
+            }
+          </span>
         )}
       </td>
     </tr>

@@ -34,7 +34,7 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
   useEffect(() => {
     const option = options?.find((option) => option.name === selectedOptionName)
     const additionalPrice = option?.additionalPrice || 0
-    const totalPrice = (price + additionalPrice) * quantity
+    const totalPrice = (+price + additionalPrice) * quantity
 
     setTotalPrice(totalPrice)
   }, [selectedOptionName, quantity, price, options])
@@ -150,7 +150,7 @@ const ItemMiniCart = ({ item }: ItemMiniCartProps) => {
                 src='/cart.png'
                 fill
                 alt='cart'
-                className='object-contain'
+                className='animate-pulse object-contain'
               />
             </div>
           </MotionLink>
