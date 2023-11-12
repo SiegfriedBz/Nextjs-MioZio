@@ -37,7 +37,7 @@ model Image {
 
 model MenuCategory {
   id          String   @id @default(cuid())
-  slug        String   @unique
+  slug        CategorySlugEnum   @unique
   name        String   @unique // Pizza, Pasta, BURGER
   description String
   img         String
@@ -62,15 +62,21 @@ model MenuItem {
 
   // 1 menuItem belongs to 1 menuCategory
   category     MenuCategory @relation(fields: [categorySlug], references: [slug])
-  categorySlug String
+  categorySlug CategorySlugEnum
 
   // array of Json objects
   options Json[]
 }
 
+enum CategorySlugEnum {
+  PIZZA
+  PASTA
+  BURGER
+}
+
 model Order {
   id         String      @id @default(cuid())
-  status     OrderStatus @default(PENDING)
+  status     OrderStatusEnum @default(PENDING)
   totalPrice Decimal
   intent_id  String?     @unique // stripe payment intent id
 
@@ -85,7 +91,7 @@ model Order {
   updatedAt DateTime @updatedAt
 }
 
-enum OrderStatus {
+enum OrderStatusEnum {
   PENDING
   PAID
   ON_THE_WAY
