@@ -1,46 +1,53 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
 import { useState } from 'react'
-import type { MenuOptionType, MenuCategoryType, MenuItemType } from '@/types'
-import { MenuCategorySlugEnum } from '@/types'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
 import { handleToast } from '@/utils/handleToast'
-import { useRouter } from 'next/navigation'
 
-const MenuCategoryDisplayNames: { [key in MenuCategorySlugEnum]: string } = {
-  [MenuCategorySlugEnum.PIZZA]: 'pizza',
-  [MenuCategorySlugEnum.PASTA]: 'pasta',
-  [MenuCategorySlugEnum.BURGER]: 'burger',
-}
-
+import type { MenuOptionType, MenuItemType } from '@/types'
+import { MenuCategorySlugEnum } from '@/types'
 const AdminForm = () => {
   const router = useRouter()
   const { data: session } = useSession()
 
   /** state */
-  const [name, setName] = useState<string | undefined>(undefined)
-  const [description, setDescription] = useState<string | undefined>(undefined)
-  const [price, setPrice] = useState<number | undefined>(undefined)
-  const [imgFile, setImgFile] = useState<File | undefined>(undefined)
-  const [isFeatured, setIsFeatured] = useState(false)
-  // options
-  const [options, setOptions] = useState<MenuOptionType[]>([])
+  const [menuItem, setMenuItem] = useState<Omit<MenuItemType, 'img'>>({
+    name: '',
+    description: '',
+    price: 0,
+    isFeatured: false,
+    categorySlug: MenuCategorySlugEnum.BURGER,
+    options: [],
+  })
+  // to add a new option
   const [option, setOption] = useState<MenuOptionType>({
     name: '',
     additionalPrice: 0,
   })
-  //
-  const [categorySlug, setCategorySlug] = useState<
-    MenuCategorySlugEnum | undefined
-  >(undefined)
+  const [imgFile, setImgFile] = useState<File | undefined>(undefined)
 
   /** helpers */
   const isAdmin = session?.user?.isAdmin
-  if (!isAdmin) return null
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    if (e.target.type === 'checkbox') {
+      setMenuItem((prev) => ({ ...prev, isFeatured: !prev.isFeatured }))
+    } else {
+      setMenuItem((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    }
+  }
 
   const addOption = () => {
-    setOptions((prev) => [...prev, option])
+    setMenuItem((prev) => ({
+      ...prev,
+      options: [...prev.options!, option],
+    }))
     setOption({
       name: '',
       additionalPrice: 0,
@@ -51,47 +58,72 @@ const AdminForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!name || !description || !price || !imgFile || !categorySlug) {
-      // notify user
+    // check if user is admin
+    if (!isAdmin) {
+      handleToast({
+        type: 'info',
+        message: 'You are not authorized to access this page.',
+      })
+      return router.push('/')
+    }
+
+    const { name, description, price, isFeatured, categorySlug, options } =
+      menuItem
+
+    if (!name || !description || !price || !categorySlug || !imgFile) {
       return handleToast({
         type: 'info',
-        message: 'Please fill in all fields.',
+        message: 'Please fill in all the fields.',
       })
     }
 
+    let imagePublicId: string | undefined = undefined
+
     try {
-      const formData = new FormData()
+      /** 1. upload image to cloudinary => get image public_id */
+      const cldFormData = new FormData()
+      cldFormData.append('imageFile', imgFile as File)
+      cldFormData.append('categorySlug', categorySlug as MenuCategorySlugEnum)
 
-      // populate form data except img
-      const newItemBase: Omit<MenuItemType, 'img'> = {
-        name: name,
-        description: description,
-        price: price,
-        isFeatured: isFeatured || false,
-        options: options,
-        categorySlug: categorySlug,
-      }
-      for (var key in newItemBase) {
-        if (newItemBase.hasOwnProperty(key)) {
-          formData.append(key, newItemBase[key])
+      const cldResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/cloudinary`,
+        {
+          method: 'POST',
+          body: cldFormData,
         }
+      )
+
+      if (!cldResponse.ok)
+        throw new Error("Couldn't upload image to cloudinary")
+
+      const { public_id } = await cldResponse.json()
+      imagePublicId = public_id
+
+      if (!imagePublicId) throw new Error("Couldn't get image public_id")
+
+      /** 2. post new item to db */
+      const body = {
+        name,
+        description,
+        price,
+        isFeatured,
+        categorySlug,
+        options,
+        img: imagePublicId,
       }
 
-      // append img to form data
-      formData.set('imgFile', imgFile)
-
-      // post new menu item to db
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/menuItems`,
         {
           method: 'POST',
-          body: formData,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
         }
       )
 
-      if (!response.ok) throw new Error()
-
-      await response.json()
+      if (!response.ok) throw new Error("Couldn't add menu item to db")
 
       // notify user
       handleToast({
@@ -103,13 +135,29 @@ const AdminForm = () => {
       router.push('/menu')
     } catch (error) {
       console.log(error)
-      // notify user
       handleToast({
         type: 'error',
-        message: 'Error uploading image to Cloudinary / adding menu item to db',
+        message: 'Error creating new menu item, please try again.',
       })
     }
   }
+
+  const handleDeleteOption = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    optionName: string
+  ) => {
+    if (!menuItem.options) {
+      setMenuItem((prev) => ({ ...prev, options: [] }))
+      return
+    }
+
+    setMenuItem((prev) => ({
+      ...prev,
+      options: prev.options!.filter((option) => option.name !== optionName),
+    }))
+  }
+
+  console.log(menuItem)
 
   return (
     <div>
@@ -122,9 +170,10 @@ const AdminForm = () => {
           </label>
           <input
             id='name'
+            name='name'
             type='text'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={menuItem.name}
+            onChange={handleChange}
             className='rounded-md border border-gray-400 px-2 py-1 outline-none'
           />
         </div>
@@ -135,8 +184,9 @@ const AdminForm = () => {
           </label>
           <textarea
             id='description'
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            name='description'
+            value={menuItem.description}
+            onChange={handleChange}
             className='rounded-md border border-gray-400 px-2 py-1  outline-none'
           />
         </div>
@@ -147,9 +197,10 @@ const AdminForm = () => {
           </label>
           <input
             id='price'
+            name='price'
             type='number'
-            value={price}
-            onChange={(e) => setPrice(+e.target.value)}
+            value={menuItem.price}
+            onChange={handleChange}
             className='rounded-md border border-gray-400 px-2 py-1  outline-none'
           />
         </div>
@@ -174,10 +225,10 @@ const AdminForm = () => {
             <input
               id='featured'
               type='checkbox'
-              checked={isFeatured}
-              onChange={() => setIsFeatured((prev) => !prev)}
+              checked={menuItem.isFeatured}
+              onChange={handleChange}
               className={`${
-                isFeatured ? 'accent-primary' : ''
+                menuItem.isFeatured ? 'accent-primary' : ''
               } rounded-md border border-gray-400 px-2 py-1 outline-none`}
             />
             <span className='ms-2 font-semibold'>Is featured</span>
@@ -191,73 +242,92 @@ const AdminForm = () => {
           {/* add option */}
           <div className='my-1 flex flex-col'>
             <span className='text-primary'>New Option</span>
-            <ul className='flex flex-col space-y-1 lg:flex-row lg:space-x-8'>
-              <li className='ms-4 flex items-center space-x-2'>
-                <label className='w-1/2 text-primary' htmlFor='newOptionName'>
-                  Name
-                </label>
-                <input
-                  id='newOptionName'
-                  type='text'
-                  value={option.name}
-                  onChange={(e) =>
-                    setOption({ ...option, name: e.target.value })
-                  }
-                  className='w-1/2 rounded-md border border-gray-400 px-2 py-1 outline-none'
-                />
-              </li>
-              <li className='ms-4 flex items-center space-x-2'>
-                <label
-                  className='w-1/2 text-primary'
-                  htmlFor='newOptionAdditionalPrice'
-                >
-                  Additional price ($)
-                </label>
-                <input
-                  id='newOptionAdditionalPrice'
-                  type='number'
-                  value={option.additionalPrice}
-                  onChange={(e) =>
-                    setOption({ ...option, additionalPrice: +e.target.value })
-                  }
-                  className='w-1/2 rounded-md border border-gray-400 px-2 py-1 outline-none'
-                />
-              </li>
+            <div className='flex w-full flex-col space-y-1 sm:flex-row sm:items-center sm:space-x-1 sm:space-y-0'>
+              <div className='flex w-full space-x-1 sm:w-2/3'>
+                <div className='flex w-1/2 flex-col'>
+                  <label htmlFor='newOptionName' className='text-dark/80'>
+                    Name
+                  </label>
+                  <input
+                    id='newOptionName'
+                    type='text'
+                    value={option.name}
+                    onChange={(e) =>
+                      setOption({ ...option, name: e.target.value })
+                    }
+                    className='rounded-md border border-gray-400 px-2 py-1 outline-none'
+                  />
+                </div>
+                <div className='flex w-1/2 flex-col'>
+                  <label
+                    htmlFor='newOptionAdditionalPrice'
+                    className='text-dark/80'
+                  >
+                    Extra (USD)
+                  </label>
+                  <input
+                    id='newOptionAdditionalPrice'
+                    type='text'
+                    value={option.additionalPrice}
+                    onChange={(e) =>
+                      setOption({
+                        ...option,
+                        additionalPrice: Number.isNaN(+e.target.value)
+                          ? 0
+                          : +e.target.value,
+                      })
+                    }
+                    className='rounded-md border border-gray-400 px-2 py-1 outline-none'
+                  />
+                </div>
+              </div>
               <button
                 type='button'
                 onClick={addOption}
                 className={twMerge(
                   'btn',
-                  'mb-2 max-w-max self-end px-4 py-2 text-sm lg:mt-1 lg:flex-1'
+                  'self-start px-4 py-2 text-sm sm:w-1/3 sm:self-end'
                 )}
               >
                 Add Option
               </button>
-            </ul>
+            </div>
           </div>
 
           {/* options list */}
-          <div className='my-4'>
-            <ul className='flex flex-col space-y-1 lg:flex-row lg:space-x-8'></ul>
-            {options.map((option, index) => (
-              <div key={index} className='my-2'>
-                <li className='flex items-center space-x-2'>
-                  <label className='w-1/2 text-primary'>Name</label>
-                  <span className='w-1/2 rounded-md border border-gray-400 px-2 py-1 outline-none'>
-                    {option.name}
-                  </span>
-                </li>
-                <li className='flex items-center space-x-2'>
-                  <label className='w-1/2 text-primary'>
-                    Additional price ($)
-                  </label>
-                  <span className='w-1/2 rounded-md border border-gray-400 px-2 py-1 outline-none'>
-                    {option.additionalPrice}
-                  </span>
-                </li>
-              </div>
-            ))}
-          </div>
+          {menuItem?.options && menuItem?.options?.length > 0 && (
+            <div className='mb-4'>
+              <table className='w-full border-separate border border-gray-400 '>
+                <thead>
+                  <tr className='text-left text-primary'>
+                    <th className='py-1'>Name</th>
+                    <th className='whitespace-nowrap py-1'>Extra (USD)</th>
+                    <th className='py-1'></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {menuItem.options.map((option, index) => (
+                    <tr key={index} className='text-left'>
+                      <td className='w-1/2 py-1'>{option.name}</td>
+                      <td className='w-1/2 py-1'>{option.additionalPrice}</td>
+                      <td className='py-1'>
+                        <button
+                          onClick={(e) => handleDeleteOption(e, option.name)}
+                          type='button'
+                          className={twMerge(
+                            'btn',
+                            'bg-amber-500 px-2 py-1 text-sm'
+                          )}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         <div className='my-4 flex flex-col'>
@@ -266,21 +336,15 @@ const AdminForm = () => {
           </label>
           <select
             id='options'
-            value={categorySlug}
-            onChange={(e) =>
-              setCategorySlug(e.target.value as MenuCategorySlugEnum)
-            }
-            className='rounded-md border border-gray-400 outline-none'
+            value={menuItem.categorySlug}
+            name='categorySlug'
+            onChange={handleChange}
+            className='rounded-md border border-gray-400 px-2 py-1 outline-none'
           >
             <>
-              <option>Select a category</option>
-              {Object.entries(MenuCategoryDisplayNames).map(
-                ([key, displayName]) => (
-                  <option key={key} value={key}>
-                    {displayName}
-                  </option>
-                )
-              )}
+              <option value='BURGER'>Burger</option>
+              <option value='PIZZA'>Pizza</option>
+              <option value='PASTA'>Pasta</option>
             </>
           </select>
         </div>
