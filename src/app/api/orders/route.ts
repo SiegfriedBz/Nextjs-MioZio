@@ -8,6 +8,9 @@ export async function GET(request: Request, response: Response) {
   const userIsAdmin = searchParams.get('userIsAdmin') === 'true'
   const userEmail = searchParams.get('userEmail')
 
+  console.log(userIsAdmin)
+  console.log(userEmail)
+
   if (!userEmail) {
     return Response.json({ message: 'unauthorized' }, { status: 401 })
   }
@@ -37,6 +40,8 @@ export async function POST(request: Request, response: Response) {
   }
 
   const body = await request.json()
+
+  console.log('POST ORDER', body)
 
   const data = {
     ...body,

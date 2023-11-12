@@ -42,7 +42,7 @@ const Cart = () => {
 
     // populate order
     const newOrder = {
-      status: OrderStatusEnum.PENDING,
+      status: 'PENDING' as keyof typeof OrderStatusEnum,
       totalPrice: totalPrice,
       userEmail: userEmail,
       cartItems: cartItems.map((cartItem) => {
@@ -59,7 +59,7 @@ const Cart = () => {
   }
 
   const checkOut = useMutation({
-    mutationFn: async (newOrder: OrderType) => {
+    mutationFn: async (newOrder: Omit<OrderType, 'status'>) => {
       const queryString = `?userEmail=${userEmail}`
 
       const response = await fetch(

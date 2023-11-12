@@ -12,8 +12,8 @@ type Props = {
 
 const CartLinkOrAdminAddItemLink = ({ mobileMenu, closeModalMenu }: Props) => {
   const { data: session, status } = useSession()
-
   const isLoading = status === 'loading'
+  const isSignedIn = status === 'authenticated'
   const isAdmin = session?.user?.isAdmin
 
   if (isLoading) return <LoadingPulse />

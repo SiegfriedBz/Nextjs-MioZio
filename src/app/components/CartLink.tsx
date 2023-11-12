@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCartStore } from '@/utils/zustand/store'
+import { useSession } from 'next-auth/react'
 
 type CartLinkProps = {
   onClick?: () => void
@@ -16,6 +17,10 @@ const CartLink = ({
   mobileMenu = false,
   className = '',
 }: CartLinkProps) => {
+  const { data: session, status } = useSession()
+  const isLoading = status === 'loading'
+  const isSignedIn = status === 'authenticated'
+
   // zustand
   const { cartItems } = useCartStore()
 
@@ -50,7 +55,7 @@ const CartLink = ({
         } ${className}`}
       >
         <span>Cart</span>
-        <span>({totalItemsCount})</span>
+        <span>({isSignedIn ? totalItemsCount : 0})</span>
       </div>
     </Link>
   )
