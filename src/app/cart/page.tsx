@@ -9,7 +9,8 @@ import { twMerge } from 'tailwind-merge'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import { useCartStore } from '@/utils/zustand/store'
 import { handleToast } from '@/utils/handleToast'
-import { OrderType } from '@/types'
+import type { OrderType } from '@/types'
+import { OrderStatusEnum } from '@/types'
 
 const Cart = () => {
   const router = useRouter()
@@ -41,6 +42,7 @@ const Cart = () => {
 
     // populate order
     const newOrder = {
+      status: OrderStatusEnum.PENDING,
       totalPrice: totalPrice,
       userEmail: userEmail,
       cartItems: cartItems.map((cartItem) => {
