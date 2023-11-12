@@ -50,10 +50,16 @@ const pageImages = [
   },
 ]
 
+enum MenuCategorySlugEnum {
+  PIZZA = 'pizza',
+  PASTA = 'pasta',
+  BURGER = 'burger',
+}
+
 const menuCategories = [
   {
     name: 'Italian Pasta',
-    slug: 'pasta',
+    slug: 'PASTA' as keyof typeof MenuCategorySlugEnum,
     bgColor: 'bg-[#009345]',
     textColor: 'text-light',
     description:
@@ -62,7 +68,7 @@ const menuCategories = [
   },
   {
     name: 'Juicy burger',
-    slug: 'burger',
+    slug: 'BURGER' as keyof typeof MenuCategorySlugEnum,
     bgColor: 'bg-transparent',
     textColor: 'text-dark',
     description:
@@ -71,7 +77,7 @@ const menuCategories = [
   },
   {
     name: 'Cheesy Pizza',
-    slug: 'pizza',
+    slug: 'PIZZA' as keyof typeof MenuCategorySlugEnum,
     bgColor: 'bg-[#CF2B36]',
     textColor: 'text-light',
     description:
@@ -88,7 +94,7 @@ const menuItems = [
     price: 24.9,
     img: 'MioZio/menuCategory/pizza/pizza01',
     isFeatured: true,
-    categorySlug: 'pizza',
+    categorySlug: 'PIZZA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -111,7 +117,7 @@ const menuItems = [
     price: 32.9,
     img: 'MioZio/menuCategory/pizza/pizza02',
     isFeatured: true,
-    categorySlug: 'pizza',
+    categorySlug: 'PIZZA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -134,7 +140,7 @@ const menuItems = [
     price: 26.9,
     img: 'MioZio/menuCategory/pizza/pizza03',
     isFeatured: false,
-    categorySlug: 'pizza',
+    categorySlug: 'PIZZA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -157,7 +163,7 @@ const menuItems = [
     price: 28.9,
     img: 'MioZio/menuCategory/pizza/pizza04',
     isFeatured: false,
-    categorySlug: 'pizza',
+    categorySlug: 'PIZZA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -182,7 +188,7 @@ const menuItems = [
     price: 24.9,
     img: 'MioZio/menuCategory/burger/burger01',
     isFeatured: true,
-    categorySlug: 'burger',
+    categorySlug: 'BURGER' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -205,7 +211,7 @@ const menuItems = [
     price: 24.9,
     img: 'MioZio/menuCategory/burger/burger02',
     isFeatured: true,
-    categorySlug: 'burger',
+    categorySlug: 'BURGER' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -228,7 +234,7 @@ const menuItems = [
     price: 29.9,
     img: 'MioZio/menuCategory/burger/burger01',
     isFeatured: false,
-    categorySlug: 'burger',
+    categorySlug: 'BURGER' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -251,7 +257,7 @@ const menuItems = [
     price: 32.9,
     img: 'MioZio/menuCategory/burger/burger02',
     isFeatured: false,
-    categorySlug: 'burger',
+    categorySlug: 'BURGER' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -276,7 +282,7 @@ const menuItems = [
     price: 24.9,
     img: 'MioZio/menuCategory/pasta/pasta01',
     isFeatured: true,
-    categorySlug: 'pasta',
+    categorySlug: 'BURGER' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -299,7 +305,7 @@ const menuItems = [
     price: 28.9,
     img: 'MioZio/menuCategory/pasta/pasta02',
     isFeatured: true,
-    categorySlug: 'pasta',
+    categorySlug: 'PASTA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -322,7 +328,7 @@ const menuItems = [
     price: 24.9,
     img: 'MioZio/menuCategory/pasta/pasta01',
     isFeatured: false,
-    categorySlug: 'pasta',
+    categorySlug: 'PASTA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
@@ -345,7 +351,7 @@ const menuItems = [
     price: 24.9,
     img: 'MioZio/menuCategory/pasta/pasta02',
     isFeatured: false,
-    categorySlug: 'pasta',
+    categorySlug: 'PASTA' as keyof typeof MenuCategorySlugEnum,
     options: [
       {
         name: 'small',
