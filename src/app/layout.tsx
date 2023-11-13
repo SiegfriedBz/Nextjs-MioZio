@@ -17,8 +17,10 @@ const roboto = Roboto({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://mio-zio.vercel.app'),
   title: 'Mio Zio',
   openGraph: {
+    images: '/opengraph-image.png',
     title: 'Mio Zio',
     description: 'Always fresh, always delicious',
     url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}`,
