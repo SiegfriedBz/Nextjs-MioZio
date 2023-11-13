@@ -1,5 +1,6 @@
 import { MenuCategorySlugEnum } from '@/types'
 import { prisma } from '@/utils/prismaClient'
+import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -24,9 +25,9 @@ export async function GET(request: Request) {
     // not serializable prisma dates
     const menuItems = JSON.parse(JSON.stringify(menuItemsPrisma))
 
-    return Response.json({ menuItems }, { status: 200 })
+    return NextResponse.json({ menuItems }, { status: 200 })
   } catch (error) {
-    return Response.json(`Error: ${error}`, { status: 500 })
+    return NextResponse.json(`Error: ${error}`, { status: 500 })
   }
 }
 
