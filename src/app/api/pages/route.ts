@@ -1,4 +1,5 @@
 import { prisma } from '@/utils/prismaClient'
+import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -13,8 +14,8 @@ export async function GET(request: Request) {
     // not serializable prisma dates
     const pageImages = JSON.parse(JSON.stringify(pageImagesPrisma))
 
-    return Response.json({ pageImages }, { status: 200 })
+    return NextResponse.json({ pageImages }, { status: 200 })
   } catch (error) {
-    return Response.json(`Error: ${error}`, { status: 500 })
+    return NextResponse.json(`Error: ${error}`, { status: 500 })
   }
 }

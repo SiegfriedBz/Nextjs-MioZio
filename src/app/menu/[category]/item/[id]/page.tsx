@@ -25,7 +25,6 @@ export async function generateMetadata({
           'Content-Type': 'application/json',
         },
         cache: 'no-store',
-        next: { revalidate: 0 },
       }
     )
     if (!response.ok) throw new Error('Network response was not ok.')
@@ -66,7 +65,6 @@ async function getData(id: string) {
           'Content-Type': 'application/json',
         },
         cache: 'no-store',
-        next: { revalidate: 0 },
       }
     )
 

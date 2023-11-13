@@ -10,7 +10,7 @@ cloudinary.config({
   secure: true,
   // unique_filename: false,
   overwrite: true,
-  invalidate: !PROD_ENV, // Invalidate the CDN old assests cache if not in production
+  invalidate: true, // Invalidate the CDN old assests cache
 })
 
 export default cloudinary

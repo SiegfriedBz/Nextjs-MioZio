@@ -39,7 +39,6 @@ async function getData(category: MenuCategorySlugEnum) {
           'Content-Type': 'application/json',
         },
         cache: 'no-store',
-        next: { revalidate: 0 },
       }
     )
 

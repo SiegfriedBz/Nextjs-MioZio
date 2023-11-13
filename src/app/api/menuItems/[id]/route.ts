@@ -1,4 +1,5 @@
 import { prisma } from '@/utils/prismaClient'
+import { NextResponse } from 'next/server'
 
 export async function GET(
   request: Request,
@@ -15,9 +16,9 @@ export async function GET(
     // not serializable prisma dates
     const menuItem = JSON.parse(JSON.stringify(menuItemPrisma))
 
-    return Response.json({ menuItem }, { status: 200 })
+    return NextResponse.json({ menuItem }, { status: 200 })
   } catch (error) {
-    return Response.json(`Error: ${error}`, { status: 500 })
+    return NextResponse.json(`Error: ${error}`, { status: 500 })
   }
 }
 
@@ -34,11 +35,11 @@ export async function DELETE(
       },
     })
 
-    return Response.json(
+    return NextResponse.json(
       { message: 'Menu item deleted successfully.' },
       { status: 200 }
     )
   } catch (error) {
-    return Response.json(`Error: ${error}`, { status: 500 })
+    return NextResponse.json(`Error: ${error}`, { status: 500 })
   }
 }

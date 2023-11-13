@@ -1,5 +1,6 @@
 import { MenuCategorySlugEnum } from '@/types'
 import { prisma } from '@/utils/prismaClient'
+import { NextResponse } from 'next/server'
 
 export async function GET(
   request: Request,
@@ -22,8 +23,8 @@ export async function GET(
       JSON.stringify(menuCategoryItemsPrisma)
     )
 
-    return Response.json({ menuCategoryItems }, { status: 200 })
+    return NextResponse.json({ menuCategoryItems }, { status: 200 })
   } catch (error) {
-    return Response.json(`Error: ${error}`, { status: 500 })
+    return NextResponse.json(`Error: ${error}`, { status: 500 })
   }
 }

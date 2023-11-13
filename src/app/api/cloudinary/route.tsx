@@ -1,4 +1,5 @@
 import cloudinary from '@/utils/cloudinary/cloudinaryConfig'
+import { NextResponse } from 'next/server'
 import { join } from 'path'
 
 const CLOUDINARY_APP_NAME = process.env.CLOUDINARY_APP_NAME
@@ -8,7 +9,7 @@ const CLOUDINARY_APP_NAME = process.env.CLOUDINARY_APP_NAME
  * - return public_id
  * - public_id is used to retrieve image from Cloudinary
  */
-export async function POST(request: Request, response: Response) {
+export async function POST(request: Request) {
   try {
     const formData = await request.formData()
 
@@ -29,8 +30,8 @@ export async function POST(request: Request, response: Response) {
     // Extract relevant information from the Cloudinary response
     const { public_id, secure_url } = response
 
-    return Response.json({ public_id }, { status: 200 })
+    return NextResponse.json({ public_id }, { status: 200 })
   } catch (error) {
-    return Response.json(`Error: ${error}`, { status: 500 })
+    return NextResponse.json(`Error: ${error}`, { status: 500 })
   }
 }

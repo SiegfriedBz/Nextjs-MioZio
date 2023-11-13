@@ -1,7 +1,8 @@
 import { prisma } from '@/utils/prismaClient'
+import { NextResponse } from 'next/server'
 
 // Update order status to PAID & add intent_id
-export async function PATCH(request: Request, response: Response) {
+export async function PATCH(request: Request) {
   const body = await request.json()
   const { orderId, paymentIntentId } = body
 
@@ -18,12 +19,11 @@ export async function PATCH(request: Request, response: Response) {
 
     if (!updatedOrder) throw new Error('Order not found, please try again')
 
-    return Response.json(
+    return NextResponse.json(
       { updatedOrder, message: 'Your payment was processed successfully' },
       { status: 200 }
     )
   } catch (error) {
-    console.log(error)
-    return Response.json({ message: `Error: ${error}` }, { status: 500 })
+    return NextResponse.json({ message: `Error: ${error}` }, { status: 500 })
   }
 }

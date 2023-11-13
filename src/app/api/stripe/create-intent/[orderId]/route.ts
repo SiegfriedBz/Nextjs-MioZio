@@ -1,4 +1,5 @@
 import { prisma } from '@/utils/prismaClient'
+import { NextResponse } from 'next/server'
 
 // This is your test secret API key.
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
@@ -27,8 +28,7 @@ const getOrderAmount = async (orderId: string) => {
 
 export async function POST(
   request: Request,
-  { params: { orderId } }: { params: { orderId: string } },
-  response: Response
+  { params: { orderId } }: { params: { orderId: string } }
 ) {
   try {
     const orderAmount = await getOrderAmount(orderId)
@@ -56,14 +56,13 @@ export async function POST(
 
     // Send PaymentIntent client_secret to client
     // => display stripe checkout form.
-    return Response.json(
+    return NextResponse.json(
       {
         clientSecret: paymentIntent.client_secret,
       },
       { status: 200 }
     )
   } catch (error) {
-    console.log(error)
-    return Response.json({ message: `Error: ${error}` }, { status: 500 })
+    return NextResponse.json({ message: `Error: ${error}` }, { status: 500 })
   }
 }
