@@ -71,7 +71,7 @@ export const authOptions: NextAuthOptions = {
           'content-type': 'application/json',
         })
 
-        fetch('https://api.brevo.com/v3/smtp/email', {
+        const response = await fetch('https://api.brevo.com/v3/smtp/email', {
           method: 'POST',
           headers: headers,
           body: JSON.stringify(data),
