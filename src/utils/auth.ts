@@ -1,8 +1,9 @@
-import { NextAuthOptions, getServerSession, User } from 'next-auth'
-
+import { Session, getServerSession, User, NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { prisma } from './prismaClient'
+import { SendVerificationRequestParams } from 'next-auth/providers/email'
+import { JWT } from 'next-auth/jwt'
 
 // augment jwt user type to include isAdmin
 declare module 'next-auth/jwt' {
@@ -22,7 +23,7 @@ declare module 'next-auth' {
   }
 }
 
-export const authOptions: NextAuthOptions = {
+export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -38,7 +39,9 @@ export const authOptions: NextAuthOptions = {
       maxAge: 24 * 60 * 60,
       name: 'Email',
       options: {},
-      sendVerificationRequest: async (params) => {
+      sendVerificationRequest: async (
+        params: SendVerificationRequestParams
+      ) => {
         const { identifier: email, url } = params
 
         const data = {
@@ -71,7 +74,7 @@ export const authOptions: NextAuthOptions = {
           'content-type': 'application/json',
         })
 
-        const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+        fetch('https://api.brevo.com/v3/smtp/email', {
           method: 'POST',
           headers: headers,
           body: JSON.stringify(data),
@@ -112,7 +115,7 @@ export const authOptions: NextAuthOptions = {
   },
 
   callbacks: {
-    async jwt({ token }) {
+    async jwt({ token }: { token: JWT }) {
       // 1. token.email => user from db => add prop to token
       const prismaUser = await prisma.user.findUnique({
         where: {
@@ -126,7 +129,7 @@ export const authOptions: NextAuthOptions = {
       }
     },
 
-    async session({ session, token, user, newSession, trigger }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       if (token) {
         // 3. token => session : add user isAdmin prop to session
         session.user.isAdmin = token.isAdmin
@@ -138,5 +141,5 @@ export const authOptions: NextAuthOptions = {
 
 // Use it in SERVER COMPONENTS
 export async function getSCSession() {
-  return await getServerSession(authOptions)
+  return await getServerSession(authOptions as NextAuthOptions)
 }
